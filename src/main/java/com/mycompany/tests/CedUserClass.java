@@ -33,13 +33,7 @@ public class CedUserClass {
     private String mainUrl = "http://shop.loc/";
     private String testUrl = "http://shop.loc/admin/users/list/";
     private String osName;
-    private String firstName = "";
-    private String secondName = "";
-    private String lastName = "";
-    private String fullName = "";
-    private String loginU = "";
-    private String emailToUse = "";
-    private int userId = 0;
+    
     
     public CedUserClass(String pathToFileFolderIn, String osNameIn){
         this.pathToLogFileFolder = pathToFileFolderIn;
@@ -48,11 +42,11 @@ public class CedUserClass {
     
     public void startCedTestUsers() {
         
-        loginU = "" + helperClass.getRandomStringWithLength(12);
-        firstName = "FN_" + helperClass.getRandomStringWithLength(14);
-        secondName = "SN_" + helperClass.getRandomStringWithLength(14);
-        lastName = "LN_" + helperClass.getRandomStringWithLength(14);
-        emailToUse = helperClass.getRandomStringWithLength(6) + "@mail.com";
+        String loginU = "" + helperClass.getRandomStringWithLength(12);
+        String firstName = "FN_" + helperClass.getRandomStringWithLength(14);
+        String secondName = "SN_" + helperClass.getRandomStringWithLength(14);
+        String lastName = "LN_" + helperClass.getRandomStringWithLength(14);
+        String emailToUse = helperClass.getRandomStringWithLength(6) + "@mail.com";
         
         //fullName = lastName + ", " + firstName;
         credentialsClass = new CredentialsClass();
@@ -72,7 +66,7 @@ public class CedUserClass {
             System.out.println("Error file creation, test log will be only in terminal");
         }
         
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Candidate creation testing starts at: " + dateTimeOfSession +" OS: " + osName);
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "User create, edit, delete test starts at: " + dateTimeOfSession +" OS: " + osName);
         
         try {
             if(MainJFrame.CURRENT_BROWSER == MainJFrame.CHANGE_CHROME_BROWSER) {
@@ -110,7 +104,7 @@ public class CedUserClass {
             Thread.sleep(500);  
             
             try {                
-                fillUserDataAndSave();
+                fillUserDataAndSave(loginU, firstName, secondName, lastName, emailToUse);
                 Thread.sleep(300); 
             } catch (Exception ex) {
                 helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Unable to fill user data", ex.getMessage());
@@ -118,11 +112,11 @@ public class CedUserClass {
             
             Thread.sleep(500);            
             
-            
+            int[] arrWithIdAndPagination = new int[2];
 
             if (checkIfOnUrlNow("admin/users/list")) {
                 try {                
-                    tryToClickOnUserEditButton();
+                    arrWithIdAndPagination = findUserIdAndPaginationPageByLogin(loginU);
                     Thread.sleep(300); 
                 } catch (Exception ex) {
                     helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Unable to check saving user data", ex.getMessage());
@@ -131,7 +125,9 @@ public class CedUserClass {
                 helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Error - not on page with users list");
             }                        
                         
-            checkIfOnUrlNow("user/edit/" + userId);
+            clickOnUserEditButton(arrWithIdAndPagination);
+                        
+            checkIfOnUrlNow("user/edit/" + arrWithIdAndPagination[0]);
             
             editSavedUserData();
             Thread.sleep(1500); 
@@ -148,7 +144,7 @@ public class CedUserClass {
     
     public boolean checkIfOnUrlNow(String url) {
         if(webDriver.getCurrentUrl().contains(mainUrl + url)) {
-                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: if on page \"" + mainUrl + url + "\" - success!\n");
+                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: checking if I on page \"" + mainUrl + url + "\" - success!\n");
                 return true;
         } 
         
@@ -157,7 +153,7 @@ public class CedUserClass {
         
     }
 
-    private void fillUserDataAndSave() throws InterruptedException {
+    private void fillUserDataAndSave(String loginU, String firstName, String secondName, String lastName, String emailToUse) throws InterruptedException {
         helperClass.editDataInTextInputWithLabel(webDriver, loginU, "id", "login", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(3) > label", fileToWriteLogsOfTesting);
         Thread.sleep(200);  
         helperClass.editDataInTextInputWithLabel(webDriver, firstName, "id", "first_name", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(4) > label", fileToWriteLogsOfTesting);
@@ -171,52 +167,19 @@ public class CedUserClass {
         helperClass.editDataInTextInputWithLabel(webDriver, "123456", "id", "password", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(7) > label", fileToWriteLogsOfTesting);
         Thread.sleep(200);
         webDriver.findElement(By.id("userCreateEditBtn")).click();
-    }
+    }    
 
-    private void checkIfUserSaved() throws InterruptedException {        
-        //js.executeScript("window.scrollBy(0,1000)");
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: ");      
-    }
-
-    private boolean findIdByLoginOnPage() throws InterruptedException {
-        boolean isFound = false;
-        Thread.sleep(500);
-        WebElement tableWithUsers = helperClass.safeFindElement(webDriver, "tableWithUsersData", "id");
-        List<WebElement> listUserTrs = null;
-        List<WebElement> listOfInternalTds = null;
-        
-        try {
-            listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
-        } catch (Exception ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
-        }
-        
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + loginU);
-
-        if (listUserTrs.size() > 1) {
-            for (int i = 1; i < listUserTrs.size(); i++) {
-                Thread.sleep(500);
-                listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
-                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: listOfInternalTds.get(1).getText()=" + listOfInternalTds.get(1).getText());
-
-                if(listOfInternalTds.get(1).getText().contains(loginU)) {
-                    userId = Integer.valueOf(listOfInternalTds.get(0).getText());
-                    helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: resId=" + userId); 
-                    isFound = true;
-                }
-            }
-        }
-        
-        Thread.sleep(500);
-        return isFound;
-    }
+    
 
     private void editSavedUserData() {
         helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Try to edit users data (editSavedUserData func)");
     }
 
-    private void tryToClickOnUserEditButton() throws InterruptedException {
+    private int[] findUserIdAndPaginationPageByLogin(String userLogin) throws InterruptedException {
         
+        int[] arrayIdAndPagination = new int[2];
+        arrayIdAndPagination[0] = 0;
+        arrayIdAndPagination[1] = 0;
         boolean isUserFound = false;
         boolean isPaginationFound = false;
         boolean isWork = true;
@@ -231,7 +194,7 @@ public class CedUserClass {
         int counter = 1;
         if (isPaginationFound){
             do {
-                webDriver.get(mainUrl + "admin/users/list?page=" + counter);
+                //webDriver.get(mainUrl + "admin/users/list?page=" + counter);//To navigate by urls
                 Thread.sleep(500);
                 js.executeScript("window.scrollBy(0,250)");
                 Thread.sleep(500);
@@ -245,7 +208,7 @@ public class CedUserClass {
                     helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
                 }
 
-                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + loginU);
+                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + userLogin);
                 Thread.sleep(500);
                 if (listUserTrs.size() > 1) {
                     for (int i = 1; i < listUserTrs.size(); i++) {
@@ -253,29 +216,74 @@ public class CedUserClass {
                         listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
                         helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: listOfInternalTds.get(1).getText()=" + listOfInternalTds.get(1).getText());
 
-                        if(listOfInternalTds.get(1).getText().contains(loginU)) {
-                            userId = Integer.valueOf(listOfInternalTds.get(0).getText());
-                            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: resId=" + userId); 
+                        if(listOfInternalTds.get(1).getText().contains(userLogin)) {
+                            arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
+                            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: resId=" + arrayIdAndPagination[0]); 
                             isUserFound = true;
-                            numberOfPage = counter;
+                            arrayIdAndPagination[1] = counter;
                             isWork = false;
                         }
                     }
                 } 
                 Thread.sleep(500);
-                counter++;
+                counter++;//number of paginating page
+                List<WebElement> currentListOfPageLinks = webDriver.findElements(By.className("page-item"));
+                if(!currentListOfPageLinks.get(currentListOfPageLinks.size()-1).getAttribute("class").contains("disabled")) {
+                    currentListOfPageLinks.get(currentListOfPageLinks.size()-1).click();
+                } else {
+                    isWork = false;
+                }
+                
+                Thread.sleep(500);
             } while (isWork);
-        } else {
-            isUserFound = findIdByLoginOnPage();
+        } else {            
+            return findIdByLoginOnOnePage(userLogin);
         }
-        
-        if(isUserFound) {
-            webDriver.get(mainUrl + "admin/users/list?page=" + numberOfPage);
+                
+        return arrayIdAndPagination;
+    }
+    
+    private void clickOnUserEditButton(int[] arrayIdAndPagination) throws InterruptedException {
+        if(arrayIdAndPagination[0] != 0) {
+            webDriver.get(mainUrl + "admin/users/list?page=" + arrayIdAndPagination[1]);
             Thread.sleep(500);
-            WebElement editButton = webDriver.findElement(By.id("edit" + userId));
+            WebElement editButton = webDriver.findElement(By.id("edit" + arrayIdAndPagination[0]));
             editButton.click();
+            Thread.sleep(500);
+        }
+    }
+    
+    private int[] findIdByLoginOnOnePage(String userLogin) throws InterruptedException {
+        int userIdOnPage = 0;
+        Thread.sleep(500);
+        WebElement tableWithUsers = helperClass.safeFindElement(webDriver, "tableWithUsersData", "id");
+        List<WebElement> listUserTrs = null;
+        List<WebElement> listOfInternalTds = null;
+        
+        try {
+            listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
+        } catch (Exception ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
         }
         
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + userLogin);
+
+        if (listUserTrs.size() > 1) {
+            for (int i = 1; i < listUserTrs.size(); i++) {
+                Thread.sleep(500);
+                listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
+                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: listOfInternalTds.get(1).getText()=" + listOfInternalTds.get(1).getText());
+
+                if(listOfInternalTds.get(1).getText().contains(userLogin)) {
+                    userIdOnPage = Integer.valueOf(listOfInternalTds.get(0).getText());
+                    helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: resId=" + userLogin); 
+                }
+            }
+        }
+        
+        Thread.sleep(500);
+        int[] resArr = {userIdOnPage, 0};
+        return resArr;
     }
     
 }

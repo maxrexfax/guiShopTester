@@ -96,7 +96,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.mycompany.perscriptumtest.MainJFrame</mainClass>
+                            <mainClass>com.mycompany.shoptester.MainJFrame</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -221,23 +221,24 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButtonStartTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartTestActionPerformed
         // TODO add your handling code here:
+        int loops = getDataFromTextField(jTextFieldLoopsNumber, 1, 100);   
         if (jRadioButtonAll.isSelected()) {
             String message = "Testing of ALL CEDs";  
             jLabelStatus.setText(message);//SearchCandidateClass
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
             Thread tSearch = new Thread() {
-                public void run() {                               
-                    try {
-                        
-                    } catch (Exception | Error ex) {
-                        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: MainFraimClass ERROR!");
-                        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, ex.getMessage());
+                public void run() {   
+                    for (int i = 0; i < loops; i++) {
+                        try {
+                            startAllTestsOneByOne();
+                        } catch (Exception | Error ex) {
+                            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR start all tests!", ex.getMessage());
+                        }
                     }
                 }
             };
             tSearch.start();
-        } else if (jRadioButtonCedUser.isSelected()) {
-            int loops = getDataFromTextField(jTextFieldLoopsNumber, 1, 100);        
+        } else if (jRadioButtonCedUser.isSelected()) {                 
             String message = "Testing of the users Create, Edit, Delete";            
             jLabelStatus.setText(message);         
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message);   
@@ -246,23 +247,30 @@ public class MainJFrame extends javax.swing.JFrame {
                     for (int i = 0; i < loops; i++) {
                         CedUserClass sortCandidatesClass = new CedUserClass(pathToLogFile, osName);                    
                         try {
-                            String[] strarr = new String[2];
                             sortCandidatesClass.startCedTestUsers();
                         } catch (Exception | Error ex) {
-                            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: MainFraimClass ERROR!");
-                            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, ex.getMessage());
+                            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR sortCandidatesClass.startCedTestUsers()!", ex.getMessage());
                         }
                     }
                 }
             };
-            tSort.start();
-            
+            tSort.start();            
         } else {
             jLabelStatus.setText("EMPTY CHOICE!"); 
             JOptionPane.showMessageDialog(frame, "EMPTY CHOICE!");
         }
     }//GEN-LAST:event_jButtonStartTestActionPerformed
 
+    private void startAllTestsOneByOne() {
+        //Test Users
+        CedUserClass sortCandidatesClass = new CedUserClass(pathToLogFile, osName);                    
+        try {
+            sortCandidatesClass.startCedTestUsers();
+        } catch (Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR sortCandidatesClass.startCedTestUsers()!", ex.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
