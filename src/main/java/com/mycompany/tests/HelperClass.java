@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,6 +36,7 @@ public class HelperClass {
     
     public final String leftDemarkator = "--->";
     public final String rightDemarkator = "<---";
+    private CredentialsClass credentialsClass;
     
     public String getRandChar() 
     {
@@ -259,17 +261,15 @@ public class HelperClass {
         try {
             inputToEditValueLabel = safeFindElement(webDriver, labelId, labelTypeId);
             textInLabel = inputToEditValueLabel.getText();    
-            System.out.println("Text in label = " + textInLabel);
-        } catch(Exception ex) {
-            writeStringToFile(logFileNormal, "Error while finding element   " + labelId);
-            System.out.println("Error while finding element with cssSelector   " + labelId);
+            printToFileAndConsoleInformation(logFileNormal, "\nText in label = " + textInLabel);
+        } catch(Exception ex) {            
+            printToFileAndConsoleInformation(logFileNormal, "Error while finding element   " + labelId);
         }
         
         try {
             inputToEditValue = safeFindElement(webDriver, inputId, inputTypeId);
         } catch(Exception ex) {
-            writeStringToFile(logFileNormal, "Error while finding element   " + inputId);
-            System.out.println("Error while finding element with id   " + inputId);
+            printToFileAndConsoleInformation(logFileNormal, "Error while finding element with id   " + inputId);
         }
         
         String inputValue;
@@ -279,32 +279,81 @@ public class HelperClass {
             inputValue = inputToEditValue.getAttribute("value");
         }
          
-        writeStringToFile(logFileNormal, "Work: found in element " + textInLabel + "  data:   " + leftDemarkator + inputToEditValue.getAttribute("value") + rightDemarkator); 
-        System.out.println("Work: found in element " + textInLabel + "  data:   " + leftDemarkator + inputToEditValue.getAttribute("value") + rightDemarkator);
+        printToFileAndConsoleInformation(logFileNormal, "Work: found in element " + textInLabel + "  data:   " + leftDemarkator + inputToEditValue.getAttribute("value") + rightDemarkator);
         
         if (inputToEditValue.getAttribute("value").length() > 0) {
-            writeStringToFile(logFileNormal, "Work: clear data in element"); 
-            System.out.println("Work: clear data in element");
+            printToFileAndConsoleInformation(logFileNormal,"Work: clear data in element");
             inputToEditValue.sendKeys(Keys.CONTROL + "a");
             Thread.sleep(500);
             inputToEditValue.sendKeys(Keys.DELETE);
             Thread.sleep(500);
         }        
         
-        writeStringToFile(logFileNormal, "Work: fill data   " + leftDemarkator + inputValue + rightDemarkator + " in element " + textInLabel); 
-        System.out.println("Work: fill data " + leftDemarkator + inputValue + rightDemarkator + " in element " +  textInLabel);
+        printToFileAndConsoleInformation(logFileNormal, "Work: fill data " + leftDemarkator + inputValue + rightDemarkator + " in element " +  textInLabel);
         
         try {
             inputToEditValue.sendKeys(inputValue);
         } catch (Exception ex) {
-            writeStringToFile(logFileNormal, "Error while sending data " + leftDemarkator + inputValue + rightDemarkator + " to input");
-            System.out.println("Error while sending data   " + leftDemarkator + inputValue + rightDemarkator + " to input");
+            printToFileAndConsoleInformation(logFileNormal, "Error while sending data   " + leftDemarkator + inputValue + rightDemarkator + " to input");
         }
         
-        writeStringToFile(logFileNormal, "Work: after filling found data " + leftDemarkator + inputToEditValue.getAttribute("value") + rightDemarkator + "\r\n");
-        System.out.println("Work: after filling found data   " + leftDemarkator + inputToEditValue.getAttribute("value") + rightDemarkator + "\r");
+        printToFileAndConsoleInformation(logFileNormal, "Work: after filling found data   " + leftDemarkator + inputToEditValue.getAttribute("value") + rightDemarkator + "\r");
         Thread.sleep(300);
-    }        
+    }
+    
+    public boolean checkInputContent(WebDriver webDriver, String inputValue, String appendix, String inputTypeId, String inputId, String labelTypeId, String labelId, File logFileNormal) {
+        WebElement inputsLabel = null;
+        WebElement inputToEditValue = null;
+        String textInLabel = "";
+        String textInInput = "";
+        
+        try {
+            inputsLabel = safeFindElement(webDriver, labelId, labelTypeId);
+            textInLabel = inputsLabel.getText();    
+            printToFileAndConsoleInformation(logFileNormal, "\nText in label = " + textInLabel);
+        } catch(Exception ex) {            
+            printToFileAndConsoleInformation(logFileNormal, "Error while finding element   " + labelId);
+        }
+        
+        try {
+            inputToEditValue = safeFindElement(webDriver, inputId, inputTypeId);
+        } catch(Exception ex) {
+            printToFileAndConsoleInformation(logFileNormal, "Error while finding element with id   " + inputId);
+        }
+        
+        String prewaitingStringInInput = inputValue + appendix;
+        textInInput = inputToEditValue.getAttribute("value");
+        if (textInInput.equals(prewaitingStringInInput)) {
+            printToFileAndConsoleInformation(logFileNormal, "String data "+ leftDemarkator + prewaitingStringInInput + rightDemarkator + " found in " + textInLabel + ". Success!");
+            return true;
+        } else {
+            printToFileAndConsoleInformation(logFileNormal, "ERROR finding String data "+ leftDemarkator + prewaitingStringInInput + rightDemarkator + " in " + textInLabel + "! Text was " + leftDemarkator + textInInput + rightDemarkator);
+        }        
+        return false;
+    }
+    
+    public void deleteModelById(WebDriver webDriver, int[] idAndPaginationPage, String idOfContainer, boolean deleteUserYesNo, File logFileNormal, int indexOfDeleteButton) throws InterruptedException {        
+        Thread.sleep(500);        
+        WebElement tableWithUsers = webDriver.findElement(By.id(idOfContainer));
+        List<WebElement> listOfTrs = tableWithUsers.findElements(By.tagName("tr"));
+        for (int i = 1; i < listOfTrs.size(); i++) {
+            List<WebElement> listOfTds = listOfTrs.get(i).findElements(By.tagName("td"));
+            if (Integer.parseInt(listOfTds.get(0).getText()) == idAndPaginationPage[0]) {
+                listOfTds.get(indexOfDeleteButton).click();
+            }
+        }
+        Thread.sleep(1500);
+        Alert alert = webDriver.switchTo().alert();
+        String alertText = alert.getText();
+        printToFileAndConsoleInformation(logFileNormal, "Work: found text in confirm message:" + alertText);
+        printToFileAndConsoleInformation(logFileNormal, "Work: confirm delete? " + deleteUserYesNo);
+        if (deleteUserYesNo) {
+            alert.accept();
+        } else {
+            alert.dismiss();
+        }
+        Thread.sleep(500);        
+    }
         
     public void writeErrorsToFiles(File logFile, File errorLogFile, String message, String exceptionMessage) {
         writeStringToFile(logFile, message); 
@@ -336,6 +385,16 @@ public class HelperClass {
         Thread.sleep(500);
         inputToClear.sendKeys(Keys.DELETE);
         Thread.sleep(500);
-    }    
+    }  
+    
 
+    public boolean checkIfOnUrlNow(String urlNow, String expectedUrl, File logFile) {
+        if(urlNow.equals(expectedUrl)) {
+                printToFileAndConsoleInformation(logFile, "Work: checking if I on page \"" + expectedUrl + "\" - success!\n");
+                return true;
+        } 
+        
+        printToFileAndConsoleInformation(logFile, "ERROR! Not on url " + expectedUrl);
+        return false;        
+    }
 }

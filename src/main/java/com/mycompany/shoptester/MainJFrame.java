@@ -5,7 +5,8 @@
  */
 package com.mycompany.shoptester;
 
-import com.mycompany.tests.CedUserClass;
+import com.mycompany.tests.CrudLocalesClass;
+import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
 import java.io.File;
 import javax.swing.ButtonGroup;
@@ -19,8 +20,8 @@ import javax.swing.JTextField;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    private ButtonGroup bgroupCEDs;
-    private ButtonGroup bgroupCartOrder;
+    private ButtonGroup bgroupCruds;
+    private ButtonGroup bgroupBrowsers;
     
     public static final int CHANGE_CHROME_BROWSER = 1;
     public static final int CHANGE_FIREFOX_BROWSER = 2;
@@ -40,6 +41,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
+        
         makeLocalWork();
         fillData();
         setTextInInfoLabel();
@@ -60,7 +62,13 @@ public class MainJFrame extends javax.swing.JFrame {
         TabsInfo = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jRadioButtonAll = new javax.swing.JRadioButton();
-        jRadioButtonCedUser = new javax.swing.JRadioButton();
+        jRadioButtonCrudUser = new javax.swing.JRadioButton();
+        jCheckBoxDeleteUser = new javax.swing.JCheckBox();
+        jRadioButtonUseChromium = new javax.swing.JRadioButton();
+        jRadioButtonUseFirefox = new javax.swing.JRadioButton();
+        jRadioButtonCrudLocale = new javax.swing.JRadioButton();
+        jCheckBoxDeleteLocale = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -84,7 +92,20 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButtonAll.setText("Start all checks below");
 
-        jRadioButtonCedUser.setText("Create, edit, delete User");
+        jRadioButtonCrudUser.setText("Create, edit, delete User");
+
+        jCheckBoxDeleteUser.setSelected(true);
+
+        jRadioButtonUseChromium.setSelected(true);
+        jRadioButtonUseChromium.setText("Use Chrome browser");
+
+        jRadioButtonUseFirefox.setText("Use Firefox browser");
+
+        jRadioButtonCrudLocale.setText("Create, edit, delete Locale");
+
+        jCheckBoxDeleteLocale.setSelected(true);
+
+        jLabel2.setText("Delete after test?");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,20 +115,45 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonAll)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jRadioButtonUseChromium)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButtonUseFirefox))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonCedUser)
-                        .addGap(129, 375, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButtonCrudUser)
+                            .addComponent(jRadioButtonCrudLocale)
+                            .addComponent(jRadioButtonAll))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jCheckBoxDeleteLocale)
+                            .addComponent(jCheckBoxDeleteUser))))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jRadioButtonAll)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jRadioButtonAll)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addGap(4, 4, 4)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonCrudUser)
+                    .addComponent(jCheckBoxDeleteUser))
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButtonCedUser)
-                .addContainerGap(297, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonCrudLocale)
+                    .addComponent(jCheckBoxDeleteLocale))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonUseChromium)
+                    .addComponent(jRadioButtonUseFirefox))
+                .addContainerGap())
         );
 
         TabsInfo.addTab("First", jPanel1);
@@ -221,12 +267,18 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButtonStartTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartTestActionPerformed
         // TODO add your handling code here:
+        if (jRadioButtonUseChromium.isSelected()) {
+            CURRENT_BROWSER = CHANGE_CHROME_BROWSER;
+        } else {
+            CURRENT_BROWSER = CHANGE_FIREFOX_BROWSER;
+        }
+        
         int loops = getDataFromTextField(jTextFieldLoopsNumber, 1, 100);   
         if (jRadioButtonAll.isSelected()) {
-            String message = "Testing of ALL CEDs";  
+            String message = "Testing of ALL Tests";  
             jLabelStatus.setText(message);//SearchCandidateClass
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            Thread tSearch = new Thread() {
+            Thread tAllChecks = new Thread() {
                 public void run() {   
                     for (int i = 0; i < loops; i++) {
                         try {
@@ -237,24 +289,41 @@ public class MainJFrame extends javax.swing.JFrame {
                     }
                 }
             };
-            tSearch.start();
-        } else if (jRadioButtonCedUser.isSelected()) {                 
+            tAllChecks.start();
+        } else if (jRadioButtonCrudUser.isSelected()) { 
+            boolean deleteUser = true;
+            if (!jCheckBoxDeleteUser.isSelected()) {
+                deleteUser = false;
+            }
             String message = "Testing of the users Create, Edit, Delete";            
             jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message);   
-            Thread tSort = new Thread() {
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
+            final boolean deleteUserF = deleteUser;
+            Thread tCrudUser = new Thread() {
                 public void run() {
                     for (int i = 0; i < loops; i++) {
-                        CedUserClass sortCandidatesClass = new CedUserClass(pathToLogFile, osName);                    
-                        try {
-                            sortCandidatesClass.startCedTestUsers();
-                        } catch (Exception | Error ex) {
-                            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR sortCandidatesClass.startCedTestUsers()!", ex.getMessage());
-                        }
+                        startCrudUser(deleteUserF);
                     }
                 }
             };
-            tSort.start();            
+            tCrudUser.start();            
+        } else if (jRadioButtonCrudLocale.isSelected()) { 
+            boolean deleteLocale = true;
+            if (!jCheckBoxDeleteLocale.isSelected()) {
+                deleteLocale = false;
+            }
+            String message = "Testing of the Locales Create, Edit, Delete";            
+            jLabelStatus.setText(message);         
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
+            final boolean deleteLocalerF = deleteLocale;
+            Thread tCrudLocale = new Thread() {
+                public void run() {
+                    for (int i = 0; i < loops; i++) {
+                        startCrudLocale(deleteLocalerF);
+                    }
+                }
+            };
+            tCrudLocale.start();            
         } else {
             jLabelStatus.setText("EMPTY CHOICE!"); 
             JOptionPane.showMessageDialog(frame, "EMPTY CHOICE!");
@@ -263,11 +332,25 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void startAllTestsOneByOne() {
         //Test Users
-        CedUserClass sortCandidatesClass = new CedUserClass(pathToLogFile, osName);                    
+        startCrudUser(true);
+        
+    }
+    
+    public void startCrudUser(boolean deleteUser) {
+        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser);                    
         try {
-            sortCandidatesClass.startCedTestUsers();
+            crudUserClass.startCrudTestUsers();
         } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR sortCandidatesClass.startCedTestUsers()!", ex.getMessage());
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudUserClass.startCrudTestUsers()!", ex.getMessage());
+        }
+    }
+    
+    public void startCrudLocale(boolean deleteUser) {
+        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteUser);                    
+        try {
+            crudLocalesClass.crudTestOfLocales();
+        } catch (Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
         }
     }
     
@@ -309,7 +392,10 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabsInfo;
     private javax.swing.JButton jButtonStartTest;
+    private javax.swing.JCheckBox jCheckBoxDeleteLocale;
+    private javax.swing.JCheckBox jCheckBoxDeleteUser;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelStatus;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -322,18 +408,26 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton jRadioButtonAll;
-    private javax.swing.JRadioButton jRadioButtonCedUser;
+    private javax.swing.JRadioButton jRadioButtonCrudLocale;
+    private javax.swing.JRadioButton jRadioButtonCrudUser;
+    private javax.swing.JRadioButton jRadioButtonUseChromium;
+    private javax.swing.JRadioButton jRadioButtonUseFirefox;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaInformation;
     private javax.swing.JTextField jTextFieldLoopsNumber;
     // End of variables declaration//GEN-END:variables
 
     private void makeLocalWork() {
-        bgroupCEDs = new ButtonGroup();
-        bgroupCEDs.add(jRadioButtonAll);
-        bgroupCEDs.add(jRadioButtonCedUser);
+        bgroupCruds = new ButtonGroup();
+        bgroupCruds.add(jRadioButtonAll);
+        bgroupCruds.add(jRadioButtonCrudUser);
+        bgroupCruds.add(jRadioButtonCrudLocale);
         frame = this;
         frame.setTitle(appName);
+        
+        bgroupBrowsers = new ButtonGroup();
+        bgroupBrowsers.add(jRadioButtonUseChromium);
+        bgroupBrowsers.add(jRadioButtonUseFirefox);        
     }
     
     private void fillData() {
@@ -360,9 +454,8 @@ public class MainJFrame extends javax.swing.JFrame {
         try {
             theDirectoryForLogFiles = new File(pathToLogFile);
             theDirectoryForLogFiles.mkdirs();
-            //System.out.println("Create folder for log files at path " + pathToLogFile);
         } catch (Exception ex) {
-            //System.out.println("ERROR with creation of the folder for log files at path " + pathToLogFile);            
+            System.out.println("ERROR with creation of the folder for log files at path " + pathToLogFile);            
         }        
         
         fileName = pathToLogFile + "mainApplicationLog_" + dateTimeOfSession + ".txt";
@@ -371,10 +464,10 @@ public class MainJFrame extends javax.swing.JFrame {
         try {
             fileToWriteLogsOfTesting = new File(fileName);
             fileToWriteErrorLogOfTesting = new File(fileNameERRORS);
-            //System.out.println("Path to logfile:" + fileName);
+            System.out.println("Path to logfile:" + fileName);
         } catch (Exception exx) {
-            //System.out.println(exx.getMessage());
-            //System.out.println("Error file creation, test log will be only in terminal");
+            System.out.println(exx.getMessage());
+            System.out.println("Error file creation, test log will be only in terminal");
         }
         helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: Start");   
     }
