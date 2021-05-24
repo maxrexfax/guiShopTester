@@ -130,36 +130,36 @@ public class HelperClass {
             }
         }
     
-    public void selectOneElementFromDropdownInHelper(WebDriver webDriver, File logFileNormal) throws InterruptedException
-    {     
-        //WebElement listContainerElement = webDriver.findElement(By.xpath("//*[contains(@class,'v-menu__content--fixed menuable__content__active')]"));
-        WebElement listContainerElement = webDriver.findElement(By.className("menuable__content__active"));
-        Thread.sleep(500);
-        List<WebElement> listElements = null;
-        try {
-            listElements = listContainerElement.findElements(By.className("v-list-item--link"));
-        } catch (Exception ex) {
-            System.out.println("Error while finding elements in dropdown");
-            writeStringToFile(logFileNormal, "Error while finding elements in dropdown!");
-        }
-        //System.out.println("H_listElements.size=" + listElements.size());
-        Thread.sleep(500);
-        int randomNumberOfElement = (int)(Math.random() * listElements.size());        
-        Thread.sleep(500);
-        if (listElements != null) {
-            if (listElements.size() > 0) {
-                //System.out.println("H_BEFORE CLICK ON ELEMENT");
-                listElements.get(randomNumberOfElement).click(); 
-                //System.out.println("H_AFTER CLICK ON ELEMENT"); 
-                Thread.sleep(500);            
-            } else {
-                System.out.println("H_Error, listElements.size() = " + listElements.size());
-            }
-        } else {
-            System.out.println("H_Error, listElements is null");
-            writeStringToFile(logFileNormal, "Dropdown is null");
-        }
-    }
+//    public void selectOneElementFromDropdownInHelper(WebDriver webDriver, File logFileNormal) throws InterruptedException
+//    {     
+//        //WebElement listContainerElement = webDriver.findElement(By.xpath("//*[contains(@class,'v-menu__content--fixed menuable__content__active')]"));
+//        WebElement listContainerElement = webDriver.findElement(By.className("menuable__content__active"));
+//        Thread.sleep(500);
+//        List<WebElement> listElements = null;
+//        try {
+//            listElements = listContainerElement.findElements(By.className("v-list-item--link"));
+//        } catch (Exception ex) {
+//            System.out.println("Error while finding elements in dropdown");
+//            writeStringToFile(logFileNormal, "Error while finding elements in dropdown!");
+//        }
+//        //System.out.println("H_listElements.size=" + listElements.size());
+//        Thread.sleep(500);
+//        int randomNumberOfElement = (int)(Math.random() * listElements.size());        
+//        Thread.sleep(500);
+//        if (listElements != null) {
+//            if (listElements.size() > 0) {
+//                //System.out.println("H_BEFORE CLICK ON ELEMENT");
+//                listElements.get(randomNumberOfElement).click(); 
+//                //System.out.println("H_AFTER CLICK ON ELEMENT"); 
+//                Thread.sleep(500);            
+//            } else {
+//                System.out.println("H_Error, listElements.size() = " + listElements.size());
+//            }
+//        } else {
+//            System.out.println("H_Error, listElements is null");
+//            writeStringToFile(logFileNormal, "Dropdown is null");
+//        }
+//    }
     
     public String getDateInStringForWindowsLinux()
     {
@@ -249,6 +249,74 @@ public class HelperClass {
         int randomMonth = getRandomDigit(1,12);
         String rndMonthStr = (randomMonth < 10) ? "0" + randomMonth : String.valueOf(randomMonth);
         return "" + rndDayStr + "-" + rndMonthStr + "-" + getRandomDigit(1960,2005);
+    }
+    
+    public int[] getIdAndPaginationNumberOfModelOnPage(String userLogin, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+        int[] arrayIdAndPagination = new int[2];
+        arrayIdAndPagination[0] = 0;
+        arrayIdAndPagination[1] = 0;
+        boolean isPaginationFound = false;
+        boolean isWork = true;
+        int numberOfPage = 0;
+        List<WebElement> listOfPageLinks = webDriver.findElements(By.className(paginationIdentifier));
+        if (listOfPageLinks != null) {
+            if (listOfPageLinks.size() > 0) {                
+                isPaginationFound = true;
+            }
+        }
+        Thread.sleep(500);
+        int counter = 1;
+        do {
+            //webDriver.get(mainUrl + "admin/users/list?page=" + counter);//To navigate by urls
+            Thread.sleep(500);
+            js.executeScript("window.scrollBy(0,245)");//to make pagination clickable
+            Thread.sleep(500);
+            WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
+            List<WebElement> listUserTrs = null;
+            List<WebElement> listOfInternalTds = null;
+
+            try {
+                listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
+            } catch (Exception ex) {
+                writeErrorsToFiles(logFileNormal, logFileErrors, "Error while finding tr", ex.getMessage());            
+            }
+
+            printToFileAndConsoleInformation(logFileNormal, "Work: try to find id of user with login:" + userLogin);
+            Thread.sleep(500);
+            if (listUserTrs.size() > 1) {
+                for (int i = 1; i < listUserTrs.size(); i++) {
+                    Thread.sleep(500);
+                    listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
+
+                    if(listOfInternalTds.get(1).getText().contains(userLogin)) {
+                        arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
+                        printToFileAndConsoleInformation(logFileNormal, "Work: user found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
+                        arrayIdAndPagination[1] = counter;
+                        isWork = false;
+                    }
+                }
+            } 
+            Thread.sleep(500);
+            if (isPaginationFound){
+                counter++;//number of paginating page
+                List<WebElement> currentListOfPageLinks = webDriver.findElements(By.className(paginationIdentifier));
+                if(!currentListOfPageLinks.get(currentListOfPageLinks.size()-1).getAttribute("class").contains("disabled")) {
+                    currentListOfPageLinks.get(currentListOfPageLinks.size()-1).click();
+                } else {
+                    isWork = false;
+                } 
+            } else {
+                isWork = false;
+            }
+
+            Thread.sleep(500);
+        } while (isWork);
+                
+        return arrayIdAndPagination;
+    }
+    
+    public void testClass(JavascriptExecutor js) {
+        js.executeScript("window.scrollBy(0,545)");
     }
     
     public void editDataInTextInputWithLabel(WebDriver webDriver, String dataToFill, String inputTypeId, String inputId, String labelTypeId, String labelId, File logFileNormal) throws InterruptedException {

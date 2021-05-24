@@ -77,6 +77,9 @@ public class CrudLocalesClass {
             startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);           
             Thread.sleep(500);
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting);
+            
+            webDriver.get("http://shop.loc/product/category/1");
+            
             webDriver.findElement(By.id("adminConrol")).click();
             Thread.sleep(300); 
             webDriver.findElement(By.id("settings")).click();
@@ -105,7 +108,7 @@ public class CrudLocalesClass {
     }
     
     private void startAndLoginToSite(WebDriver webDriver, File fileToWriteLogsOfTesting, String mainUrl) throws InterruptedException {
-         helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: go to url:" + mainUrl);
+        helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: go to url:" + mainUrl);
         webDriver.get(mainUrl);
         Thread.sleep(500);
         webDriver.findElement(By.cssSelector("#navbarSupportedContent > ul.navbar-nav.ml-auto > li:nth-child(1) > a")).click();

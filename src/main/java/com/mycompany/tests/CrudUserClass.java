@@ -116,8 +116,8 @@ public class CrudUserClass {
             int[] arrWithIdAndPagination = new int[2];
 
             if (helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/users/list", fileToWriteLogsOfTesting)) {
-                try {                
-                    arrWithIdAndPagination = findObjectIdAndPaginationPageByStringInTable(userLogin, "tableWithUsersData", "id", "page-item");
+                try {
+                    arrWithIdAndPagination = helperClass.getIdAndPaginationNumberOfModelOnPage(userLogin, "tableWithUsersData", "id", "page-item", webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
                     Thread.sleep(300); 
                 } catch (Exception ex) {
                     helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Unable to check saving user data", ex.getMessage());
@@ -185,71 +185,6 @@ public class CrudUserClass {
         Thread.sleep(200);
         webDriver.findElement(By.id("userCreateEditBtn")).click();
         Thread.sleep(500); 
-    }
-    
-    private int[] findObjectIdAndPaginationPageByStringInTable(String userLogin, String tableIdetifier, String typeOfId, String paginationIdentifier) throws InterruptedException {
-        
-        int[] arrayIdAndPagination = new int[2];
-        arrayIdAndPagination[0] = 0;
-        arrayIdAndPagination[1] = 0;
-        boolean isPaginationFound = false;
-        boolean isWork = true;
-        int numberOfPage = 0;
-        List<WebElement> listOfPageLinks = webDriver.findElements(By.className(paginationIdentifier));
-        if (listOfPageLinks != null) {
-            if (listOfPageLinks.size() > 0) {                
-                isPaginationFound = true;
-            }
-        }
-        Thread.sleep(500);
-        int counter = 1;
-        do {
-            //webDriver.get(mainUrl + "admin/users/list?page=" + counter);//To navigate by urls
-            Thread.sleep(500);
-            js.executeScript("window.scrollBy(0,245)");//to make pagination clickable
-            Thread.sleep(500);
-            WebElement tableWithUsers = helperClass.safeFindElement(webDriver, tableIdetifier, typeOfId);
-            List<WebElement> listUserTrs = null;
-            List<WebElement> listOfInternalTds = null;
-
-            try {
-                listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
-            } catch (Exception ex) {
-                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
-            }
-
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + userLogin);
-            Thread.sleep(500);
-            if (listUserTrs.size() > 1) {
-                for (int i = 1; i < listUserTrs.size(); i++) {
-                    Thread.sleep(500);
-                    listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
-
-                    if(listOfInternalTds.get(1).getText().contains(userLogin)) {
-                        arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
-                        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: user found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
-                        arrayIdAndPagination[1] = counter;
-                        isWork = false;
-                    }
-                }
-            } 
-            Thread.sleep(500);
-            if (isPaginationFound){
-                counter++;//number of paginating page
-                List<WebElement> currentListOfPageLinks = webDriver.findElements(By.className(paginationIdentifier));
-                if(!currentListOfPageLinks.get(currentListOfPageLinks.size()-1).getAttribute("class").contains("disabled")) {
-                    currentListOfPageLinks.get(currentListOfPageLinks.size()-1).click();
-                } else {
-                    isWork = false;
-                } 
-            } else {
-                isWork = false;
-            }
-
-            Thread.sleep(500);
-        } while (isWork);
-                
-        return arrayIdAndPagination;
     }
     
     private void clickOnUserEditButton(int[] arrayIdAndPagination) throws InterruptedException {
