@@ -203,51 +203,51 @@ public class CrudUserClass {
         }
         Thread.sleep(500);
         int counter = 1;
-        if (isPaginationFound){
-            do {
-                //webDriver.get(mainUrl + "admin/users/list?page=" + counter);//To navigate by urls
-                Thread.sleep(500);
-                js.executeScript("window.scrollBy(0,245)");//to make pagination clickable
-                Thread.sleep(500);
-                WebElement tableWithUsers = helperClass.safeFindElement(webDriver, tableIdetifier, typeOfId);
-                List<WebElement> listUserTrs = null;
-                List<WebElement> listOfInternalTds = null;
+        do {
+            //webDriver.get(mainUrl + "admin/users/list?page=" + counter);//To navigate by urls
+            Thread.sleep(500);
+            js.executeScript("window.scrollBy(0,245)");//to make pagination clickable
+            Thread.sleep(500);
+            WebElement tableWithUsers = helperClass.safeFindElement(webDriver, tableIdetifier, typeOfId);
+            List<WebElement> listUserTrs = null;
+            List<WebElement> listOfInternalTds = null;
 
-                try {
-                    listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
-                } catch (Exception ex) {
-                    helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
-                }
+            try {
+                listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
+            } catch (Exception ex) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
+            }
 
-                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + userLogin);
-                Thread.sleep(500);
-                if (listUserTrs.size() > 1) {
-                    for (int i = 1; i < listUserTrs.size(); i++) {
-                        Thread.sleep(500);
-                        listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + userLogin);
+            Thread.sleep(500);
+            if (listUserTrs.size() > 1) {
+                for (int i = 1; i < listUserTrs.size(); i++) {
+                    Thread.sleep(500);
+                    listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
 
-                        if(listOfInternalTds.get(1).getText().contains(userLogin)) {
-                            arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
-                            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: user found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
-                            arrayIdAndPagination[1] = counter;
-                            isWork = false;
-                        }
+                    if(listOfInternalTds.get(1).getText().contains(userLogin)) {
+                        arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
+                        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: user found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
+                        arrayIdAndPagination[1] = counter;
+                        isWork = false;
                     }
-                } 
-                Thread.sleep(500);
+                }
+            } 
+            Thread.sleep(500);
+            if (isPaginationFound){
                 counter++;//number of paginating page
                 List<WebElement> currentListOfPageLinks = webDriver.findElements(By.className(paginationIdentifier));
                 if(!currentListOfPageLinks.get(currentListOfPageLinks.size()-1).getAttribute("class").contains("disabled")) {
                     currentListOfPageLinks.get(currentListOfPageLinks.size()-1).click();
                 } else {
                     isWork = false;
-                }
-                
-                Thread.sleep(500);
-            } while (isWork);
-        } else {            
-            return findIdByLoginOnOnePage(userLogin);
-        }
+                } 
+            } else {
+                isWork = false;
+            }
+
+            Thread.sleep(500);
+        } while (isWork);
                 
         return arrayIdAndPagination;
     }
@@ -263,40 +263,6 @@ public class CrudUserClass {
         }
     }
     
-    private int[] findIdByLoginOnOnePage(String userLogin) throws InterruptedException {
-        js.executeScript("window.scrollBy(0,245)");
-        int userIdOnPage = 0;
-        Thread.sleep(500);
-        WebElement tableWithUsers = helperClass.safeFindElement(webDriver, "tableWithUsersData", "id");
-        List<WebElement> listUserTrs = null;
-        List<WebElement> listOfInternalTds = null;
-        
-        try {
-            listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
-        } catch (Exception ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Error while finding tr", ex.getMessage());            
-        }
-        
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: try to find id of user with login:" + userLogin);
-
-        if (listUserTrs.size() > 1) {
-            for (int i = 1; i < listUserTrs.size(); i++) {
-                Thread.sleep(500);
-                listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
-                helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: listOfInternalTds.get(1).getText()=" + listOfInternalTds.get(1).getText());
-
-                if(listOfInternalTds.get(1).getText().contains(userLogin)) {
-                    userIdOnPage = Integer.valueOf(listOfInternalTds.get(0).getText());
-                    helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: resId=" + userLogin); 
-                }
-            }
-        }
-        
-        Thread.sleep(500);
-        int[] resArr = {userIdOnPage, 0};
-        return resArr;
-    }
-
     private void checkUserData(int[] arrWithIdAndPagination, String userLogin, String firstName, String secondName, String lastName, String emailToUse, String appendixToAdd) throws InterruptedException {
         helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Try to find after editing user data appendix " + helperClass.leftDemarkator + appendixToAdd + helperClass.rightDemarkator);
         webDriver.get(mainUrl + "user/edit/" + arrWithIdAndPagination[0]);
