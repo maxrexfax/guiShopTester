@@ -6,6 +6,8 @@
 package com.mycompany.tests;
 
 import com.mycompany.shoptester.MainJFrame;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
@@ -101,6 +103,30 @@ public class CrudDeliveryClass {
             //login to site START
             js = (JavascriptExecutor)webDriver;
             webDriver.manage().window().maximize(); 
+            //driver.manage().window().setPosition(new Point(0, -2000));
+            
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_WINDOWS);
+            robot.keyPress(68);
+            robot.keyRelease(68);
+            robot.keyRelease(KeyEvent.VK_WINDOWS);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+//            robot.keyPress(KeyEvent.VK_ALT);
+//robot.keyPress(KeyEvent.VK_SPACE);
+//robot.keyPress(KeyEvent.VK_N);
+//robot.keyRelease(KeyEvent.VK_ALT);
+//robot.keyRelease(KeyEvent.VK_SPACE);
+//robot.keyRelease(KeyEvent.VK_N);
+//            robot.mouseMove(630, 420); // move mouse point to specific location	
+//            robot.delay(1500);        // delay is to make code wait for mentioned milliseconds before executing next step	
+//            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK); // press left click	
+//            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK); // release left click	
+//            robot.delay(1500);	
+//            robot.keyPress(KeyEvent.VK_DOWN); // press keyboard arrow key to select Save radio button	
+//            Thread.sleep(2000);	
+//            robot.keyPress(KeyEvent.VK_ENTER);	
+
             helperClass.setProgressBarValue(3, this.jProgressBar);
             //LOGIN TO SITE
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - Login"); 
