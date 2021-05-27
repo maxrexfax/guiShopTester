@@ -5,6 +5,7 @@
  */
 package com.mycompany.shoptester;
 
+import com.mycompany.tests.CrudDeliveryClass;
 import com.mycompany.tests.CrudLocalesClass;
 import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
@@ -13,6 +14,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -45,8 +47,30 @@ public class MainJFrame extends javax.swing.JFrame {
         makeLocalWork();
         fillData();
         setTextInInfoLabel();
+        //setTextInAreaInformation("txtToShow");
     }
 
+//    public void setTextInAreaInformation(String txtToShow) {
+//       new Thread(new Runnable() {
+//      public void run() {
+//        for (int i = 0; i <= 100; i++) {
+//            final int fI = i;
+//            // Runs inside of the Swing UI thread
+//            SwingUtilities.invokeLater(new Runnable() {
+//              public void run() {
+//                jProgressBar1.setValue(fI);
+//              }
+//            });
+//
+//            try {
+//              java.lang.Thread.sleep(100);
+//            }
+//            catch(Exception e) { }
+//          }
+//        }
+//      }).start();        
+//    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,6 +93,10 @@ public class MainJFrame extends javax.swing.JFrame {
         jRadioButtonCrudLocale = new javax.swing.JRadioButton();
         jCheckBoxDeleteLocale = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jRadioButtonCrudDelivery = new javax.swing.JRadioButton();
+        jCheckBoxDeleteDelivery = new javax.swing.JCheckBox();
+        jProgressBarDelivery = new javax.swing.JProgressBar();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -92,7 +120,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButtonAll.setText("Start all checks below");
 
-        jRadioButtonCrudUser.setText("Create, edit, delete User");
+        jRadioButtonCrudUser.setText("Crud User");
 
         jCheckBoxDeleteUser.setSelected(true);
 
@@ -101,11 +129,19 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButtonUseFirefox.setText("Use Firefox browser");
 
-        jRadioButtonCrudLocale.setText("Create, edit, delete Locale");
+        jRadioButtonCrudLocale.setText("Crud Locale");
 
         jCheckBoxDeleteLocale.setSelected(true);
 
         jLabel2.setText("Delete after test?");
+
+        jLabel3.setText("Create, edit, delete (Crud)");
+
+        jRadioButtonCrudDelivery.setText("Crud Delivery");
+
+        jCheckBoxDeleteDelivery.setSelected(true);
+
+        jProgressBarDelivery.setMaximum(10);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -115,41 +151,58 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonUseChromium)
-                        .addGap(18, 18, 18)
-                        .addComponent(jRadioButtonUseFirefox))
+                        .addComponent(jRadioButtonCrudDelivery)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonCrudUser)
-                            .addComponent(jRadioButtonCrudLocale)
-                            .addComponent(jRadioButtonAll))
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jCheckBoxDeleteLocale)
-                            .addComponent(jCheckBoxDeleteUser))))
-                .addContainerGap(205, Short.MAX_VALUE))
+                            .addComponent(jRadioButtonAll)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonUseChromium)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButtonUseFirefox))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButtonCrudUser)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jRadioButtonCrudLocale))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(58, 58, 58)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCheckBoxDeleteUser)
+                                            .addComponent(jCheckBoxDeleteLocale)
+                                            .addComponent(jCheckBoxDeleteDelivery)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel2)))))
+                        .addGap(0, 203, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jRadioButtonAll)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addGap(4, 4, 4)))
+                .addGap(27, 27, 27)
+                .addComponent(jRadioButtonAll)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jRadioButtonCrudUser)
                     .addComponent(jCheckBoxDeleteUser))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jRadioButtonCrudLocale)
                     .addComponent(jCheckBoxDeleteLocale))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButtonCrudDelivery)
+                        .addComponent(jCheckBoxDeleteDelivery))
+                    .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButtonUseChromium)
                     .addComponent(jRadioButtonUseFirefox))
@@ -324,7 +377,24 @@ public class MainJFrame extends javax.swing.JFrame {
                 }
             };
             tCrudLocale.start();            
-        } else {
+        }else if (jRadioButtonCrudDelivery.isSelected()) { 
+            boolean deleteDelivery = true;
+            if (!jCheckBoxDeleteDelivery.isSelected()) {
+                deleteDelivery = false;
+            }
+            String message = "Testing of the Delivery Create, Edit, Delete";            
+            jLabelStatus.setText(message);         
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
+            final boolean deleteDeliveryF = deleteDelivery;
+            Thread tCrudDelivery = new Thread() {
+                public void run() {
+                    for (int i = 0; i < loops; i++) {
+                        startCrudDelivery(deleteDeliveryF);
+                    }
+                }
+            };
+            tCrudDelivery.start();            
+        } else {//
             jLabelStatus.setText("EMPTY CHOICE!"); 
             JOptionPane.showMessageDialog(frame, "EMPTY CHOICE!");
         }
@@ -349,6 +419,15 @@ public class MainJFrame extends javax.swing.JFrame {
         CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteUser);                    
         try {
             crudLocalesClass.crudTestOfLocales();
+        } catch (Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
+        }
+    }
+    
+    public void startCrudDelivery(boolean deleteUser) {
+        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteUser, jProgressBarDelivery);                    
+        try {
+            crudDeliveryClass.crudTestOfDeliveries();
         } catch (Exception | Error ex) {
             helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
         }
@@ -392,10 +471,12 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabsInfo;
     private javax.swing.JButton jButtonStartTest;
+    private javax.swing.JCheckBox jCheckBoxDeleteDelivery;
     private javax.swing.JCheckBox jCheckBoxDeleteLocale;
     private javax.swing.JCheckBox jCheckBoxDeleteUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelStatus;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -407,7 +488,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JProgressBar jProgressBarDelivery;
     private javax.swing.JRadioButton jRadioButtonAll;
+    private javax.swing.JRadioButton jRadioButtonCrudDelivery;
     private javax.swing.JRadioButton jRadioButtonCrudLocale;
     private javax.swing.JRadioButton jRadioButtonCrudUser;
     private javax.swing.JRadioButton jRadioButtonUseChromium;
@@ -422,6 +505,7 @@ public class MainJFrame extends javax.swing.JFrame {
         bgroupCruds.add(jRadioButtonAll);
         bgroupCruds.add(jRadioButtonCrudUser);
         bgroupCruds.add(jRadioButtonCrudLocale);
+        bgroupCruds.add(jRadioButtonCrudDelivery);
         frame = this;
         frame.setTitle(appName);
         
@@ -509,4 +593,7 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         return result;
     }
+    
+    
+    
 }

@@ -16,7 +16,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
- * @author user
+ * @author maxrexfax
  */
 public class CrudLocalesClass {
     
@@ -43,8 +43,10 @@ public class CrudLocalesClass {
     public void crudTestOfLocales() {
         String localeName = "Test locale name";
         String localeCode = "TcodeT";
+        String appendixToAdd = "_tmp";
         String pathToImageFolder = "/home/user/Downloads/";
         String logoName = "upload.jpg";
+        String logoNameAlt = "upload(1).jpg";
         String fullPath = pathToImageFolder + logoName;
         
         credentialsClass = new CredentialsClass();
@@ -73,34 +75,52 @@ public class CrudLocalesClass {
             }
             //login to site START
             js = (JavascriptExecutor)webDriver;
-            webDriver.manage().window().maximize();            
+            webDriver.manage().window().maximize();      
+            
+            //LOGIN TO SITE
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - Login"); 
             startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);           
             Thread.sleep(500);
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting);
             
-            webDriver.get("http://shop.loc/product/category/1");
+            goThroughMenuToCreation();
             
-            webDriver.findElement(By.id("adminConrol")).click();
-            Thread.sleep(300); 
-            webDriver.findElement(By.id("settings")).click();
-            Thread.sleep(300); 
-            webDriver.findElement(By.id("settingsLocales")).click();
-            Thread.sleep(300); 
-            webDriver.findElement(By.id("btnCreateLocale")).click();
-            Thread.sleep(300);  
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "locale/create", fileToWriteLogsOfTesting);
-            Thread.sleep(500);  
+            //TEST CREATION OF LOCALE
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - create locale"); 
+            fillDataAndSave(localeName, localeCode, fullPath);
             
-            fillUserDataAndSave(localeName, localeCode, fullPath);
-            
+            //SEARCH CREATED LOCALE
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - SEARCH locale"); 
             Thread.sleep(500);
+            int[] arrWithIdAndPagination = new int[2];
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/locales/list", fileToWriteLogsOfTesting);
+            arrWithIdAndPagination = helperClass.getIdAndPaginationNumberOfModelOnPage(localeName, 2, "tableWithLocalesData", "id", "page-item", webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+            Thread.sleep(500);
+            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/locales/list", fileToWriteLogsOfTesting); 
+            Thread.sleep(500);
+                       
+            //EDIT CREATED LOCALE
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - EDIT locale"); 
+            webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
+            Thread.sleep(500); 
+            helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 4, "tableWithLocalesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+            editDataInFoundElement(localeName, localeCode, pathToImageFolder, logoNameAlt, appendixToAdd);
+            Thread.sleep(500); 
+            webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
+            Thread.sleep(500); 
+            helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 4, "tableWithLocalesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
             
-            //findTestCreatedLocale();
+            checkData(arrWithIdAndPagination, localeName, localeCode, appendixToAdd);
+            //DELETE CREATED LOCALE
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - DELETE locale"); 
+            Thread.sleep(500); 
+            helperClass.deleteModelById(webDriver, arrWithIdAndPagination, "tableWithLocalesData", this.isLocaleDeleteAfterCreation, fileToWriteLogsOfTesting, 5);
+            
+            //
             Thread.sleep(5000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudUserClass"); 
+            helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudLocaleClass"); 
         } finally {
             webDriver.close();
             webDriver.quit();
@@ -123,7 +143,7 @@ public class CrudLocalesClass {
         btnLogin.click();
     }
     
-    private void fillUserDataAndSave(String localeName, String localeCode, String pathToFileToUpload) throws InterruptedException {
+    private void fillDataAndSave(String localeName, String localeCode, String pathToFileToUpload) throws InterruptedException {
         helperClass.editDataInTextInputWithLabel(webDriver, localeName, "id", "locale_name", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(3) > label", fileToWriteLogsOfTesting);
         Thread.sleep(200);  
         helperClass.editDataInTextInputWithLabel(webDriver, localeCode, "id", "locale_code", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(4) > label", fileToWriteLogsOfTesting);
@@ -135,7 +155,53 @@ public class CrudLocalesClass {
         Thread.sleep(500); 
     } 
 
-    private void findTestCreatedLocale() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void editDataInFoundElement(String localeName, String localeCode, String pathToImageFolder, String logoNameAlt, String appendix) throws InterruptedException {
+        helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Try to edit filled data");
+        helperClass.editDataInTextInputWithLabel(webDriver, localeName + appendix, "id", "locale_name", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(3) > label", fileToWriteLogsOfTesting);
+        Thread.sleep(200);  
+        helperClass.editDataInTextInputWithLabel(webDriver, localeCode + appendix, "id", "locale_code", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(4) > label", fileToWriteLogsOfTesting);
+        Thread.sleep(200); 
+        WebElement fileInput = webDriver.findElement(By.id("store_logo"));
+        fileInput.sendKeys(pathToImageFolder + logoNameAlt);
+        Thread.sleep(200);
+        webDriver.findElement(By.id("btnCreateLocale")).click();
+        Thread.sleep(500); 
+        
+    }    
+    
+    private void checkData(int[] arrWithIdAndPagination, String localeName, String localeCode, String appendixToAdd) throws InterruptedException {
+        helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Try to find after editing data appendix " + helperClass.leftDemarkator + appendixToAdd + helperClass.rightDemarkator);
+        
+        Thread.sleep(500);
+        if(helperClass.checkInputContent(webDriver, localeName, appendixToAdd, "id", "locale_name", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(3) > label", fileToWriteLogsOfTesting)) {
+             helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: locale name edited successfully!");
+        } else {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: login editing not complete", "Error");
+        }
+        Thread.sleep(200); 
+        
+        if(helperClass.checkInputContent(webDriver, localeCode, appendixToAdd, "id", "locale_code", "cssSelector", "#app > main > div > div > div > div > div > div.col-9.p-0.bg-secondary > main > div > div > div > div > div.d-flex.justify-content-between.flex-wrap > div > div.card-body > form > div:nth-child(4) > label", fileToWriteLogsOfTesting)) {
+             helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: locale code edited successfully!");
+        } else {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: login editing not complete", "Error");
+        }
+        Thread.sleep(200); 
+        webDriver.findElement(By.id("btnCreateLocale")).click();
+        Thread.sleep(500); 
+    }
+
+    private void goThroughMenuToCreation() throws InterruptedException {
+        webDriver.get("http://shop.loc/product/category/1");
+        Thread.sleep(500);
+        webDriver.findElement(By.id("adminConrol")).click();
+        Thread.sleep(300); 
+        webDriver.findElement(By.id("settings")).click();
+        Thread.sleep(300); 
+        webDriver.findElement(By.id("settingsLocales")).click();
+        Thread.sleep(300); 
+        webDriver.findElement(By.id("btnCreateLocale")).click();
+        Thread.sleep(300);  
+        helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "locale/create", fileToWriteLogsOfTesting);
+        Thread.sleep(500); 
     }
 }

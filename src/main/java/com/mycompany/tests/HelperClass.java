@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -251,7 +253,7 @@ public class HelperClass {
         return "" + rndDayStr + "-" + rndMonthStr + "-" + getRandomDigit(1960,2005);
     }
     
-    public int[] getIdAndPaginationNumberOfModelOnPage(String userLogin, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+    public int[] getIdAndPaginationNumberOfModelOnPage(String stringToSearch, int indexOfTdWithString, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
         int[] arrayIdAndPagination = new int[2];
         arrayIdAndPagination[0] = 0;
         arrayIdAndPagination[1] = 0;
@@ -281,16 +283,16 @@ public class HelperClass {
                 writeErrorsToFiles(logFileNormal, logFileErrors, "Error while finding tr", ex.getMessage());            
             }
 
-            printToFileAndConsoleInformation(logFileNormal, "Work: try to find id of user with login:" + userLogin);
+            printToFileAndConsoleInformation(logFileNormal, "Work: try to find id of element with text:" + stringToSearch);
             Thread.sleep(500);
             if (listUserTrs.size() > 1) {
                 for (int i = 1; i < listUserTrs.size(); i++) {
                     Thread.sleep(500);
                     listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
 
-                    if(listOfInternalTds.get(1).getText().contains(userLogin)) {
+                    if(listOfInternalTds.get(indexOfTdWithString).getText().contains(stringToSearch)) {
                         arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
-                        printToFileAndConsoleInformation(logFileNormal, "Work: user found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
+                        printToFileAndConsoleInformation(logFileNormal, "Work: data " + leftDemarkator + stringToSearch + rightDemarkator + " found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
                         arrayIdAndPagination[1] = counter;
                         isWork = false;
                     }
@@ -313,6 +315,34 @@ public class HelperClass {
         } while (isWork);
                 
         return arrayIdAndPagination;
+    }
+    
+    public void clickOnEditButtonByModelId(int modelId, int indexOfTdWithClickable, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+        WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
+        List<WebElement> listOfTrs = null;
+        List<WebElement> listOfInternalTds = null;
+        printToFileAndConsoleInformation(logFileNormal, "Work: try to find data with ID text:" + tableIdetifier);
+        try {
+                listOfTrs = tableWithUsers.findElements(By.tagName("tr"));
+            } catch (Exception ex) {
+                writeErrorsToFiles(logFileNormal, logFileErrors, "Error while finding tr", ex.getMessage());            
+            }
+        printToFileAndConsoleInformation(logFileNormal, "Work: listOfTrs.size():" + listOfTrs.size());
+        if (listOfTrs.size() > 1) {
+            for (int i = 1; i < listOfTrs.size(); i++) {
+                listOfInternalTds = listOfTrs.get(i).findElements(By.tagName("td"));
+                printToFileAndConsoleInformation(logFileNormal, "Work: listOfInternalTds.size()=" + listOfInternalTds.size());
+                int idFromTable = Integer.parseInt(listOfInternalTds.get(0).getText());
+                printToFileAndConsoleInformation(logFileNormal, "Work: idFromTable=" + idFromTable + "   listOfInternalTds.get(0).getText():" + listOfInternalTds.get(0).getText());
+                if (idFromTable == modelId) {
+                    printToFileAndConsoleInformation(logFileNormal, "Work: ID found, try to click");
+                    WebElement tagToClick = listOfInternalTds.get(indexOfTdWithClickable).findElement(By.tagName("a"));
+                    tagToClick.click();
+                } else {
+                    printToFileAndConsoleInformation(logFileNormal, "Work: ID not found");
+                }
+            }
+        }
     }
     
     public void testClass(JavascriptExecutor js) {
@@ -407,7 +437,9 @@ public class HelperClass {
         for (int i = 1; i < listOfTrs.size(); i++) {
             List<WebElement> listOfTds = listOfTrs.get(i).findElements(By.tagName("td"));
             if (Integer.parseInt(listOfTds.get(0).getText()) == idAndPaginationPage[0]) {
-                listOfTds.get(indexOfDeleteButton).click();
+                //listOfTds.get(indexOfDeleteButton).click();
+                WebElement tagToClick = listOfTds.get(indexOfDeleteButton).findElement(By.tagName("a"));
+                tagToClick.click();
             }
         }
         Thread.sleep(1500);
@@ -464,5 +496,21 @@ public class HelperClass {
         
         printToFileAndConsoleInformation(logFile, "ERROR! Not on url " + expectedUrl);
         return false;        
+    }
+    
+    public void setProgressBarValue(int complete, JProgressBar jProgressBar) {
+        new Thread(new Runnable() {
+            public void run() {  
+                try {
+                    final int fComplete = complete;
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                          jProgressBar.setValue(fComplete);
+                        }
+                    });              
+                }
+                catch(Exception e) { }
+            }
+        }).start();        
     }
 }

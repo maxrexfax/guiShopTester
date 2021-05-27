@@ -1,13 +1,17 @@
 com/mycompany/tests/HelperClass.class
+com/mycompany/tests/HelperClass$3$1.class
 com/mycompany/tests/CrudUserClass.class
 com/mycompany/tests/CrudLocalesClass.class
 com/mycompany/shoptester/MainJFrame.class
 com/mycompany/shoptester/MainJFrame$3.class
+com/mycompany/tests/HelperClass$3.class
+com/mycompany/tests/CrudDeliveryClass.class
 com/mycompany/shoptester/MainJFrame$4.class
 com/mycompany/tests/HelperClass$1.class
 com/mycompany/tests/HelperClass$2.class
 com/mycompany/shoptester/MainJFrame$5.class
 com/mycompany/tests/CredentialsClass.class
+com/mycompany/shoptester/MainJFrame$7.class
 com/mycompany/shoptester/MainJFrame$1.class
 com/mycompany/shoptester/MainJFrame$2.class
 com/mycompany/shoptester/MainJFrame$6.class

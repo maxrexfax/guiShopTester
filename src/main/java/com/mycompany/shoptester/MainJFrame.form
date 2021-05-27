@@ -127,53 +127,76 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jRadioButtonUseChromium" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jRadioButtonUseFirefox" min="-2" max="-2" attributes="0"/>
+                              <Component id="jRadioButtonCrudDelivery" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jProgressBarDelivery" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jRadioButtonCrudUser" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jRadioButtonCrudLocale" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jRadioButtonAll" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jRadioButtonUseChromium" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jRadioButtonUseFirefox" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jRadioButtonCrudUser" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jRadioButtonCrudLocale" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="jCheckBoxDeleteUser" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jCheckBoxDeleteLocale" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jCheckBoxDeleteDelivery" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jCheckBoxDeleteLocale" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jCheckBoxDeleteUser" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <EmptySpace min="0" pref="203" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="205" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="jRadioButtonAll" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jRadioButtonCrudUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBoxDeleteUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="jRadioButtonAll" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jRadioButtonCrudLocale" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBoxDeleteLocale" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="225" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jRadioButtonCrudUser" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBoxDeleteUser" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jRadioButtonCrudLocale" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBoxDeleteLocale" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jRadioButtonCrudDelivery" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckBoxDeleteDelivery" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jProgressBarDelivery" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="145" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jRadioButtonUseChromium" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jRadioButtonUseFirefox" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -191,7 +214,7 @@
             </Component>
             <Component class="javax.swing.JRadioButton" name="jRadioButtonCrudUser">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Create, edit, delete User"/>
+                <Property name="text" type="java.lang.String" value="Crud User"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBoxDeleteUser">
@@ -212,7 +235,7 @@
             </Component>
             <Component class="javax.swing.JRadioButton" name="jRadioButtonCrudLocale">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Create, edit, delete Locale"/>
+                <Property name="text" type="java.lang.String" value="Crud Locale"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JCheckBox" name="jCheckBoxDeleteLocale">
@@ -223,6 +246,26 @@
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Delete after test?"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Create, edit, delete (Crud)"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JRadioButton" name="jRadioButtonCrudDelivery">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Crud Delivery"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBoxDeleteDelivery">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JProgressBar" name="jProgressBarDelivery">
+              <Properties>
+                <Property name="maximum" type="int" value="10"/>
               </Properties>
             </Component>
           </SubComponents>

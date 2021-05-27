@@ -19,7 +19,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
- * @author user
+ * @author maxrexfax
  */
 public class CrudUserClass {
     
@@ -117,7 +117,7 @@ public class CrudUserClass {
 
             if (helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/users/list", fileToWriteLogsOfTesting)) {
                 try {
-                    arrWithIdAndPagination = helperClass.getIdAndPaginationNumberOfModelOnPage(userLogin, "tableWithUsersData", "id", "page-item", webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+                    arrWithIdAndPagination = helperClass.getIdAndPaginationNumberOfModelOnPage(userLogin, 1, "tableWithUsersData", "id", "page-item", webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
                     Thread.sleep(300); 
                 } catch (Exception ex) {
                     helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Unable to check saving user data", ex.getMessage());
@@ -240,7 +240,7 @@ public class CrudUserClass {
     }
 
     private void startAndLoginToSite(WebDriver webDriver, File fileToWriteLogsOfTesting, String mainUrl) throws InterruptedException {
-         helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: go to url:" + mainUrl);
+        helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: go to url:" + mainUrl);
         webDriver.get(mainUrl);
         Thread.sleep(500);
         webDriver.findElement(By.cssSelector("#navbarSupportedContent > ul.navbar-nav.ml-auto > li:nth-child(1) > a")).click();
