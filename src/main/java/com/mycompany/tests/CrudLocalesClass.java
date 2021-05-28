@@ -7,6 +7,7 @@ package com.mycompany.tests;
 
 import com.mycompany.shoptester.MainJFrame;
 import java.io.File;
+import javax.swing.JProgressBar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -33,11 +34,15 @@ public class CrudLocalesClass {
     private String osName;
     private final int countOfSymbols = 15;
     private boolean isLocaleDeleteAfterCreation; 
+    private JProgressBar jProgressBar;
     
-    public CrudLocalesClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale){
+    public CrudLocalesClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.isLocaleDeleteAfterCreation = isDeleteLocale;
+        this.jProgressBar = jProgressBarIn;
+        this.credentialsClass = credentialsClassIn;
+        helperClass.setProgressBarValue(1, this.jProgressBar);
     }
     
     public void crudTestOfLocales() {
@@ -49,7 +54,6 @@ public class CrudLocalesClass {
         String logoNameAlt = "upload(1).jpg";
         String fullPath = pathToImageFolder + logoName;
         
-        credentialsClass = new CredentialsClass();
         dateTimeOfSession = helperClass.getDateInStringForWindowsLinux();    
         String fileName = "";
         String fileNameERRORS = "";
@@ -67,6 +71,7 @@ public class CrudLocalesClass {
         }
         
         helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Locale create, edit, delete test starts at: " + dateTimeOfSession +" OS: " + osName);
+        helperClass.setProgressBarValue(2, this.jProgressBar);
         try {
             if(MainJFrame.CURRENT_BROWSER == MainJFrame.CHANGE_CHROME_BROWSER) {
                 webDriver = new ChromeDriver();
@@ -79,15 +84,22 @@ public class CrudLocalesClass {
             
             //LOGIN TO SITE
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - Login"); 
-            startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);           
+            startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);         
+            helperClass.setProgressBarValue(3, this.jProgressBar);
             Thread.sleep(500);
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting);
+            
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting)) {
+                return;
+            }
             
             goThroughMenuToCreation();
+            helperClass.setProgressBarValue(4, this.jProgressBar);
+            
             
             //TEST CREATION OF LOCALE
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - create locale"); 
             fillDataAndSave(localeName, localeCode, fullPath);
+            helperClass.setProgressBarValue(5, this.jProgressBar);
             
             //SEARCH CREATED LOCALE
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - SEARCH locale"); 
@@ -98,6 +110,7 @@ public class CrudLocalesClass {
             Thread.sleep(500);
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/locales/list", fileToWriteLogsOfTesting); 
             Thread.sleep(500);
+            helperClass.setProgressBarValue(6, this.jProgressBar);
                        
             //EDIT CREATED LOCALE
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - EDIT locale"); 
@@ -109,19 +122,21 @@ public class CrudLocalesClass {
             webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
             Thread.sleep(500); 
             helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 4, "tableWithLocalesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+            helperClass.setProgressBarValue(7, this.jProgressBar);
             
             checkData(arrWithIdAndPagination, localeName, localeCode, appendixToAdd);
             //DELETE CREATED LOCALE
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - DELETE locale"); 
             Thread.sleep(500); 
             helperClass.deleteModelById(webDriver, arrWithIdAndPagination, "tableWithLocalesData", this.isLocaleDeleteAfterCreation, fileToWriteLogsOfTesting, 5);
-            
+            helperClass.setProgressBarValue(8, this.jProgressBar);
             //
             Thread.sleep(5000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudLocaleClass"); 
         } finally {
+            helperClass.setProgressBarValue(0, this.jProgressBar);
             webDriver.close();
             webDriver.quit();
         }
@@ -136,10 +151,10 @@ public class CrudLocalesClass {
         WebElement login = webDriver.findElement(By.id("email"));
         WebElement passwd = webDriver.findElement(By.id("password"));
         WebElement btnLogin = webDriver.findElement(By.cssSelector("#app > main > div > div > div > div > div.card-body > form > div.form-group.row.mb-0 > div > button"));
-        login.sendKeys(credentialsClass.emailToLogin);
-        passwd.sendKeys(credentialsClass.passwordToLogin);
+        login.sendKeys(credentialsClass.getEmailToLogin());
+        passwd.sendKeys(credentialsClass.getPasswordToLogin());
         Thread.sleep(300);            
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: trying to login with email " + credentialsClass.emailToLogin + " and pswd " + credentialsClass.passwordToLogin);
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: trying to login with email " + credentialsClass.getEmailToLogin() + " and pswd " + credentialsClass.getPasswordToLogin());
         btnLogin.click();
     }
     

@@ -5,16 +5,28 @@
  */
 package com.mycompany.shoptester;
 
+import com.mycompany.tests.CredentialsClass;
 import com.mycompany.tests.CrudDeliveryClass;
 import com.mycompany.tests.CrudLocalesClass;
 import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
+import java.awt.Color;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -38,16 +50,18 @@ public class MainJFrame extends javax.swing.JFrame {
     public String dateTimeOfSession;
     public JFrame frame = null;
     public static JFrame frameStat = null;
+    private CredentialsClass credentialsClass;
+    private Date dateForTimer;
+    private boolean isTimerWork;
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
-        initComponents();
+        initComponents();        
         
-        makeLocalWork();
         fillData();
         setTextInInfoLabel();
-        //setTextInAreaInformation("txtToShow");
+        
     }
 
 //    public void setTextInAreaInformation(String txtToShow) {
@@ -97,7 +111,15 @@ public class MainJFrame extends javax.swing.JFrame {
         jRadioButtonCrudDelivery = new javax.swing.JRadioButton();
         jCheckBoxDeleteDelivery = new javax.swing.JCheckBox();
         jProgressBarDelivery = new javax.swing.JProgressBar();
+        jProgressBarLocale = new javax.swing.JProgressBar();
+        jProgressBarUser = new javax.swing.JProgressBar();
         jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldLoginData = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPasswordFieldMain = new javax.swing.JPasswordField();
+        jButtonSetCredentials = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaInformation = new javax.swing.JTextArea();
@@ -105,6 +127,14 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelStatus = new javax.swing.JLabel();
         jTextFieldLoopsNumber = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabelTimeLeft = new javax.swing.JLabel();
+        jButtonStartTimer = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jButtonStopTimer = new javax.swing.JButton();
+        jLabelStateOfAutomation = new javax.swing.JLabel();
+        jSpinnerTimerPause = new javax.swing.JSpinner();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -137,11 +167,16 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Create, edit, delete (Crud)");
 
+        jRadioButtonCrudDelivery.setSelected(true);
         jRadioButtonCrudDelivery.setText("Crud Delivery");
 
         jCheckBoxDeleteDelivery.setSelected(true);
 
-        jProgressBarDelivery.setMaximum(10);
+        jProgressBarDelivery.setMaximum(8);
+
+        jProgressBarLocale.setMaximum(8);
+
+        jProgressBarUser.setMaximum(8);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,32 +186,39 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButtonCrudDelivery)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButtonCrudUser)
+                            .addComponent(jLabel3)
+                            .addComponent(jRadioButtonCrudLocale))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxDeleteDelivery)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                                        .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxDeleteUser)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jProgressBarUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jCheckBoxDeleteLocale)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jProgressBarLocale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonAll)
+                            .addComponent(jRadioButtonCrudDelivery)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jRadioButtonUseChromium)
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButtonUseFirefox))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRadioButtonCrudUser)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jRadioButtonCrudLocale))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(58, 58, 58)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBoxDeleteUser)
-                                            .addComponent(jCheckBoxDeleteLocale)
-                                            .addComponent(jCheckBoxDeleteDelivery)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel2)))))
-                        .addGap(0, 203, Short.MAX_VALUE)))
+                            .addComponent(jRadioButtonAll))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -191,38 +233,75 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jRadioButtonCrudUser)
-                    .addComponent(jCheckBoxDeleteUser))
+                    .addComponent(jCheckBoxDeleteUser)
+                    .addComponent(jProgressBarUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jRadioButtonCrudLocale)
-                    .addComponent(jCheckBoxDeleteLocale))
+                    .addComponent(jCheckBoxDeleteLocale)
+                    .addComponent(jProgressBarLocale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButtonCrudDelivery)
-                        .addComponent(jCheckBoxDeleteDelivery))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonCrudDelivery)
+                    .addComponent(jCheckBoxDeleteDelivery)
                     .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 183, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButtonUseChromium)
                     .addComponent(jRadioButtonUseFirefox))
                 .addContainerGap())
         );
 
-        TabsInfo.addTab("First", jPanel1);
+        TabsInfo.addTab("Tests", jPanel1);
+
+        jLabel4.setText("Use credentials:");
+
+        jLabel5.setText("Login/email");
+
+        jLabel6.setText("Password");
+
+        jButtonSetCredentials.setText("Set new credentials");
+        jButtonSetCredentials.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSetCredentialsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(jTextFieldLoginData)
+                        .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+                    .addComponent(jButtonSetCredentials))
+                .addContainerGap(355, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldLoginData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonSetCredentials)
+                .addContainerGap(218, Short.MAX_VALUE))
         );
 
-        TabsInfo.addTab("Second", jPanel2);
+        TabsInfo.addTab("Settings", jPanel2);
 
         jTextAreaInformation.setColumns(20);
         jTextAreaInformation.setRows(5);
@@ -241,13 +320,13 @@ public class MainJFrame extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         TabsInfo.addTab("Info", jPanel3);
 
-        jButtonStartTest.setText("Start test");
+        jButtonStartTest.setText("Start single test");
         jButtonStartTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonStartTestActionPerformed(evt);
@@ -259,6 +338,32 @@ public class MainJFrame extends javax.swing.JFrame {
         jTextFieldLoopsNumber.setText("1");
 
         jLabel1.setText("Number of loops");
+
+        jLabel8.setText("Autostart every");
+
+        jLabel7.setText("minutes");
+
+        jLabelTimeLeft.setText("Time of next test:");
+
+        jButtonStartTimer.setText("Start timer");
+        jButtonStartTimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonStartTimerActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Automation:");
+
+        jButtonStopTimer.setText("Stop timer");
+        jButtonStopTimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonStopTimerActionPerformed(evt);
+            }
+        });
+
+        jLabelStateOfAutomation.setText("OFF");
+
+        jSpinnerTimerPause.setModel(new javax.swing.SpinnerNumberModel(2, 2, 60, 1));
 
         jMenu3.setText("File");
 
@@ -287,27 +392,65 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(TabsInfo)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonStartTest)
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldLoopsNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(149, 149, 149)
+                                .addComponent(jLabelTimeLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(128, 128, 128)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonStopTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonStartTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonStartTest, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(20, 20, 20)
+                                .addComponent(jSpinnerTimerPause, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelStateOfAutomation, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldLoopsNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel7)
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(TabsInfo)
-                .addGap(18, 18, 18)
+                .addComponent(TabsInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabelStateOfAutomation))
+                    .addComponent(jButtonStartTest))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel7)
+                        .addComponent(jSpinnerTimerPause, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelStatus, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonStartTest)
-                    .addComponent(jLabelStatus)
-                    .addComponent(jTextFieldLoopsNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap())
+                    .addComponent(jButtonStartTimer)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldLoopsNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelTimeLeft)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonStopTimer)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -320,6 +463,300 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButtonStartTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartTestActionPerformed
         // TODO add your handling code here:
+        mainWorkStarts();        
+    }//GEN-LAST:event_jButtonStartTestActionPerformed
+
+    private void jButtonSetCredentialsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetCredentialsActionPerformed
+        // TODO add your handling code here:
+        credentialsClass.SetEmailToLogin(jTextFieldLoginData.getText());
+        credentialsClass.SetPasswordToLogin(jPasswordFieldMain.getText());
+        JOptionPane.showMessageDialog(frame, "New data: Email: " + jTextFieldLoginData.getText() + "  password:" + jPasswordFieldMain.getText());
+    }//GEN-LAST:event_jButtonSetCredentialsActionPerformed
+
+    private void jButtonStartTimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartTimerActionPerformed
+        // TODO add your handling code here:        
+        isTimerWork = true;
+        jLabelStateOfAutomation.setText("TIMER WORKS");
+        try {
+            turnOnTimer();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonStartTimerActionPerformed
+
+    private void jButtonStopTimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStopTimerActionPerformed
+        // TODO add your handling code here:
+        isTimerWork = false;
+        jLabelStateOfAutomation.setText("TIMER OFF");
+        jLabelTimeLeft.setText("...");
+    }//GEN-LAST:event_jButtonStopTimerActionPerformed
+
+    private void startAllTestsOneByOne() {
+        //Test Users
+        startCrudUser(true);        
+        startCrudLocale(true);        
+        startCrudDelivery(true);        
+    }
+    
+    public void startCrudUser(boolean deleteUser) {
+        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser, jProgressBarUser, credentialsClass);                    
+        try {
+            crudUserClass.startCrudTestUsers();
+        } catch (Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudUserClass.startCrudTestUsers()!", ex.getMessage());
+        }
+    }
+    
+    public void startCrudLocale(boolean deleteLocale){
+        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteLocale, jProgressBarLocale, credentialsClass);                    
+        try {
+            crudLocalesClass.crudTestOfLocales();
+        } catch (Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
+        }
+    }
+    
+    public void startCrudDelivery(boolean deleteDelivery) {
+        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteDelivery, jProgressBarDelivery, credentialsClass);                    
+        try {
+            crudDeliveryClass.crudTestOfDeliveries();
+        } catch (Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
+        }
+    }
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MainJFrame().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane TabsInfo;
+    private javax.swing.JButton jButtonSetCredentials;
+    private javax.swing.JButton jButtonStartTest;
+    private javax.swing.JButton jButtonStartTimer;
+    private javax.swing.JButton jButtonStopTimer;
+    private javax.swing.JCheckBox jCheckBoxDeleteDelivery;
+    private javax.swing.JCheckBox jCheckBoxDeleteLocale;
+    private javax.swing.JCheckBox jCheckBoxDeleteUser;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelStateOfAutomation;
+    private javax.swing.JLabel jLabelStatus;
+    private javax.swing.JLabel jLabelTimeLeft;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPasswordField jPasswordFieldMain;
+    private javax.swing.JProgressBar jProgressBarDelivery;
+    private javax.swing.JProgressBar jProgressBarLocale;
+    private javax.swing.JProgressBar jProgressBarUser;
+    private javax.swing.JRadioButton jRadioButtonAll;
+    private javax.swing.JRadioButton jRadioButtonCrudDelivery;
+    private javax.swing.JRadioButton jRadioButtonCrudLocale;
+    private javax.swing.JRadioButton jRadioButtonCrudUser;
+    private javax.swing.JRadioButton jRadioButtonUseChromium;
+    private javax.swing.JRadioButton jRadioButtonUseFirefox;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinnerTimerPause;
+    private javax.swing.JTextArea jTextAreaInformation;
+    private javax.swing.JTextField jTextFieldLoginData;
+    private javax.swing.JTextField jTextFieldLoopsNumber;
+    // End of variables declaration//GEN-END:variables
+
+   
+    
+    private void fillData() {
+        bgroupCruds = new ButtonGroup();
+        bgroupCruds.add(jRadioButtonAll);
+        bgroupCruds.add(jRadioButtonCrudUser);
+        bgroupCruds.add(jRadioButtonCrudLocale);
+        bgroupCruds.add(jRadioButtonCrudDelivery);
+        frame = this;
+        frame.setTitle(appName);
+        
+        bgroupBrowsers = new ButtonGroup();
+        bgroupBrowsers.add(jRadioButtonUseChromium);
+        bgroupBrowsers.add(jRadioButtonUseFirefox); 
+        credentialsClass = new CredentialsClass();
+        jTextFieldLoginData.setText(credentialsClass.getEmailToLogin());
+        jPasswordFieldMain.setText(credentialsClass.getPasswordToLogin());
+        
+        String fileName = "";
+        String fileNameERRORS = "";
+        dateTimeOfSession = helperClass.getDateInStringForWindowsLinux(); 
+        
+        osName = System.getProperty("os.name");
+        //System.out.println("osName:" + osName);
+       // JOptionPane.showMessageDialog(frame, "osName=" + osName);
+        File theDirectoryForLogFiles = null;
+        if (osName.contains("Linux")) {
+            pathToLogFile = "./logs/";            
+            System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");      
+            System.setProperty("webdriver.gecko.driver", "/usr/bin/geckodriver");            
+        } else if (osName.contains("Windows")) {
+            pathToLogFile = "C:\\users\\public\\documents\\logs\\";            
+            System.setProperty("webdriver.chrome.driver", "C:\\users\\public\\documents\\chromedriver.exe");
+            System.setProperty("webdriver.gecko.driver", "C:\\users\\public\\documents\\geckodriver.exe");            
+        } else {
+            pathToLogFile = "./";
+        }
+        
+        try {
+            theDirectoryForLogFiles = new File(pathToLogFile);
+            theDirectoryForLogFiles.mkdirs();
+        } catch (Exception ex) {
+            System.out.println("ERROR with creation of the folder for log files at path " + pathToLogFile);            
+        }        
+        
+        fileName = pathToLogFile + "mainApplicationLog_" + dateTimeOfSession + ".txt";
+        fileNameERRORS = pathToLogFile + "mainApplicationLog_ERRORS_" + dateTimeOfSession + ".txt";        
+        
+        try {
+            fileToWriteLogsOfTesting = new File(fileName);
+            fileToWriteErrorLogOfTesting = new File(fileNameERRORS);
+            System.out.println("Path to logfile:" + fileName);
+        } catch (Exception exx) {
+            System.out.println(exx.getMessage());
+            System.out.println("Error file creation, test log will be only in terminal");
+        }
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: Start");   
+//        jProgressBarDelivery.setForeground(Color.red);
+//        jProgressBarLocale.setForeground(Color.red);
+//        jProgressBarUser.setForeground(Color.red);
+//        jProgressBarUser.setBackground(Color.yellow);
+//        UIManager.put("jProgressBarDelivery.background", Color.ORANGE);
+//        UIManager.put("jProgressBarDelivery.foreground", Color.BLUE);
+//        UIManager.put("jProgressBarDelivery.selectionBackground", Color.RED);
+//        UIManager.put("jProgressBarDelivery.selectionForeground", Color.GREEN);
+    }
+    
+    private void setTextInInfoLabel() {
+        
+        StringBuffer strBuffer = new StringBuffer();
+        strBuffer.append("To use this application make sure GoogleChromDriver and GeckoDriver are placed in the folder ");
+        if (osName.contains("Linux")) {
+            strBuffer.append("/usr/bin/");
+        } else if (osName.contains("Windows")) {
+            strBuffer.append("C:\\users\\public\\documents\\");
+        }
+        strBuffer.append(".\nMake sure that the version of the Chromedriver matches the version of the Chrome browser you have installed.\n");
+        strBuffer.append("Log files will be saved to the folder ");
+        if (osName.contains("Linux")) {
+            strBuffer.append("/logs/.");
+        } else if (osName.contains("Windows")) {
+            strBuffer.append("C:\\users\\public\\documents\\logs.");
+        }
+        jTextAreaInformation.setLineWrap(true);
+        jTextAreaInformation.setText(strBuffer.toString());
+    }
+
+    
+    private int getDataFromTextField(JTextField jTextFieldToGetData, int min, int max) {
+        int result = 0;
+            try {
+                result = Integer.parseInt(jTextFieldToGetData.getText());
+            } catch (Exception | Error ex) {
+                result = (min);
+                jTextFieldToGetData.setText("" + result);
+                JOptionPane.showMessageDialog(frame, "Error! Only numeric! Set to " + result);
+            }
+            if (result < min || result > max) {
+                result = min;
+                jTextFieldToGetData.setText("" + result);
+                JOptionPane.showMessageDialog(frame, "Error! Set to " + result);
+            }
+        return result;
+    }
+    
+    private void turnOnTimer() throws InterruptedException {
+        final int minutes = (Integer) jSpinnerTimerPause.getValue();
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: START of timer, every " + minutes + "minutes");
+        //JOptionPane.showMessageDialog(frame, "minutes=" + minutes);
+        Thread tCrudLocale = new Thread() {
+                public void run() {
+                    Date startDdate = new java.util.Date();
+                    while(isTimerWork) {
+                        try {
+                            Date endDate = addMinutes(startDdate, minutes);
+                            jLabelTimeLeft.setText("Time of next test:" + dateToString(endDate));
+                            Date currentDate = new java.util.Date();                            
+                            Thread.sleep(10000);                       
+                            long diff = endDate.getTime() - currentDate.getTime();
+                            //long diffSeconds = (diff / 1000) % 60;
+                            long diffMinutes = (diff / (60 * 1000)) % 60;
+                            //long diffHours = diff / (60 * 60 * 1000);
+                            if(diffMinutes == 0) {                                
+                                if (isTimerWork) {
+                                    helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: Timer starts selected test");
+                                    startDdate = new java.util.Date();
+                                    mainWorkStarts();
+                                }
+                            }                            
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                            
+                    }
+                    helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: timer stopped\n");             
+                }
+            };
+            tCrudLocale.start();             
+    }
+    
+    public static Date addMinutes(Date date, int minutes)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, minutes); //minus number would decrement the days
+        return cal.getTime();
+    }
+
+    private void mainWorkStarts() {
         if (jRadioButtonUseChromium.isSelected()) {
             CURRENT_BROWSER = CHANGE_CHROME_BROWSER;
         } else {
@@ -398,202 +835,18 @@ public class MainJFrame extends javax.swing.JFrame {
             jLabelStatus.setText("EMPTY CHOICE!"); 
             JOptionPane.showMessageDialog(frame, "EMPTY CHOICE!");
         }
-    }//GEN-LAST:event_jButtonStartTestActionPerformed
-
-    private void startAllTestsOneByOne() {
-        //Test Users
-        startCrudUser(true);
-        
     }
     
-    public void startCrudUser(boolean deleteUser) {
-        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser);                    
-        try {
-            crudUserClass.startCrudTestUsers();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudUserClass.startCrudTestUsers()!", ex.getMessage());
-        }
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
     }
     
-    public void startCrudLocale(boolean deleteUser) {
-        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteUser);                    
-        try {
-            crudLocalesClass.crudTestOfLocales();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
-        }
+    public String dateToString(Date date) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");
+        return sdfDate.format(date);
     }
-    
-    public void startCrudDelivery(boolean deleteUser) {
-        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteUser, jProgressBarDelivery);                    
-        try {
-            crudDeliveryClass.crudTestOfDeliveries();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
-        }
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainJFrame().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane TabsInfo;
-    private javax.swing.JButton jButtonStartTest;
-    private javax.swing.JCheckBox jCheckBoxDeleteDelivery;
-    private javax.swing.JCheckBox jCheckBoxDeleteLocale;
-    private javax.swing.JCheckBox jCheckBoxDeleteUser;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabelStatus;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JProgressBar jProgressBarDelivery;
-    private javax.swing.JRadioButton jRadioButtonAll;
-    private javax.swing.JRadioButton jRadioButtonCrudDelivery;
-    private javax.swing.JRadioButton jRadioButtonCrudLocale;
-    private javax.swing.JRadioButton jRadioButtonCrudUser;
-    private javax.swing.JRadioButton jRadioButtonUseChromium;
-    private javax.swing.JRadioButton jRadioButtonUseFirefox;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextAreaInformation;
-    private javax.swing.JTextField jTextFieldLoopsNumber;
-    // End of variables declaration//GEN-END:variables
-
-    private void makeLocalWork() {
-        bgroupCruds = new ButtonGroup();
-        bgroupCruds.add(jRadioButtonAll);
-        bgroupCruds.add(jRadioButtonCrudUser);
-        bgroupCruds.add(jRadioButtonCrudLocale);
-        bgroupCruds.add(jRadioButtonCrudDelivery);
-        frame = this;
-        frame.setTitle(appName);
-        
-        bgroupBrowsers = new ButtonGroup();
-        bgroupBrowsers.add(jRadioButtonUseChromium);
-        bgroupBrowsers.add(jRadioButtonUseFirefox);        
-    }
-    
-    private void fillData() {
-        String fileName = "";
-        String fileNameERRORS = "";
-        dateTimeOfSession = helperClass.getDateInStringForWindowsLinux(); 
-        
-        osName = System.getProperty("os.name");
-        //System.out.println("osName:" + osName);
-       // JOptionPane.showMessageDialog(frame, "osName=" + osName);
-        File theDirectoryForLogFiles = null;
-        if (osName.contains("Linux")) {
-            pathToLogFile = "./logs/";            
-            System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");      
-            System.setProperty("webdriver.gecko.driver", "/usr/bin/geckodriver");            
-        } else if (osName.contains("Windows")) {
-            pathToLogFile = "C:\\users\\public\\documents\\logs\\";            
-            System.setProperty("webdriver.chrome.driver", "C:\\users\\public\\documents\\chromedriver.exe");
-            System.setProperty("webdriver.gecko.driver", "C:\\users\\public\\documents\\geckodriver.exe");            
-        } else {
-            pathToLogFile = "./";
-        }
-        
-        try {
-            theDirectoryForLogFiles = new File(pathToLogFile);
-            theDirectoryForLogFiles.mkdirs();
-        } catch (Exception ex) {
-            System.out.println("ERROR with creation of the folder for log files at path " + pathToLogFile);            
-        }        
-        
-        fileName = pathToLogFile + "mainApplicationLog_" + dateTimeOfSession + ".txt";
-        fileNameERRORS = pathToLogFile + "mainApplicationLog_ERRORS_" + dateTimeOfSession + ".txt";        
-        
-        try {
-            fileToWriteLogsOfTesting = new File(fileName);
-            fileToWriteErrorLogOfTesting = new File(fileNameERRORS);
-            System.out.println("Path to logfile:" + fileName);
-        } catch (Exception exx) {
-            System.out.println(exx.getMessage());
-            System.out.println("Error file creation, test log will be only in terminal");
-        }
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: Start");   
-    }
-    
-    private void setTextInInfoLabel() {
-        
-        StringBuffer strBuffer = new StringBuffer();
-        strBuffer.append("To use this application make sure GoogleChromDriver and GeckoDriver are placed in the folder ");
-        if (osName.contains("Linux")) {
-            strBuffer.append("/usr/bin/");
-        } else if (osName.contains("Windows")) {
-            strBuffer.append("C:\\users\\public\\documents\\");
-        }
-        strBuffer.append(".\nMake sure that the version of the Chromedriver matches the version of the Chrome browser you have installed.\n");
-        strBuffer.append("Log files will be saved to the folder ");
-        if (osName.contains("Linux")) {
-            strBuffer.append("/logs/.");
-        } else if (osName.contains("Windows")) {
-            strBuffer.append("C:\\users\\public\\documents\\logs.");
-        }
-        jTextAreaInformation.setLineWrap(true);
-        jTextAreaInformation.setText(strBuffer.toString());
-    }
-
-    
-    private int getDataFromTextField(JTextField jTextFieldToGetData, int min, int max) {
-        int result = 0;
-            try {
-                result = Integer.parseInt(jTextFieldToGetData.getText());
-            } catch (Exception | Error ex) {
-                result = (min);
-                jTextFieldToGetData.setText("" + result);
-                JOptionPane.showMessageDialog(frame, "Error! Only numeric! Set to " + result);
-            }
-            if (result < min || result > max) {
-                result = min;
-                jTextFieldToGetData.setText("" + result);
-                JOptionPane.showMessageDialog(frame, "Error! Set to " + result);
-            }
-        return result;
-    }
-    
-    
     
 }

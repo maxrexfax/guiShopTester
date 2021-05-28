@@ -10,6 +10,7 @@ package com.mycompany.tests;
  * @author maxim
  */
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,6 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -504,8 +506,19 @@ public class HelperClass {
                 try {
                     final int fComplete = complete;
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                          jProgressBar.setValue(fComplete);
+                        public void run() {                          
+                          if(fComplete > 100) {
+//                              UIManager.put("jProgressBar.selectionBackground", Color.RED);
+//                              
+//                              jProgressBar.setStringPainted(true);
+//                              jProgressBar.setForeground(Color.blue);
+//                              jProgressBar.setBackground(Color.red);
+                          } else {
+                              //jProgressBar.setStringPainted(true);
+                              jProgressBar.setForeground(Color.green);
+                              jProgressBar.setBackground(Color.PINK);
+                              jProgressBar.setValue(fComplete);
+                          }
                         }
                     });              
                 }

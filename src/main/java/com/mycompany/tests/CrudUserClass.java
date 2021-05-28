@@ -9,6 +9,7 @@ import com.mycompany.shoptester.MainJFrame;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+import javax.swing.JProgressBar;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -36,14 +37,18 @@ public class CrudUserClass {
     private String osName;
     private final int countOfSymbols = 15;
     private boolean isUserDeleteAfterCreation; 
+    private JProgressBar jProgressBar;
     
-    public CrudUserClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteUser){
+    public CrudUserClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteUser, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.isUserDeleteAfterCreation = isDeleteUser;
+        this.jProgressBar = jProgressBarIn;
+        this.credentialsClass = credentialsClassIn;
+        helperClass.setProgressBarValue(1, this.jProgressBar);
     }
     
-    public void startCrudTestUsers() {
+    public void startCrudTestUsers() throws InterruptedException {
         
         String userLogin = "" + helperClass.getRandomStringWithLength(countOfSymbols);
         userLogin = userLogin.replace("-", "");
@@ -57,7 +62,6 @@ public class CrudUserClass {
         emailToUse = emailToUse.replace("-", "");
         
         //fullName = lastName + ", " + firstName;
-        credentialsClass = new CredentialsClass();
         dateTimeOfSession = helperClass.getDateInStringForWindowsLinux();    
         String fileName = "";
         String fileNameERRORS = "";
@@ -65,6 +69,7 @@ public class CrudUserClass {
         fileName = this.pathToLogFileFolder + "testUserCrudLogFile_" + dateTimeOfSession + ".txt";
         fileNameERRORS = this.pathToLogFileFolder + "testUserCrudLogFile_ERRORS_" + dateTimeOfSession + ".txt";        
         
+        helperClass.setProgressBarValue(2, this.jProgressBar);
         try {
             fileToWriteLogsOfTesting = new File(fileName);
             fileToWriteErrorLogOfTesting = new File(fileNameERRORS);
@@ -74,6 +79,7 @@ public class CrudUserClass {
             System.out.println("Error file creation, test log will be only in terminal");
         }
         
+        helperClass.setProgressBarValue(2, this.jProgressBar);
         helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "User create, edit, delete test starts at: " + dateTimeOfSession +" OS: " + osName);
         
         try {
@@ -86,26 +92,26 @@ public class CrudUserClass {
             js = (JavascriptExecutor)webDriver;
             webDriver.manage().window().maximize();
             
+            //LOGIN TO SITE
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - Login"); 
             startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);
-            
-           
+            helperClass.setProgressBarValue(3, this.jProgressBar);
             Thread.sleep(500);  
             
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting);
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting)) {
+                return;
+            }
             
-            webDriver.findElement(By.id("adminConrol")).click();
-            Thread.sleep(300); 
-            webDriver.findElement(By.id("management")).click();
-            Thread.sleep(300); 
-            webDriver.findElement(By.id("managementUsers")).click();
-            Thread.sleep(300); 
-            webDriver.findElement(By.id("userCreateButton")).click();
-            Thread.sleep(300);  
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "user/create", fileToWriteLogsOfTesting);
+            goThroughMenuToCreation();
+            helperClass.setProgressBarValue(4, this.jProgressBar);
             Thread.sleep(500);  
             
+            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting);            
+             
+            //TEST CREATION OF USER
             try {                
                 fillUserDataAndSave(userLogin, firstName, secondName, lastName, emailToUse);
+                helperClass.setProgressBarValue(5, this.jProgressBar);
                 Thread.sleep(300); 
             } catch (Exception ex) {
                 helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Unable to fill user data", ex.getMessage());
@@ -113,6 +119,7 @@ public class CrudUserClass {
             
             Thread.sleep(500);            
             
+            //SEARCH CREATED USER
             int[] arrWithIdAndPagination = new int[2];
 
             if (helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/users/list", fileToWriteLogsOfTesting)) {
@@ -124,8 +131,12 @@ public class CrudUserClass {
                 } 
             } else {
                 helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Error - not on page with users list");
-            }                        
-            Thread.sleep(500);       
+            }        
+            
+            helperClass.setProgressBarValue(6, this.jProgressBar);
+            Thread.sleep(500); 
+            
+            //EDIT CREATED USER
             clickOnUserEditButton(arrWithIdAndPagination);
             Thread.sleep(500);  
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "user/edit/" + arrWithIdAndPagination[0], fileToWriteLogsOfTesting);
@@ -134,6 +145,7 @@ public class CrudUserClass {
             Thread.sleep(500);
             editSavedUserData(userLogin, firstName, secondName, lastName, emailToUse, appendixToAdd);
             Thread.sleep(500);
+            helperClass.setProgressBarValue(7, this.jProgressBar);
             
             checkUserData(arrWithIdAndPagination, userLogin, firstName, secondName, lastName, emailToUse, appendixToAdd);
             Thread.sleep(500);
@@ -145,11 +157,14 @@ public class CrudUserClass {
             
             Thread.sleep(1500); 
             helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: END");
+            helperClass.setProgressBarValue(8, this.jProgressBar);
             Thread.sleep(5000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudUserClass"); 
         } finally {
+            helperClass.setProgressBarValue(0, this.jProgressBar);
+            Thread.sleep(5000);
             webDriver.close();
             webDriver.quit();
         }
@@ -248,12 +263,25 @@ public class CrudUserClass {
         WebElement login = webDriver.findElement(By.id("email"));
         WebElement passwd = webDriver.findElement(By.id("password"));
         WebElement btnLogin = webDriver.findElement(By.cssSelector("#app > main > div > div > div > div > div.card-body > form > div.form-group.row.mb-0 > div > button"));
-        login.sendKeys(credentialsClass.emailToLogin);
-        passwd.sendKeys(credentialsClass.passwordToLogin);
-        Thread.sleep(300);            
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: trying to login with email " + credentialsClass.emailToLogin + " and pswd " + credentialsClass.passwordToLogin);
+        login.sendKeys(credentialsClass.getEmailToLogin());
+        passwd.sendKeys(credentialsClass.getPasswordToLogin());
+        Thread.sleep(1300);            
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: trying to login with email " + credentialsClass.getEmailToLogin() + " and pswd " + credentialsClass.getPasswordToLogin());
         btnLogin.click();
     }
     
-    
+    private void goThroughMenuToCreation() throws InterruptedException {
+        webDriver.get("http://shop.loc/product/category/1");
+        Thread.sleep(500);
+        webDriver.findElement(By.id("adminConrol")).click();
+        Thread.sleep(300); 
+        webDriver.findElement(By.id("management")).click();
+        Thread.sleep(300); 
+        webDriver.findElement(By.id("managementUsers")).click();
+        Thread.sleep(300); 
+        webDriver.findElement(By.id("userCreateButton")).click();
+        Thread.sleep(300);  
+        helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "user/create", fileToWriteLogsOfTesting);
+        Thread.sleep(500);  
+    }
 }

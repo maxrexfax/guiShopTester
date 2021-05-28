@@ -13,7 +13,9 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import junit.awtui.ProgressBar;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,32 +43,16 @@ public class CrudDeliveryClass {
     private boolean isLocaleDeleteAfterCreation; 
     private JProgressBar jProgressBar;
     
-    public CrudDeliveryClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale, JProgressBar jProgressBarIn){
+    public CrudDeliveryClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.isLocaleDeleteAfterCreation = isDeleteLocale;
         this.jProgressBar = jProgressBarIn;
-        //frame.setTextInAreaInformation.setText("CrudDeliveryClass Constructor worked");
-    }
-    
-//    public void setTextInAreaInformation(int complete, JProgressBar jProgressBar) {
-//        new Thread(new Runnable() {
-//            public void run() {  
-//                try {
-//                    final int fComplete = complete;
-//                    SwingUtilities.invokeLater(new Runnable() {
-//                        public void run() {
-//                          jProgressBar.setValue(fComplete);
-//                        }
-//                    });              
-//                }
-//                catch(Exception e) { }
-//            }
-//        }).start();        
-//    }
-    
-    public void crudTestOfDeliveries() {
+        this.credentialsClass = credentialsClassIn;
         helperClass.setProgressBarValue(1, this.jProgressBar);
+    }    
+   
+    public void crudTestOfDeliveries() {
         String deliveryName = "Test delivery name";
         String deliveryDescription = "Test delivery Description. Text text text text text text text";
         double deliveryPrice = 22.0;
@@ -76,7 +62,7 @@ public class CrudDeliveryClass {
         String logoNameAlt = "dlogo(1).jpg";
         String fullPath = pathToImageFolder + logoName;
         
-        credentialsClass = new CredentialsClass();
+        
         dateTimeOfSession = helperClass.getDateInStringForWindowsLinux();    
         String fileName = "";
         String fileNameERRORS = "";
@@ -91,9 +77,10 @@ public class CrudDeliveryClass {
             System.out.println(exx.getMessage());
             System.out.println("Error file creation, test log will be only in terminal");
         }
-        helperClass.setProgressBarValue(2, this.jProgressBar);
         
+        helperClass.setProgressBarValue(2, this.jProgressBar);        
         helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Delivery create, edit, delete test starts at: " + dateTimeOfSession +" OS: " + osName);
+        
         try {
             if(MainJFrame.CURRENT_BROWSER == MainJFrame.CHANGE_CHROME_BROWSER) {
                 webDriver = new ChromeDriver();
@@ -103,72 +90,64 @@ public class CrudDeliveryClass {
             //login to site START
             js = (JavascriptExecutor)webDriver;
             webDriver.manage().window().maximize(); 
-            //driver.manage().window().setPosition(new Point(0, -2000));
-            
-            Robot robot = new Robot();
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_WINDOWS);
-            robot.keyPress(68);
-            robot.keyRelease(68);
-            robot.keyRelease(KeyEvent.VK_WINDOWS);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-//            robot.keyPress(KeyEvent.VK_ALT);
-//robot.keyPress(KeyEvent.VK_SPACE);
-//robot.keyPress(KeyEvent.VK_N);
-//robot.keyRelease(KeyEvent.VK_ALT);
-//robot.keyRelease(KeyEvent.VK_SPACE);
-//robot.keyRelease(KeyEvent.VK_N);
-//            robot.mouseMove(630, 420); // move mouse point to specific location	
-//            robot.delay(1500);        // delay is to make code wait for mentioned milliseconds before executing next step	
-//            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK); // press left click	
-//            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK); // release left click	
-//            robot.delay(1500);	
-//            robot.keyPress(KeyEvent.VK_DOWN); // press keyboard arrow key to select Save radio button	
-//            Thread.sleep(2000);	
-//            robot.keyPress(KeyEvent.VK_ENTER);	
+            Thread.sleep(500);
 
-            helperClass.setProgressBarValue(3, this.jProgressBar);
             //LOGIN TO SITE
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - Login"); 
-            startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);           
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - Login");
+            startAndLoginToSite(webDriver, fileToWriteLogsOfTesting, mainUrl);
+            helperClass.setProgressBarValue(3, this.jProgressBar);
             Thread.sleep(500);
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting);
-            
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting)) {
+                return;
+            }
+                       
             goThroughMenuToCreation();
+            helperClass.setProgressBarValue(4, this.jProgressBar);
             Thread.sleep(500);
             
-            helperClass.setProgressBarValue(5, this.jProgressBar);
             //TEST CREATION OF DELIVERY
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - create delivery"); 
             fillDataAndSave(deliveryName, deliveryDescription, deliveryPrice, fullPath);
-            
+            helperClass.setProgressBarValue(5, this.jProgressBar);
             
             //SEARCH CREATED DELIVERY
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - SEARCH delivery"); 
             Thread.sleep(500);
-            helperClass.setProgressBarValue(8, this.jProgressBar);
             int[] arrWithIdAndPagination = new int[2];
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/deliveries/list", fileToWriteLogsOfTesting);
             arrWithIdAndPagination = helperClass.getIdAndPaginationNumberOfModelOnPage(deliveryName, 1, "tableWithDeliveriesData", "id", "page-item", webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+            helperClass.setProgressBarValue(6, this.jProgressBar);
             Thread.sleep(500);
             helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/deliveries/list", fileToWriteLogsOfTesting); 
             Thread.sleep(500);
             
             
             
-            //TEST EDIT OF DELIVERY
+            //EDIT CREATED DELIVERY            
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - EDIT delivery"); 
+            webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
+            Thread.sleep(500); 
+            helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 4, "tableWithLocalesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+//            editDataInFoundElement(localeName, localeCode, pathToImageFolder, logoNameAlt, appendixToAdd);
+//            Thread.sleep(500); 
+//            webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
+//            Thread.sleep(500); 
+//            helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 4, "tableWithLocalesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+//            
+//            checkData(arrWithIdAndPagination, localeName, localeCode, appendixToAdd);
+            helperClass.setProgressBarValue(7, this.jProgressBar);
             
             
             
             
-            
-            helperClass.setProgressBarValue(10, this.jProgressBar);
+            helperClass.setProgressBarValue(8, this.jProgressBar);
             Thread.sleep(5000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudDeliveryClass");
-            helperClass.setProgressBarValue(0, this.jProgressBar);
+            
         } finally {
+            helperClass.setProgressBarValue(0, this.jProgressBar);
             webDriver.close();
             webDriver.quit();
         }
@@ -184,10 +163,10 @@ public class CrudDeliveryClass {
         WebElement login = webDriver.findElement(By.id("email"));
         WebElement passwd = webDriver.findElement(By.id("password"));
         WebElement btnLogin = webDriver.findElement(By.cssSelector("#app > main > div > div > div > div > div.card-body > form > div.form-group.row.mb-0 > div > button"));
-        login.sendKeys(credentialsClass.emailToLogin);
-        passwd.sendKeys(credentialsClass.passwordToLogin);
+        login.sendKeys(credentialsClass.getEmailToLogin());
+        passwd.sendKeys(credentialsClass.getPasswordToLogin());
         Thread.sleep(300);            
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: trying to login with email " + credentialsClass.emailToLogin + " and pswd " + credentialsClass.passwordToLogin);
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: trying to login with email " + credentialsClass.getEmailToLogin() + " and pswd " + credentialsClass.getPasswordToLogin());
         btnLogin.click();
     }
 
