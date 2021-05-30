@@ -89,6 +89,7 @@ public class CrudLocalesClass {
             Thread.sleep(500);
             
             if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "home!!! Return...", "Empty");
                 return;
             }
             
@@ -105,10 +106,15 @@ public class CrudLocalesClass {
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - SEARCH locale"); 
             Thread.sleep(500);
             int[] arrWithIdAndPagination = new int[2];
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/locales/list", fileToWriteLogsOfTesting);
+            
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/locales/list", fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "admin/locales/list!!! Return...", "Empty");
+                return;
+            }
+            
             arrWithIdAndPagination = helperClass.getIdAndPaginationNumberOfModelOnPage(localeName, 2, "tableWithLocalesData", "id", "page-item", webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
             Thread.sleep(500);
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "admin/locales/list", fileToWriteLogsOfTesting); 
+            
             Thread.sleep(500);
             helperClass.setProgressBarValue(6, this.jProgressBar);
                        

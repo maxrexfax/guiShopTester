@@ -18,9 +18,9 @@
             <version>3.3.1</version>
         </dependency>
         <dependency>
-            <groupId>com.google.collections</groupId>
-            <artifactId>google-collections</artifactId>
-            <version>1.0</version>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>4.0.0-alpha-7</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -36,15 +36,21 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.2</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-firefox-driver</artifactId>
             <version>4.0.0-alpha-7</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -64,21 +70,10 @@
             <version>1.7.30</version>
         </dependency>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-support</artifactId>
-            <version>4.0.0-alpha-7</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
             <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>2.47.1</version>
         </dependency>
     </dependencies>
     <properties>

@@ -82,11 +82,17 @@ public class CrudDeliveryClass {
         helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Delivery create, edit, delete test starts at: " + dateTimeOfSession +" OS: " + osName);
         
         try {
-            if(MainJFrame.CURRENT_BROWSER == MainJFrame.CHANGE_CHROME_BROWSER) {
-                webDriver = new ChromeDriver();
-            } else {
-                webDriver = new FirefoxDriver();
+            try{
+                if(MainJFrame.CURRENT_BROWSER == MainJFrame.CHANGE_CHROME_BROWSER) {
+                    webDriver = new ChromeDriver();
+                } else {
+                    webDriver = new FirefoxDriver();
+                }
+            } catch(Exception | Error exe) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: in creating webDriver!", exe.getMessage());
             }
+            Thread.sleep(500);
+
             //login to site START
             js = (JavascriptExecutor)webDriver;
             webDriver.manage().window().maximize(); 
@@ -98,6 +104,7 @@ public class CrudDeliveryClass {
             helperClass.setProgressBarValue(3, this.jProgressBar);
             Thread.sleep(500);
             if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "home!!! Return...", "Empty");
                 return;
             }
                        
@@ -144,7 +151,7 @@ public class CrudDeliveryClass {
             Thread.sleep(5000);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudDeliveryClass");
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of CrudDeliveryClass", ex.getMessage());
             
         } finally {
             helperClass.setProgressBarValue(0, this.jProgressBar);

@@ -99,6 +99,7 @@ public class CrudUserClass {
             Thread.sleep(500);  
             
             if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "home", fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "home!!! Return...", "Empty");
                 return;
             }
             
@@ -130,7 +131,8 @@ public class CrudUserClass {
                     helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Unable to check saving user data", ex.getMessage());
                 } 
             } else {
-                helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Error - not on page with users list");
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "admin/users/list!!! Return...", "Empty");
+                return;
             }        
             
             helperClass.setProgressBarValue(6, this.jProgressBar);
@@ -139,7 +141,10 @@ public class CrudUserClass {
             //EDIT CREATED USER
             clickOnUserEditButton(arrWithIdAndPagination);
             Thread.sleep(500);  
-            helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "user/edit/" + arrWithIdAndPagination[0], fileToWriteLogsOfTesting);
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "user/edit/" + arrWithIdAndPagination[0], fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "user/edit/" + arrWithIdAndPagination[0] + "!!! Return...", "Empty");
+                return;
+            }
             Thread.sleep(500);
             String appendixToAdd = "tmp";
             Thread.sleep(500);
