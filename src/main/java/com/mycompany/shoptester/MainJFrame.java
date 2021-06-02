@@ -12,6 +12,8 @@ import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,7 +61,15 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame() {
         initComponents();        
         
-        fillData();
+        try{
+            fillData();
+        } catch(FileNotFoundException fex) {
+            System.out.println("Error! FileNotFoundException: " + fex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error! FileNotFoundException: " + fex.getMessage());
+        } catch(IOException iex) {
+            System.out.println("Error! FileNotFoundException: " + iex.getMessage());
+            JOptionPane.showMessageDialog(frame, "Error! IOException: " + iex.getMessage());
+        }
         setTextInInfoLabel();
         
     }
@@ -611,7 +621,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
    
     
-    private void fillData() {
+    private void fillData() throws FileNotFoundException, IOException {
         bgroupCruds = new ButtonGroup();
         bgroupCruds.add(jRadioButtonAll);
         bgroupCruds.add(jRadioButtonCrudUser);
