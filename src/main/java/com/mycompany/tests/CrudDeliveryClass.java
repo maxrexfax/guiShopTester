@@ -40,13 +40,13 @@ public class CrudDeliveryClass {
     private String testUrl = "http://shop.loc/admin/deliveries/list/";
     private String osName;
     private final int countOfSymbols = 15;
-    private boolean isLocaleDeleteAfterCreation; 
+    private boolean isDeliveryDeleteAfterCreation; 
     private JProgressBar jProgressBar;
     
-    public CrudDeliveryClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
+    public CrudDeliveryClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteDelivery, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
-        this.isLocaleDeleteAfterCreation = isDeleteLocale;
+        this.isDeliveryDeleteAfterCreation = isDeleteDelivery;
         this.jProgressBar = jProgressBarIn;
         this.credentialsClass = credentialsClassIn;
         helperClass.setProgressBarValue(1, this.jProgressBar);
@@ -132,10 +132,11 @@ public class CrudDeliveryClass {
             
             //EDIT CREATED DELIVERY            
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "\nWork: Stage - EDIT delivery"); 
-            webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
+            webDriver.get(mainUrl + "admin/deliveries/list?page=" + arrWithIdAndPagination[1]);
             Thread.sleep(500); 
-            helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 4, "tableWithLocalesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
-//            editDataInFoundElement(localeName, localeCode, pathToImageFolder, logoNameAlt, appendixToAdd);
+            helperClass.clickOnEditButtonByModelId(arrWithIdAndPagination[0], 5, "tableWithDeliveriesData", "id", null, webDriver, js, fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting);
+            Thread.sleep(500); 
+            editDataInFoundElement(deliveryName, deliveryDescription, deliveryPrice, appendixToAdd);
 //            Thread.sleep(500); 
 //            webDriver.get(mainUrl + "admin/locales/list?page=" + arrWithIdAndPagination[1]);
 //            Thread.sleep(500); 
@@ -145,8 +146,9 @@ public class CrudDeliveryClass {
             helperClass.setProgressBarValue(7, this.jProgressBar);
             
             
-            
-            
+            Thread.sleep(500); 
+            helperClass.deleteModelById(webDriver, arrWithIdAndPagination, "tableWithDeliveriesData", this.isDeliveryDeleteAfterCreation, fileToWriteLogsOfTesting, 6);
+            Thread.sleep(500); 
             helperClass.setProgressBarValue(8, this.jProgressBar);
             Thread.sleep(5000);
         } catch (Exception ex) {
@@ -160,6 +162,24 @@ public class CrudDeliveryClass {
         }
         
     }
+    
+    private void editDataInFoundElement(String deliveryName, String deliveryDescription, Double deliveryPrice, String appendixToAdd) throws InterruptedException {
+        helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: Try to edit filled data in delivery");
+        helperClass.editDataInTextInputWithLabel(webDriver, deliveryName + appendixToAdd, "id", "delivery_name", "cssSelector", "#formToAddDeliveries > div:nth-child(3) > label", fileToWriteLogsOfTesting);
+        Thread.sleep(200);  
+        helperClass.editDataInTextInputWithLabel(webDriver, deliveryDescription + appendixToAdd, "id", "delivery_description", "cssSelector", "#formToAddDeliveries > div:nth-child(4) > label", fileToWriteLogsOfTesting);
+        Thread.sleep(200); 
+        helperClass.editDataInTextInputWithLabel(webDriver, "" + deliveryPrice, "id", "currency_value", "cssSelector", "#formToAddDeliveries > div:nth-child(5) > label", fileToWriteLogsOfTesting);
+        Thread.sleep(200); 
+        
+        Thread.sleep(200);
+        webDriver.findElement(By.id("btnSaveDelivery")).click();
+        Thread.sleep(500); 
+    }
+    
+//    public void switchTrueFalseSelectDropdown(WebDriver webDriver, String selectIdetifier, String typeOfId) {
+//        boolean startResult;
+//    }
     
     private void startAndLoginToSite(WebDriver webDriver, File fileToWriteLogsOfTesting, String mainUrl) throws InterruptedException {
         helperClass.writeStringToFile(fileToWriteLogsOfTesting, "Work: go to url:" + mainUrl);
@@ -205,6 +225,8 @@ public class CrudDeliveryClass {
         webDriver.findElement(By.id("btnSaveDelivery")).click();
         Thread.sleep(500);         
     }
+
+    
     
     
 }

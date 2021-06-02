@@ -323,6 +323,7 @@ public class HelperClass {
         WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
         List<WebElement> listOfTrs = null;
         List<WebElement> listOfInternalTds = null;
+        js.executeScript("window.scrollBy(0,245)");
         printToFileAndConsoleInformation(logFileNormal, "Work: try to find data with ID text:" + tableIdetifier);
         try {
                 listOfTrs = tableWithUsers.findElements(By.tagName("tr"));
