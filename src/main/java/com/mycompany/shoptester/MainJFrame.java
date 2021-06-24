@@ -10,6 +10,8 @@ import com.mycompany.tests.CrudDeliveryClass;
 import com.mycompany.tests.CrudLocalesClass;
 import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
+import com.mycompany.utils.SlackMessage;
+import com.mycompany.utils.SlackUtils;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -130,6 +132,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPasswordFieldMain = new javax.swing.JPasswordField();
         jButtonSetCredentials = new javax.swing.JButton();
+        jButtonSlackSend = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaInformation = new javax.swing.JTextArea();
@@ -278,6 +281,13 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButtonSlackSend.setText("Test sending to Slack");
+        jButtonSlackSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSlackSendActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -291,7 +301,8 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addComponent(jTextFieldLoginData)
                         .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
-                    .addComponent(jButtonSetCredentials))
+                    .addComponent(jButtonSetCredentials)
+                    .addComponent(jButtonSlackSend))
                 .addContainerGap(355, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -309,7 +320,9 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonSetCredentials)
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
+                .addComponent(jButtonSlackSend)
+                .addGap(37, 37, 37))
         );
 
         TabsInfo.addTab("Settings", jPanel2);
@@ -502,6 +515,22 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelTimeLeft.setText("...");
     }//GEN-LAST:event_jButtonStopTimerActionPerformed
 
+    private void jButtonSlackSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSlackSendActionPerformed
+        // TODO add your handling code here:
+        //Этот метод высылает в мой личный канал слака сообщение. Буду использовать для высылки ошибок.
+//        SlackMessage slackMessage = SlackMessage.builder()
+//        .channel("the-channel-name")
+//        .username("user1")
+//        .text("just testing")
+//        .icon_emoji(":twice:")
+//        .build();
+	SlackMessage slackMessage = new SlackMessage();
+        slackMessage.text = "text";
+        slackMessage.username = "Username";
+        
+      SlackUtils.sendMessage(slackMessage);
+    }//GEN-LAST:event_jButtonSlackSendActionPerformed
+
     private void startAllTestsOneByOne() {
         //Test Users
         startCrudUser(true);        
@@ -574,6 +603,7 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabsInfo;
     private javax.swing.JButton jButtonSetCredentials;
+    private javax.swing.JButton jButtonSlackSend;
     private javax.swing.JButton jButtonStartTest;
     private javax.swing.JButton jButtonStartTimer;
     private javax.swing.JButton jButtonStopTimer;

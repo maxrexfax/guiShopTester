@@ -366,6 +366,7 @@
                               <Component id="jPasswordFieldMain" alignment="0" pref="218" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jButtonSetCredentials" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonSlackSend" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="355" max="32767" attributes="0"/>
                   </Group>
@@ -386,7 +387,9 @@
                       <Component id="jPasswordFieldMain" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonSetCredentials" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="218" max="32767" attributes="0"/>
+                      <EmptySpace pref="156" max="32767" attributes="0"/>
+                      <Component id="jButtonSlackSend" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -417,6 +420,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSetCredentialsActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonSlackSend">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Test sending to Slack"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSlackSendActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
