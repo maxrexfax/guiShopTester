@@ -12,16 +12,23 @@ import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
 import com.mycompany.utils.SlackMessage;
 import com.mycompany.utils.SlackUtils;
-import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -31,13 +38,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 /**
  *
  * @author user
  */
 public class MainJFrame extends javax.swing.JFrame {
 
+    private Session session;
     private ButtonGroup bgroupCruds;
     private ButtonGroup bgroupBrowsers;
     
@@ -133,6 +140,10 @@ public class MainJFrame extends javax.swing.JFrame {
         jPasswordFieldMain = new javax.swing.JPasswordField();
         jButtonSetCredentials = new javax.swing.JButton();
         jButtonSlackSend = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jTextFieldEmailAddress = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextAreaEmailToSend = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaInformation = new javax.swing.JTextArea();
@@ -288,6 +299,19 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Send test email");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldEmailAddress.setText("maxrexfax@gmail.com");
+
+        jTextAreaEmailToSend.setColumns(20);
+        jTextAreaEmailToSend.setRows(5);
+        jScrollPane2.setViewportView(jTextAreaEmailToSend);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -295,15 +319,26 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel6)
-                        .addComponent(jTextFieldLoginData)
-                        .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
-                    .addComponent(jButtonSetCredentials)
-                    .addComponent(jButtonSlackSend))
-                .addContainerGap(355, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonSlackSend)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jTextFieldLoginData)
+                                .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+                            .addComponent(jButtonSetCredentials))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldEmailAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,8 +355,14 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonSetCredentials)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
-                .addComponent(jButtonSlackSend)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonSlackSend)
+                    .addComponent(jButton1))
                 .addGap(37, 37, 37))
         );
 
@@ -531,6 +572,34 @@ public class MainJFrame extends javax.swing.JFrame {
       SlackUtils.sendMessage(slackMessage);
     }//GEN-LAST:event_jButtonSlackSendActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Message message = new MimeMessage(session);
+        String emailFromAddress = "development_test@ukr.net";
+        String emailToAddress = jTextFieldEmailAddress.getText().toString();
+        String emailMessage = jTextAreaEmailToSend.getText();
+        try {
+            message.setFrom(new InternetAddress(emailFromAddress));
+            message.setRecipients(
+                    Message.RecipientType.TO, InternetAddress.parse(emailToAddress));
+            message.setSubject("Mail Subject");
+            
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(emailMessage, "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+        } catch (AddressException ex) {
+            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void startAllTestsOneByOne() {
         //Test Users
         startCrudUser(true);        
@@ -602,6 +671,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabsInfo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonSetCredentials;
     private javax.swing.JButton jButtonSlackSend;
     private javax.swing.JButton jButtonStartTest;
@@ -643,8 +713,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButtonUseChromium;
     private javax.swing.JRadioButton jRadioButtonUseFirefox;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinnerTimerPause;
+    private javax.swing.JTextArea jTextAreaEmailToSend;
     private javax.swing.JTextArea jTextAreaInformation;
+    private javax.swing.JTextField jTextFieldEmailAddress;
     private javax.swing.JTextField jTextFieldLoginData;
     private javax.swing.JTextField jTextFieldLoopsNumber;
     // End of variables declaration//GEN-END:variables
@@ -714,6 +787,22 @@ public class MainJFrame extends javax.swing.JFrame {
 //        UIManager.put("jProgressBarDelivery.foreground", Color.BLUE);
 //        UIManager.put("jProgressBarDelivery.selectionBackground", Color.RED);
 //        UIManager.put("jProgressBarDelivery.selectionForeground", Color.GREEN);
+//EMAIL
+            Properties prop = new Properties();
+            prop.put("mail.smtp.auth", true);
+            prop.put("mail.smtp.starttls.enable", "true");
+            prop.put("mail.smtp.host", "smtp.ukr.net");
+            prop.put("mail.smtp.port", "2525");
+            prop.put("mail.smtp.ssl.trust", "smtp.ukr.net");
+            String username = "development_test@ukr.net";
+            String password = "GfHjKM12!@";
+            //char[] password = passwordStr.toCharArray();
+            session = Session.getInstance(prop, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
     }
     
     private void setTextInInfoLabel() {
