@@ -49,8 +49,8 @@ public class OrderCreateClass {
         String fileName = "";
         String fileNameERRORS = "";
         
-        fileName = this.pathToLogFileFolder + "testLocaleCrudLogFile_" + dateTimeOfSession + ".txt";
-        fileNameERRORS = this.pathToLogFileFolder + "testLocaleCrudLogFile_ERRORS_" + dateTimeOfSession + ".txt";        
+        fileName = this.pathToLogFileFolder + "testOrderInCartCreationLogFile_" + dateTimeOfSession + ".txt";
+        fileNameERRORS = this.pathToLogFileFolder + "testOrderInCartCreationLogFile_ERRORS_" + dateTimeOfSession + ".txt";        
         
         try {
             fileToWriteLogsOfTesting = new File(fileName);
@@ -61,7 +61,7 @@ public class OrderCreateClass {
             System.out.println("Error file creation, test log will be only in terminal");
         }
         
-        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Locale create, edit, delete test starts at: " + dateTimeOfSession +" OS: " + osName);
+        helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Order in Cart creation test starts at: " + dateTimeOfSession +" OS: " + osName);
         helperClass.setProgressBarValue(2, this.jProgressBar);
         try {
             if(MainJFrame.CURRENT_BROWSER == MainJFrame.CHANGE_CHROME_BROWSER) {

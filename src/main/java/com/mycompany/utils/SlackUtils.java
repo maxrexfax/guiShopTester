@@ -10,13 +10,10 @@ package com.mycompany.utils;
 	
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-  import org.apache.http.client.methods.HttpPost;
-	
-  import org.apache.http.entity.StringEntity;
-	
-  import org.apache.http.impl.client.CloseableHttpClient;
-	
-  import org.apache.http.impl.client.HttpClients;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 /**
  *
  * @author user
@@ -36,8 +33,6 @@ public class SlackUtils {
             ObjectMapper objectMapper = new ObjectMapper();
 
             String json = objectMapper.writeValueAsString(message);
-
-
 
             StringEntity entity = new StringEntity(json);
 

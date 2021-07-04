@@ -134,6 +134,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jProgressBarLocale = new javax.swing.JProgressBar();
         jProgressBarUser = new javax.swing.JProgressBar();
         jCheckBoxCreateOrder = new javax.swing.JCheckBox();
+        jCheckBoxCrudDelivery = new javax.swing.JCheckBox();
+        jRadioButton1 = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaInformation = new javax.swing.JTextArea();
@@ -205,6 +207,10 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jCheckBoxCreateOrder.setText("Create Order");
 
+        jCheckBoxCrudDelivery.setText("Crud Delivery");
+
+        jRadioButton1.setText("Empty");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -245,7 +251,9 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButtonUseFirefox))
                             .addComponent(jRadioButtonAll)
-                            .addComponent(jCheckBoxCreateOrder))
+                            .addComponent(jCheckBoxCreateOrder)
+                            .addComponent(jCheckBoxCrudDelivery)
+                            .addComponent(jRadioButton1))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -275,8 +283,12 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addComponent(jRadioButtonCrudDelivery)
                         .addComponent(jCheckBoxDeleteDelivery)))
                 .addGap(18, 18, 18)
+                .addComponent(jRadioButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(jCheckBoxCreateOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBoxCrudDelivery)
+                .addGap(82, 82, 82)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButtonUseChromium)
                     .addComponent(jRadioButtonUseFirefox))
@@ -568,12 +580,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jButtonSlackSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSlackSendActionPerformed
         // TODO add your handling code here:
         //Этот метод высылает в мой личный канал слака сообщение. Буду использовать для высылки ошибок.
-//        SlackMessage slackMessage = SlackMessage.builder()
-//        .channel("the-channel-name")
-//        .username("user1")
-//        .text("just testing")
-//        .icon_emoji(":twice:")
-//        .build();
+        /*SlackMessage slackMessage = SlackMessage.builder().channel("the-channel-name")
+        .username("user1")
+        .text("just testing")
+        .icon_emoji(":twice:")
+        .build();*/
 	SlackMessage slackMessage = new SlackMessage();
         slackMessage.text = "text";
         slackMessage.username = "Username";
@@ -696,6 +707,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonStartTimer;
     private javax.swing.JButton jButtonStopTimer;
     private javax.swing.JCheckBox jCheckBoxCreateOrder;
+    private javax.swing.JCheckBox jCheckBoxCrudDelivery;
     private javax.swing.JCheckBox jCheckBoxDeleteDelivery;
     private javax.swing.JCheckBox jCheckBoxDeleteLocale;
     private javax.swing.JCheckBox jCheckBoxDeleteUser;
@@ -725,6 +737,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBarDelivery;
     private javax.swing.JProgressBar jProgressBarLocale;
     private javax.swing.JProgressBar jProgressBarUser;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButtonAll;
     private javax.swing.JRadioButton jRadioButtonCrudDelivery;
     private javax.swing.JRadioButton jRadioButtonCrudLocale;
@@ -964,6 +977,24 @@ public class MainJFrame extends javax.swing.JFrame {
             };
             tCrudLocale.start();            
         }else if (jRadioButtonCrudDelivery.isSelected()) { 
+            boolean deleteDelivery = true;
+            if (!jCheckBoxDeleteDelivery.isSelected()) {
+                deleteDelivery = false;
+            }
+            String message = "Testing of the Delivery Create, Edit, Delete";            
+            jLabelStatus.setText(message);         
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
+            final boolean deleteDeliveryF = deleteDelivery;
+            Thread tCrudDelivery = new Thread() {
+                public void run() {
+                    for (int i = 0; i < loops; i++) {
+                        startCrudDelivery(deleteDeliveryF);
+                    }
+                }
+            };
+            tCrudDelivery.start();            
+        }
+        if (jCheckBoxCrudDelivery.isSelected()) { 
             boolean deleteDelivery = true;
             if (!jCheckBoxDeleteDelivery.isSelected()) {
                 deleteDelivery = false;

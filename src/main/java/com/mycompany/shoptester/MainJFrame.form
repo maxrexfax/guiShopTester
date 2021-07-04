@@ -221,6 +221,8 @@
                                   </Group>
                                   <Component id="jRadioButtonAll" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jCheckBoxCreateOrder" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckBoxCrudDelivery" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jRadioButton1" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -260,8 +262,12 @@
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="46" max="32767" attributes="0"/>
                       <Component id="jCheckBoxCreateOrder" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="192" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jCheckBoxCrudDelivery" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jRadioButtonUseChromium" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jRadioButtonUseFirefox" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -346,6 +352,16 @@
             <Component class="javax.swing.JCheckBox" name="jCheckBoxCreateOrder">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Create Order"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="jCheckBoxCrudDelivery">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Crud Delivery"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Empty"/>
               </Properties>
             </Component>
           </SubComponents>
