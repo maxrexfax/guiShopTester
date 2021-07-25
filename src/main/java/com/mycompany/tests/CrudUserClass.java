@@ -39,13 +39,15 @@ public class CrudUserClass {
     private boolean isUserDeleteAfterCreation; 
     private JProgressBar jProgressBar;
     
-    public CrudUserClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteUser, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
+    public CrudUserClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteUser, 
+            JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn, String mainUrlIncome){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.isUserDeleteAfterCreation = isDeleteUser;
         this.jProgressBar = jProgressBarIn;
         this.credentialsClass = credentialsClassIn;
         helperClass.setProgressBarValue(1, this.jProgressBar);
+        this.mainUrl = mainUrlIncome;
     }
     
     public void startCrudTestUsers() throws InterruptedException {

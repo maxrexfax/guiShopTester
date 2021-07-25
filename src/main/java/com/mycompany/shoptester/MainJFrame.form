@@ -189,7 +189,7 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
                                               <Component id="jCheckBoxDeleteDelivery" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace pref="290" max="32767" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
                                               <Component id="jProgressBarDelivery" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" attributes="0">
@@ -219,12 +219,20 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jRadioButtonUseFirefox" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jRadioButtonAll" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jCheckBoxCreateOrder" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jCheckBoxCrudDelivery" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jRadioButton1" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jRadioButtonAll" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
+                              <Component id="jTextFieldMainUrl" min="-2" pref="246" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jButtonCheckUrl" min="-2" pref="89" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jButtonSetMainUrl" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -234,8 +242,13 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                      <Component id="jRadioButtonAll" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jRadioButtonAll" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextFieldMainUrl" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonSetMainUrl" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonCheckUrl" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -263,7 +276,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="46" max="32767" attributes="0"/>
+                      <EmptySpace pref="40" max="32767" attributes="0"/>
                       <Component id="jCheckBoxCreateOrder" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jCheckBoxCrudDelivery" min="-2" max="-2" attributes="0"/>
@@ -364,6 +377,24 @@
                 <Property name="text" type="java.lang.String" value="Empty"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JTextField" name="jTextFieldMainUrl">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="http://test.ru"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonSetMainUrl">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Set URL"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSetMainUrlActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonCheckUrl">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Check URL"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -380,7 +411,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="701" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="720" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -439,7 +470,7 @@
                                   </Group>
                                   <Component id="jButtonSetCredentials" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="221" max="32767" attributes="0"/>
+                              <EmptySpace pref="240" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
                                   <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>

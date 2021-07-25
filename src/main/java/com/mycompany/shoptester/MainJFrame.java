@@ -65,6 +65,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private CredentialsClass credentialsClass;
     private Date dateForTimer;
     private boolean isTimerWork;
+    private String mainUrl;
     /**
      * Creates new form MainJFrame
      */
@@ -136,6 +137,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jCheckBoxCreateOrder = new javax.swing.JCheckBox();
         jCheckBoxCrudDelivery = new javax.swing.JCheckBox();
         jRadioButton1 = new javax.swing.JRadioButton();
+        jTextFieldMainUrl = new javax.swing.JTextField();
+        jButtonSetMainUrl = new javax.swing.JButton();
+        jButtonCheckUrl = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaInformation = new javax.swing.JTextArea();
@@ -211,6 +215,17 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButton1.setText("Empty");
 
+        jTextFieldMainUrl.setText("http://test.ru");
+
+        jButtonSetMainUrl.setText("Set URL");
+        jButtonSetMainUrl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSetMainUrlActionPerformed(evt);
+            }
+        });
+
+        jButtonCheckUrl.setText("Check URL");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -229,7 +244,7 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jCheckBoxDeleteDelivery)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jCheckBoxDeleteUser)
@@ -250,18 +265,29 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jRadioButtonUseChromium)
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButtonUseFirefox))
-                            .addComponent(jRadioButtonAll)
                             .addComponent(jCheckBoxCreateOrder)
                             .addComponent(jCheckBoxCrudDelivery)
                             .addComponent(jRadioButton1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jRadioButtonAll)
+                        .addGap(133, 133, 133)
+                        .addComponent(jTextFieldMainUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonCheckUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonSetMainUrl)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jRadioButtonAll)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButtonAll)
+                    .addComponent(jTextFieldMainUrl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSetMainUrl)
+                    .addComponent(jButtonCheckUrl))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -284,7 +310,7 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addComponent(jCheckBoxDeleteDelivery)))
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jCheckBoxCreateOrder)
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBoxCrudDelivery)
@@ -307,7 +333,7 @@ public class MainJFrame extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -369,7 +395,7 @@ public class MainJFrame extends javax.swing.JFrame {
                                 .addComponent(jTextFieldLoginData)
                                 .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
                             .addComponent(jButtonSetCredentials))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -585,11 +611,16 @@ public class MainJFrame extends javax.swing.JFrame {
         .text("just testing")
         .icon_emoji(":twice:")
         .build();*/
-	SlackMessage slackMessage = new SlackMessage();
-        slackMessage.text = "text";
-        slackMessage.username = "Username";
+        try {
+            SlackMessage slackMessage = new SlackMessage();
+            slackMessage.text = "text";
+            slackMessage.username = "Username";
+
+            SlackUtils.sendMessage(slackMessage);
+        } catch(Exception | Error ex) {
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR sending slack message!", ex.getMessage());
+        }
         
-      SlackUtils.sendMessage(slackMessage);
     }//GEN-LAST:event_jButtonSlackSendActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -620,6 +651,11 @@ public class MainJFrame extends javax.swing.JFrame {
         }    */
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButtonSetMainUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetMainUrlActionPerformed
+        // TODO add your handling code here:
+        mainUrl = jTextFieldMainUrl.getText();
+    }//GEN-LAST:event_jButtonSetMainUrlActionPerformed
+
     private void startAllTestsOneByOne() {
         //Test Users
         startCrudUser(true);        
@@ -628,7 +664,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
     
     public void startCrudUser(boolean deleteUser) {
-        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser, jProgressBarUser, credentialsClass);                    
+        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser, jProgressBarUser, credentialsClass, mainUrl);                    
         try {
             crudUserClass.startCrudTestUsers();
         } catch (Exception | Error ex) {
@@ -637,7 +673,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
     
     public void startCrudLocale(boolean deleteLocale){
-        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteLocale, jProgressBarLocale, credentialsClass);                    
+        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteLocale, jProgressBarLocale, credentialsClass, mainUrl);                    
         try {
             crudLocalesClass.crudTestOfLocales();
         } catch (Exception | Error ex) {
@@ -646,7 +682,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
     
     public void startCrudDelivery(boolean deleteDelivery) {
-        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteDelivery, jProgressBarDelivery, credentialsClass);                    
+        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteDelivery, jProgressBarDelivery, credentialsClass, mainUrl);
         try {
             crudDeliveryClass.crudTestOfDeliveries();
         } catch (Exception | Error ex) {
@@ -655,7 +691,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
     
     private void testOrderCreate() {
-         OrderCreateClass orderCreateClass = new OrderCreateClass(pathToLogFile, osName, jProgressBarDelivery, credentialsClass);
+         OrderCreateClass orderCreateClass = new OrderCreateClass(pathToLogFile, osName, jProgressBarDelivery, credentialsClass, mainUrl);
          try {
             orderCreateClass.testOrderCreation();
         } catch (Exception | Error ex) {
@@ -701,7 +737,9 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabsInfo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonCheckUrl;
     private javax.swing.JButton jButtonSetCredentials;
+    private javax.swing.JButton jButtonSetMainUrl;
     private javax.swing.JButton jButtonSlackSend;
     private javax.swing.JButton jButtonStartTest;
     private javax.swing.JButton jButtonStartTimer;
@@ -752,6 +790,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldEmailAddress;
     private javax.swing.JTextField jTextFieldLoginData;
     private javax.swing.JTextField jTextFieldLoopsNumber;
+    private javax.swing.JTextField jTextFieldMainUrl;
     // End of variables declaration//GEN-END:variables
 
    
@@ -771,7 +810,7 @@ public class MainJFrame extends javax.swing.JFrame {
         credentialsClass = new CredentialsClass();
         jTextFieldLoginData.setText(credentialsClass.getEmailToLogin());
         jPasswordFieldMain.setText(credentialsClass.getPasswordToLogin());
-        
+        jTextFieldMainUrl.setText(credentialsClass.getMainUrl());
         String fileName = "";
         String fileNameERRORS = "";
         dateTimeOfSession = helperClass.getDateInStringForWindowsLinux(); 
@@ -820,7 +859,7 @@ public class MainJFrame extends javax.swing.JFrame {
 //        UIManager.put("jProgressBarDelivery.selectionBackground", Color.RED);
 //        UIManager.put("jProgressBarDelivery.selectionForeground", Color.GREEN);
 //EMAIL
-            Properties prop = new Properties();
+           /* Properties prop = new Properties();
             prop.put("mail.smtp.auth", true);
             prop.put("mail.smtp.starttls.enable", "true");
             prop.put("mail.smtp.host", "smtp.ukr.net");
@@ -834,11 +873,10 @@ public class MainJFrame extends javax.swing.JFrame {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(username, password);
                 }
-            });
+            });*/
     }
     
-    private void setTextInInfoLabel() {
-        
+    private void setTextInInfoLabel() {        
         StringBuffer strBuffer = new StringBuffer();
         strBuffer.append("To use this application make sure GoogleChromDriver and GeckoDriver are placed in the folder ");
         if (osName.contains("Linux")) {

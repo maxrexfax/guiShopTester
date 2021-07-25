@@ -36,20 +36,22 @@ public class CrudDeliveryClass {
     private File fileToWriteLogsOfTesting;
     private File fileToWriteErrorLogOfTesting;
     private WebDriver webDriver = null;
-    private String mainUrl = "http://shop.loc/";
+    private String mainUrl;
     private String testUrl = "http://shop.loc/admin/deliveries/list/";
     private String osName;
     private final int countOfSymbols = 15;
     private boolean isDeliveryDeleteAfterCreation; 
     private JProgressBar jProgressBar;
     
-    public CrudDeliveryClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteDelivery, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
+    public CrudDeliveryClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteDelivery, 
+            JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn, String mainUrlIncome){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.isDeliveryDeleteAfterCreation = isDeleteDelivery;
         this.jProgressBar = jProgressBarIn;
         this.credentialsClass = credentialsClassIn;
         helperClass.setProgressBarValue(1, this.jProgressBar);
+        this.mainUrl = mainUrlIncome;
     }    
    
     public void crudTestOfDeliveries() {

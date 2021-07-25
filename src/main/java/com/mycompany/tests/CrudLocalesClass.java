@@ -29,20 +29,22 @@ public class CrudLocalesClass {
     private File fileToWriteLogsOfTesting;
     private File fileToWriteErrorLogOfTesting;
     private WebDriver webDriver = null;
-    private String mainUrl = "http://shop.loc/";
+    private String mainUrl;
     private String testUrl = "http://shop.loc/admin/locales/list/";
     private String osName;
     private final int countOfSymbols = 15;
     private boolean isLocaleDeleteAfterCreation; 
     private JProgressBar jProgressBar;
     
-    public CrudLocalesClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale, JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn){
+    public CrudLocalesClass(String pathToFileFolderIn, String osNameIn, boolean isDeleteLocale, 
+            JProgressBar jProgressBarIn, CredentialsClass credentialsClassIn, String mainUrlIncome){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.isLocaleDeleteAfterCreation = isDeleteLocale;
         this.jProgressBar = jProgressBarIn;
         this.credentialsClass = credentialsClassIn;
         helperClass.setProgressBarValue(1, this.jProgressBar);
+        this.mainUrl = mainUrlIncome;
     }
     
     public void crudTestOfLocales() {
