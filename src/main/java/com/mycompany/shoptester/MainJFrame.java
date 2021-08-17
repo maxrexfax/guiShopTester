@@ -6,11 +6,8 @@
 package com.mycompany.shoptester;
 
 import com.mycompany.tests.CredentialsClass;
-import com.mycompany.tests.CrudDeliveryClass;
-import com.mycompany.tests.CrudLocalesClass;
-import com.mycompany.tests.CrudUserClass;
+import com.mycompany.tests.FillTestFormClass;
 import com.mycompany.tests.HelperClass;
-import com.mycompany.tests.OrderCreateClass;
 import com.mycompany.utils.SlackMessage;
 import com.mycompany.utils.SlackUtils;
 import java.io.File;
@@ -22,14 +19,14 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+//import javax.mail.Authenticator;
+//import javax.mail.PasswordAuthentication;
+//import javax.mail.*;
+//import javax.mail.internet.AddressException;
+//import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.MimeBodyPart;
+//import javax.mail.internet.MimeMessage;
+//import javax.mail.internet.MimeMultipart;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -45,7 +42,7 @@ import javax.swing.event.ChangeListener;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    private Session session;
+    //private Session session;
     private ButtonGroup bgroupCruds;
     private ButtonGroup bgroupBrowsers;
     
@@ -121,22 +118,14 @@ public class MainJFrame extends javax.swing.JFrame {
         TabsInfo = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jRadioButtonAll = new javax.swing.JRadioButton();
-        jRadioButtonCrudUser = new javax.swing.JRadioButton();
-        jCheckBoxDeleteUser = new javax.swing.JCheckBox();
+        jRadioButtonFillExampleForm = new javax.swing.JRadioButton();
+        jCheckBoxDeleteData = new javax.swing.JCheckBox();
         jRadioButtonUseChromium = new javax.swing.JRadioButton();
         jRadioButtonUseFirefox = new javax.swing.JRadioButton();
-        jRadioButtonCrudLocale = new javax.swing.JRadioButton();
-        jCheckBoxDeleteLocale = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jRadioButtonCrudDelivery = new javax.swing.JRadioButton();
-        jCheckBoxDeleteDelivery = new javax.swing.JCheckBox();
-        jProgressBarDelivery = new javax.swing.JProgressBar();
-        jProgressBarLocale = new javax.swing.JProgressBar();
-        jProgressBarUser = new javax.swing.JProgressBar();
-        jCheckBoxCreateOrder = new javax.swing.JCheckBox();
-        jCheckBoxCrudDelivery = new javax.swing.JCheckBox();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        jProgressBarForm = new javax.swing.JProgressBar();
+        jRadioButtonEmpty = new javax.swing.JRadioButton();
         jTextFieldMainUrl = new javax.swing.JTextField();
         jButtonSetMainUrl = new javax.swing.JButton();
         jButtonCheckUrl = new javax.swing.JButton();
@@ -150,11 +139,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPasswordFieldMain = new javax.swing.JPasswordField();
         jButtonSetCredentials = new javax.swing.JButton();
-        jButtonSlackSend = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jTextFieldEmailAddress = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextAreaEmailToSend = new javax.swing.JTextArea();
         jButtonStartTest = new javax.swing.JButton();
         jLabelStatus = new javax.swing.JLabel();
         jTextFieldLoopsNumber = new javax.swing.JTextField();
@@ -182,38 +166,22 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButtonAll.setText("Start all checks below");
 
-        jRadioButtonCrudUser.setText("Crud User");
+        jRadioButtonFillExampleForm.setText("Fill example form");
 
-        jCheckBoxDeleteUser.setSelected(true);
+        jCheckBoxDeleteData.setSelected(true);
 
         jRadioButtonUseChromium.setSelected(true);
         jRadioButtonUseChromium.setText("Use Chrome browser");
 
         jRadioButtonUseFirefox.setText("Use Firefox browser");
 
-        jRadioButtonCrudLocale.setText("Crud Locale");
-
-        jCheckBoxDeleteLocale.setSelected(true);
-
         jLabel2.setText("Delete after test?");
 
-        jLabel3.setText("Create, edit, delete (Crud)");
+        jLabel3.setText("Action name");
 
-        jRadioButtonCrudDelivery.setText("Crud Delivery");
+        jProgressBarForm.setMaximum(8);
 
-        jCheckBoxDeleteDelivery.setSelected(true);
-
-        jProgressBarDelivery.setMaximum(8);
-
-        jProgressBarLocale.setMaximum(8);
-
-        jProgressBarUser.setMaximum(8);
-
-        jCheckBoxCreateOrder.setText("Create Order");
-
-        jCheckBoxCrudDelivery.setText("Crud Delivery");
-
-        jRadioButton1.setText("Empty");
+        jRadioButtonEmpty.setText("Empty");
 
         jTextFieldMainUrl.setText("http://test.ru");
 
@@ -235,39 +203,25 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonCrudUser)
-                            .addComponent(jLabel3)
-                            .addComponent(jRadioButtonCrudLocale))
+                            .addComponent(jRadioButtonFillExampleForm)
+                            .addComponent(jLabel3))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(58, 58, 58)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxDeleteDelivery)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxDeleteUser)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jProgressBarUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxDeleteLocale)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jProgressBarLocale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jCheckBoxDeleteData)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jProgressBarForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonCrudDelivery)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jRadioButtonUseChromium)
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButtonUseFirefox))
-                            .addComponent(jCheckBoxCreateOrder)
-                            .addComponent(jCheckBoxCrudDelivery)
-                            .addComponent(jRadioButton1))
+                            .addComponent(jRadioButtonEmpty))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jRadioButtonAll)
@@ -294,27 +248,12 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jRadioButtonCrudUser)
-                    .addComponent(jCheckBoxDeleteUser)
-                    .addComponent(jProgressBarUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jRadioButtonFillExampleForm)
+                    .addComponent(jCheckBoxDeleteData)
+                    .addComponent(jProgressBarForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jRadioButtonCrudLocale)
-                    .addComponent(jCheckBoxDeleteLocale)
-                    .addComponent(jProgressBarLocale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButtonCrudDelivery)
-                        .addComponent(jCheckBoxDeleteDelivery)))
-                .addGap(18, 18, 18)
-                .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jCheckBoxCreateOrder)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBoxCrudDelivery)
-                .addGap(82, 82, 82)
+                .addComponent(jRadioButtonEmpty)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 268, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButtonUseChromium)
                     .addComponent(jRadioButtonUseFirefox))
@@ -359,26 +298,6 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButtonSlackSend.setText("Test sending to Slack");
-        jButtonSlackSend.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSlackSendActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Send test email");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jTextFieldEmailAddress.setText("maxrexfax@gmail.com");
-
-        jTextAreaEmailToSend.setColumns(20);
-        jTextAreaEmailToSend.setRows(5);
-        jScrollPane2.setViewportView(jTextAreaEmailToSend);
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -386,54 +305,31 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6)
-                                .addComponent(jTextFieldLoginData)
-                                .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
-                            .addComponent(jButtonSetCredentials))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextFieldEmailAddress, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButtonSlackSend)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(jTextFieldLoginData)
+                        .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+                    .addComponent(jButtonSetCredentials))
+                .addContainerGap(514, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldLoginData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel5)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonSetCredentials)
-                        .addGap(27, 27, 27)
-                        .addComponent(jButtonSlackSend))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextFieldEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addComponent(jTextFieldLoginData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPasswordFieldMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonSetCredentials)
+                .addContainerGap(237, Short.MAX_VALUE))
         );
 
         TabsInfo.addTab("Settings", jPanel2);
@@ -603,54 +499,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabelTimeLeft.setText("...");
     }//GEN-LAST:event_jButtonStopTimerActionPerformed
 
-    private void jButtonSlackSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSlackSendActionPerformed
-        // TODO add your handling code here:
-        //Этот метод высылает в мой личный канал слака сообщение. Буду использовать для высылки ошибок.
-        /*SlackMessage slackMessage = SlackMessage.builder().channel("the-channel-name")
-        .username("user1")
-        .text("just testing")
-        .icon_emoji(":twice:")
-        .build();*/
-        try {
-            SlackMessage slackMessage = new SlackMessage();
-            slackMessage.text = "text";
-            slackMessage.username = "Username";
-
-            SlackUtils.sendMessage(slackMessage);
-        } catch(Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR sending slack message!", ex.getMessage());
-        }
-        
-    }//GEN-LAST:event_jButtonSlackSendActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        /*Message message = new MimeMessage(session);
-        String emailFromAddress = "development_test@ukr.net";
-        String emailToAddress = jTextFieldEmailAddress.getText().toString();
-        String emailMessage = jTextAreaEmailToSend.getText();
-        try {
-            message.setFrom(new InternetAddress(emailFromAddress));
-            message.setRecipients(
-                    Message.RecipientType.TO, InternetAddress.parse(emailToAddress));
-            message.setSubject("Mail Subject");
-            
-            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setContent(emailMessage, "text/html");
-
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(mimeBodyPart);
-
-            message.setContent(multipart);
-
-            Transport.send(message);
-        } catch (AddressException ex) {
-            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MessagingException ex) {
-            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }    */
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButtonSetMainUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetMainUrlActionPerformed
         // TODO add your handling code here:
         mainUrl = jTextFieldMainUrl.getText();
@@ -658,46 +506,19 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void startAllTestsOneByOne() {
         //Test Users
-        startCrudUser(true);        
-        startCrudLocale(true);        
-        startCrudDelivery(true);        
+        System.out.println("Empty");
     }
     
-    public void startCrudUser(boolean deleteUser) {
-        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser, jProgressBarUser, credentialsClass, mainUrl);                    
+    
+    public void startFillingExampleForm(boolean deleteItem) {
+        FillTestFormClass fillTestFormClass = new FillTestFormClass(pathToLogFile, osName, deleteItem, jProgressBarForm, credentialsClass, mainUrl);                    
         try {
-            crudUserClass.startCrudTestUsers();
+            fillTestFormClass.fillForm();
         } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudUserClass.startCrudTestUsers()!", ex.getMessage());
+            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting FillTestFormClass.fillForm()!", ex.getMessage());
         }
     }
     
-    public void startCrudLocale(boolean deleteLocale){
-        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteLocale, jProgressBarLocale, credentialsClass, mainUrl);                    
-        try {
-            crudLocalesClass.crudTestOfLocales();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
-        }
-    }
-    
-    public void startCrudDelivery(boolean deleteDelivery) {
-        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteDelivery, jProgressBarDelivery, credentialsClass, mainUrl);
-        try {
-            crudDeliveryClass.crudTestOfDeliveries();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudDeliveriesesClass.crudTestOfDeliveries()!", ex.getMessage());
-        }
-    }
-    
-    private void testOrderCreate() {
-         OrderCreateClass orderCreateClass = new OrderCreateClass(pathToLogFile, osName, jProgressBarDelivery, credentialsClass, mainUrl);
-         try {
-            orderCreateClass.testOrderCreation();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting orderCreateClass.testOrderCreation()!", ex.getMessage());
-        }
-    }
     
     /**
      * @param args the command line arguments
@@ -736,19 +557,13 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabsInfo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonCheckUrl;
     private javax.swing.JButton jButtonSetCredentials;
     private javax.swing.JButton jButtonSetMainUrl;
-    private javax.swing.JButton jButtonSlackSend;
     private javax.swing.JButton jButtonStartTest;
     private javax.swing.JButton jButtonStartTimer;
     private javax.swing.JButton jButtonStopTimer;
-    private javax.swing.JCheckBox jCheckBoxCreateOrder;
-    private javax.swing.JCheckBox jCheckBoxCrudDelivery;
-    private javax.swing.JCheckBox jCheckBoxDeleteDelivery;
-    private javax.swing.JCheckBox jCheckBoxDeleteLocale;
-    private javax.swing.JCheckBox jCheckBoxDeleteUser;
+    private javax.swing.JCheckBox jCheckBoxDeleteData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -772,22 +587,15 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jPasswordFieldMain;
-    private javax.swing.JProgressBar jProgressBarDelivery;
-    private javax.swing.JProgressBar jProgressBarLocale;
-    private javax.swing.JProgressBar jProgressBarUser;
-    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JProgressBar jProgressBarForm;
     private javax.swing.JRadioButton jRadioButtonAll;
-    private javax.swing.JRadioButton jRadioButtonCrudDelivery;
-    private javax.swing.JRadioButton jRadioButtonCrudLocale;
-    private javax.swing.JRadioButton jRadioButtonCrudUser;
+    private javax.swing.JRadioButton jRadioButtonEmpty;
+    private javax.swing.JRadioButton jRadioButtonFillExampleForm;
     private javax.swing.JRadioButton jRadioButtonUseChromium;
     private javax.swing.JRadioButton jRadioButtonUseFirefox;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinnerTimerPause;
-    private javax.swing.JTextArea jTextAreaEmailToSend;
     private javax.swing.JTextArea jTextAreaInformation;
-    private javax.swing.JTextField jTextFieldEmailAddress;
     private javax.swing.JTextField jTextFieldLoginData;
     private javax.swing.JTextField jTextFieldLoopsNumber;
     private javax.swing.JTextField jTextFieldMainUrl;
@@ -798,9 +606,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private void fillData() throws FileNotFoundException, IOException {
         bgroupCruds = new ButtonGroup();
         bgroupCruds.add(jRadioButtonAll);
-        bgroupCruds.add(jRadioButtonCrudUser);
-        bgroupCruds.add(jRadioButtonCrudLocale);
-        bgroupCruds.add(jRadioButtonCrudDelivery);
+        bgroupCruds.add(jRadioButtonFillExampleForm);
+        bgroupCruds.add(jRadioButtonEmpty);
+        //bgroupCruds.add(jRadioButtonCrudLocale);
+        //bgroupCruds.add(jRadioButtonCrudDelivery);
         frame = this;
         frame.setTitle(appName);
         
@@ -811,6 +620,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jTextFieldLoginData.setText(credentialsClass.getEmailToLogin());
         jPasswordFieldMain.setText(credentialsClass.getPasswordToLogin());
         jTextFieldMainUrl.setText(credentialsClass.getMainUrl());
+        mainUrl = credentialsClass.getMainUrl();
         String fileName = "";
         String fileNameERRORS = "";
         dateTimeOfSession = helperClass.getDateInStringForWindowsLinux(); 
@@ -965,7 +775,7 @@ public class MainJFrame extends javax.swing.JFrame {
         
         int loops = getDataFromTextField(jTextFieldLoopsNumber, 1, 100);   
         if (jRadioButtonAll.isSelected()) {
-            String message = "Testing of ALL Tests";  
+            String message = "Perform of ALL Tests";  
             jLabelStatus.setText(message);//SearchCandidateClass
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
             Thread tAllChecks = new Thread() {
@@ -980,92 +790,30 @@ public class MainJFrame extends javax.swing.JFrame {
                 }
             };
             tAllChecks.start();
-        } else if (jRadioButtonCrudUser.isSelected()) { 
-            boolean deleteUser = true;
-            if (!jCheckBoxDeleteUser.isSelected()) {
-                deleteUser = false;
+        } else if (jRadioButtonFillExampleForm.isSelected()) {
+            boolean deleteItem = true;
+            String message = "Testing of filling example form";  
+            if (!jCheckBoxDeleteData.isSelected()) {
+                deleteItem = false;
             }
-            String message = "Testing of the users Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
+            final boolean deleteItemF = deleteItem;
+            jLabelStatus.setText(message);//
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteUserF = deleteUser;
-            Thread tCrudUser = new Thread() {
-                public void run() {
+            Thread tFillExampleForm = new Thread() {
+                public void run() {   
                     for (int i = 0; i < loops; i++) {
-                        startCrudUser(deleteUserF);
+                        try {
+                            startFillingExampleForm(deleteItemF);
+                        } catch (Exception | Error ex) {
+                            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR start example form filling test!", ex.getMessage());
+                        }
                     }
                 }
             };
-            tCrudUser.start();            
-        } else if (jRadioButtonCrudLocale.isSelected()) { 
-            boolean deleteLocale = true;
-            if (!jCheckBoxDeleteLocale.isSelected()) {
-                deleteLocale = false;
-            }
-            String message = "Testing of the Locales Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteLocalerF = deleteLocale;
-            Thread tCrudLocale = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        startCrudLocale(deleteLocalerF);
-                    }
-                }
-            };
-            tCrudLocale.start();            
-        }else if (jRadioButtonCrudDelivery.isSelected()) { 
-            boolean deleteDelivery = true;
-            if (!jCheckBoxDeleteDelivery.isSelected()) {
-                deleteDelivery = false;
-            }
-            String message = "Testing of the Delivery Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteDeliveryF = deleteDelivery;
-            Thread tCrudDelivery = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        startCrudDelivery(deleteDeliveryF);
-                    }
-                }
-            };
-            tCrudDelivery.start();            
-        }
-        if (jCheckBoxCrudDelivery.isSelected()) { 
-            boolean deleteDelivery = true;
-            if (!jCheckBoxDeleteDelivery.isSelected()) {
-                deleteDelivery = false;
-            }
-            String message = "Testing of the Delivery Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteDeliveryF = deleteDelivery;
-            Thread tCrudDelivery = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        startCrudDelivery(deleteDeliveryF);
-                    }
-                }
-            };
-            tCrudDelivery.start();            
-        }
-        if (jCheckBoxCreateOrder.isSelected()) { 
-                        
-            String message = "Testing of the Order creation";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            
-            Thread tOrderCreate = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        testOrderCreate();
-                    }
-                }
-                
-            };
-            tOrderCreate.start();            
-        }
+            tFillExampleForm.start();
+        } 
+        
+        
         /*else {//
             jLabelStatus.setText("EMPTY CHOICE!"); 
             JOptionPane.showMessageDialog(frame, "EMPTY CHOICE!");

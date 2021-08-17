@@ -44,13 +44,14 @@ public class CredentialsClass{
         }
         
         if (isSettingsFileFound) {
-            this.email = baseConf.getProperty("emailToLogin", "admin@mail.com");
-            this.password = baseConf.getProperty("password", "123456");
-            this.mainUrl = baseConf.getProperty("mainUrl", "http://shop.loc");
+            this.email = baseConf.getProperty("emailToLogin", "test@test.com");
+            this.password = baseConf.getProperty("password", "12345678");
+            this.mainUrl = baseConf.getProperty("mainUrl", "http://maxbarannyk.ru/");
         } else {
             createConfigFile();
             this.email = "admin@gmail.com";
-            this.password = "123456";
+            this.password = "12345678";
+            this.mainUrl = "http://maxbarannyk.ru/";
         }
     }
     
@@ -82,7 +83,7 @@ public class CredentialsClass{
     try {
       File baseConfigFile = new File("baseConf.cfg");
       FileWriter myWriter = new FileWriter("baseConf.cfg");
-      myWriter.write("info=Please Fill this file with correct data\nemailToLogin=admin@mail.com\npassword=123456\nmainUrl=http://site.ru");
+      myWriter.write("info=Please Fill this file with correct data\nemailToLogin=test@test.com\npassword=12345678\nmainUrl=http://maxbarannyk.ru/");
       myWriter.close();
       
 //      BufferedWriter writer = new BufferedWriter(new FileWriter("baseConf.cfg", true));
