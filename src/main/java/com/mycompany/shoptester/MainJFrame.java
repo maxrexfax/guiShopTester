@@ -179,7 +179,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Action name");
 
-        jProgressBarForm.setMaximum(8);
+        jProgressBarForm.setMaximum(20);
 
         jRadioButtonEmpty.setText("Empty");
 

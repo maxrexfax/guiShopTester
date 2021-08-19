@@ -476,9 +476,16 @@ public class HelperClass {
         return strBuf.toString();
     }
     
-    public void printToFileAndConsoleInformation(File logFile, String message) {
+    public void printToFileAndConsoleInformation(File logFile, String message) {        
         if (message == null) message = "NULL REPLACED!";
         writeStringToFile(logFile, message);
+        System.out.println(message);
+    }
+    
+    public void printToFileAndJsAndConsoleInformation(File logFile, String message, JavascriptExecutor js) {        
+        if (message == null) message = "NULL REPLACED!";
+        writeStringToFile(logFile, message);
+        showJsMessage(js, message);
         System.out.println(message);
     }
     
@@ -526,5 +533,27 @@ public class HelperClass {
                 catch(Exception e) { }
             }
         }).start();        
+    }
+    
+    
+    public void createMiniScreen(JavascriptExecutor js) {
+        js.executeScript("var element = document.createElement('DIV'); element.id='info-area'; element.style.cssText='width:200px;" +
+    " min-height: 50px;" +
+    " opacity: 0.7;" +
+    " position: fixed;" +
+    " top:250px;" +
+    " left:120px;" +
+    " border: 1px solid gray;" +
+    " border-radius: 5px;" +
+    " background-color: #adb5bd;" +
+    " padding: 10px;'; document.body.appendChild(element);"); 
+    }
+    
+    public void showJsMessage(JavascriptExecutor js, String message) {
+        js.executeScript("document.getElementById('info-area').innerHTML = '<b>" + message + "</b>'");
+    }
+    
+    public void appendTextToPrevious(JavascriptExecutor js, String message) {
+        js.executeScript("document.getElementById('info-area').innerHTML = document.getElementById('info-area').innerHTML + '<br><b>" + message + "</b>'");
     }
 }
