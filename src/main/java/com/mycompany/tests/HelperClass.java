@@ -485,7 +485,8 @@ public class HelperClass {
     public void printToFileAndJsAndConsoleInformation(File logFile, String message, JavascriptExecutor js) {        
         if (message == null) message = "NULL REPLACED!";
         writeStringToFile(logFile, message);
-        showJsMessage(js, message);
+        //showJsMessage(js, message);
+        appendTextToPrevious(js, message);
         System.out.println(message);
     }
     
@@ -537,16 +538,18 @@ public class HelperClass {
     
     
     public void createMiniScreen(JavascriptExecutor js) {
-        js.executeScript("var element = document.createElement('DIV'); element.id='info-area'; element.style.cssText='width:200px;" +
+        js.executeScript("var element = document.createElement('DIV'); element.style.cssText='width:200px;" +
     " min-height: 50px;" +
+    " max-height: 400px;" +
+    " overflow-y:auto;" +
     " opacity: 0.7;" +
-    " position: fixed;" +
+    " position: absolute;" +
     " top:250px;" +
     " left:120px;" +
     " border: 1px solid gray;" +
     " border-radius: 5px;" +
     " background-color: #adb5bd;" +
-    " padding: 10px;'; document.body.appendChild(element);"); 
+    " padding: 10px;'; document.body.appendChild(element); var elementInner = document.createElement('DIV'); elementInner.id='info-area'; elementInner.setAttribute('onmousedown', 'drag(this.parentNode,event)'); elementInner.setAttribute('title', 'Drag and drop this item by mouse'); element.appendChild(elementInner); var scriptTag = document.createElement(\"script\"); scriptTag.src = \"http://maxbarannyk.ru/js/dragndrop.js\"; document.head.appendChild(scriptTag);"); 
     }
     
     public void showJsMessage(JavascriptExecutor js, String message) {

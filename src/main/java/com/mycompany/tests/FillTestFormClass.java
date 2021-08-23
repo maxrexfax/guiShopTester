@@ -84,138 +84,138 @@ public class FillTestFormClass {
                 return;
             }
             Thread.sleep(1000);
-            webDriver.get(mainUrl + "exampleform");
-            Thread.sleep(1000);
-            helperClass.createMiniScreen(js);
-            Thread.sleep(1000);
-            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "exampleform", fileToWriteLogsOfTesting)) {
-                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "exampleform!!! Return...", "Empty");
-                return;
-            }
-            Thread.sleep(1000);
+//            webDriver.get(mainUrl + "exampleform");
+//            Thread.sleep(1000);
+//            helperClass.createMiniScreen(js);
+//            Thread.sleep(1000);
+//            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "exampleform", fileToWriteLogsOfTesting)) {
+//                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "exampleform!!! Return...", "Empty");
+//                return;
+//            }
+//            Thread.sleep(1000);
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for name with data:<br>" + nameToFill, js);
+//            Thread.sleep(500);
+//            WebElement inputName = webDriver.findElement(By.id("test_name"));
+//            inputName.clear();
+//            inputName.sendKeys(nameToFill);  
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(2, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for Email with data:<br>" + emailToFill, js);
+//            Thread.sleep(500);
+//            WebElement inputEmail = webDriver.findElement(By.id("test_email"));
+//            inputEmail.clear();
+//            inputEmail.sendKeys(emailToFill); 
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(3, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for Textarea with data:<br>" + someTextToFill, js);
+//            Thread.sleep(500);
+//            WebElement inputTextarea = webDriver.findElement(By.id("test_textarea"));
+//            inputTextarea.clear();
+//            inputTextarea.sendKeys(someTextToFill); 
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(4, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for phone number with data:<br>" + phoneToFill, js);
+//            Thread.sleep(500);
+//            WebElement inputPhoneNumber = webDriver.findElement(By.id("test_phone_number"));
+//            inputPhoneNumber.clear();
+//            inputPhoneNumber.sendKeys(phoneToFill); 
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(5, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to tick checkboxes", js);  
+//            Thread.sleep(500);
+//            List<WebElement> checkboxList = webDriver.findElements(By.name("test_checkboxes[]"));
+//            int numberOfElementsToTick = helperClass.getRandomDigit(1, (checkboxList.size() - 1));
+//            for(int i = 0; i < numberOfElementsToTick; i++) {
+//                checkboxList.get(i).click();
+//                Thread.sleep(500);
+//            }
+//            helperClass.setProgressBarValue(6, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to tick radiobutton", js);  
+//            List<WebElement> radioButtonsList = webDriver.findElements(By.name("test_radio"));
+//            int numberOfElementToClick = helperClass.getRandomDigit(1, (radioButtonsList.size() - 1));
+//            radioButtonsList.get(numberOfElementToClick).click();
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(7, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to scroll page down", js);  
+//            Thread.sleep(1000);
+//            js.executeScript("window.scrollBy(0,245)");
+//            Thread.sleep(1000);
+//            
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to change element in dropdown", js);            
+//            Thread.sleep(500);
+//            WebElement dropdown = webDriver.findElement(By.id("test_dropdown"));
+//            dropdown.click();
+//            Thread.sleep(2000);
+//            List<WebElement> listOfOptions = dropdown.findElements(By.tagName("option"));
+//            int indexToClick1 = helperClass.getRandomDigit(1, (listOfOptions.size()-1));
+//            listOfOptions.get(indexToClick1).click(); 
+//            Thread.sleep(500);          
+//            helperClass.setProgressBarValue(8, this.jProgressBar);
+//            helperClass.appendTextToPrevious(js, "Done");
+//            Thread.sleep(500);          
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to change element in dropdown", js);  
+//            dropdown.click();
+//            Thread.sleep(2000);
+//            dropdown.click();
+//            Thread.sleep(2000);            
+//            int indexToClick2 = helperClass.getRandomDigit(0, (listOfOptions.size()-1));
+//            listOfOptions.get(indexToClick2).click(); 
+//            Thread.sleep(500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(9, this.jProgressBar);
+//            dropdown.click();
+//            Thread.sleep(2000);  
+//            
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for password with data:<br>" + passwordToFill, js);
+//            Thread.sleep(500);
+//            WebElement inputPassword = webDriver.findElement(By.id("test_password"));
+//            inputPassword.clear();
+//            inputPassword.sendKeys(passwordToFill); 
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(10, this.jProgressBar);
+//            Thread.sleep(1000);
+//            
+//            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for password confirm with data:<br>" + passwordConfirmToFill, js);
+//            Thread.sleep(500);
+//            WebElement inputPasswordConfirm = webDriver.findElement(By.id("test_password_confirmation"));
+//            inputPasswordConfirm.clear();
+//            inputPasswordConfirm.sendKeys(passwordToFill); 
+//            Thread.sleep(1500);          
+//            helperClass.appendTextToPrevious(js, "Done");
+//            helperClass.setProgressBarValue(11, this.jProgressBar);
+//            Thread.sleep(1000);                        
+//            js.executeScript("let infoDiv = document.getElementById('info-button'); infoDiv.innerText = infoDiv.dataset.info");
+//            Thread.sleep(5000);
+//            webDriver.findElement(By.id("btnSaveTestData")).click();
+//            helperClass.setProgressBarValue(12, this.jProgressBar);
+//            Thread.sleep(5000);
             
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for name with data:<br>" + nameToFill, js);
-            Thread.sleep(500);
-            WebElement inputName = webDriver.findElement(By.id("test_name"));
-            inputName.clear();
-            inputName.sendKeys(nameToFill);  
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(2, this.jProgressBar);
-            Thread.sleep(1000);
             
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for Email with data:<br>" + emailToFill, js);
-            Thread.sleep(500);
-            WebElement inputEmail = webDriver.findElement(By.id("test_email"));
-            inputEmail.clear();
-            inputEmail.sendKeys(emailToFill); 
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(3, this.jProgressBar);
-            Thread.sleep(1000);
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for Textarea with data:<br>" + someTextToFill, js);
-            Thread.sleep(500);
-            WebElement inputTextarea = webDriver.findElement(By.id("test_textarea"));
-            inputTextarea.clear();
-            inputTextarea.sendKeys(someTextToFill); 
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(4, this.jProgressBar);
-            Thread.sleep(1000);
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for phone number with data:<br>" + phoneToFill, js);
-            Thread.sleep(500);
-            WebElement inputPhoneNumber = webDriver.findElement(By.id("test_phone_number"));
-            inputPhoneNumber.clear();
-            inputPhoneNumber.sendKeys(phoneToFill); 
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(5, this.jProgressBar);
-            Thread.sleep(1000);
-            
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to tick checkboxes", js);  
-            Thread.sleep(500);
-            List<WebElement> checkboxList = webDriver.findElements(By.name("test_checkboxes[]"));
-            int numberOfElementsToTick = helperClass.getRandomDigit(1, (checkboxList.size() - 1));
-            for(int i = 0; i < numberOfElementsToTick; i++) {
-                checkboxList.get(i).click();
-                Thread.sleep(500);
-            }
-            helperClass.setProgressBarValue(6, this.jProgressBar);
-            Thread.sleep(1000);
-            
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to tick radiobutton", js);  
-            List<WebElement> radioButtonsList = webDriver.findElements(By.name("test_radio"));
-            int numberOfElementToClick = helperClass.getRandomDigit(1, (radioButtonsList.size() - 1));
-            radioButtonsList.get(numberOfElementToClick).click();
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(7, this.jProgressBar);
-            Thread.sleep(1000);
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to scroll page down", js);  
-            Thread.sleep(1000);
-            js.executeScript("window.scrollBy(0,245)");
-            Thread.sleep(1000);
-            
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to change element in dropdown", js);            
-            Thread.sleep(500);
-            WebElement dropdown = webDriver.findElement(By.id("test_dropdown"));
-            dropdown.click();
-            Thread.sleep(2000);
-            List<WebElement> listOfOptions = dropdown.findElements(By.tagName("option"));
-            int indexToClick1 = helperClass.getRandomDigit(1, (listOfOptions.size()-1));
-            listOfOptions.get(indexToClick1).click(); 
-            Thread.sleep(500);          
-            helperClass.setProgressBarValue(8, this.jProgressBar);
-            helperClass.appendTextToPrevious(js, "Done");
-            Thread.sleep(500);          
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to change element in dropdown", js);  
-            dropdown.click();
-            Thread.sleep(2000);
-            dropdown.click();
-            Thread.sleep(2000);            
-            int indexToClick2 = helperClass.getRandomDigit(0, (listOfOptions.size()-1));
-            listOfOptions.get(indexToClick2).click(); 
-            Thread.sleep(500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(9, this.jProgressBar);
-            dropdown.click();
-            Thread.sleep(2000);  
-            
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for password with data:<br>" + passwordToFill, js);
-            Thread.sleep(500);
-            WebElement inputPassword = webDriver.findElement(By.id("test_password"));
-            inputPassword.clear();
-            inputPassword.sendKeys(passwordToFill); 
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(10, this.jProgressBar);
-            Thread.sleep(1000);
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to fill input for password confirm with data:<br>" + passwordConfirmToFill, js);
-            Thread.sleep(500);
-            WebElement inputPasswordConfirm = webDriver.findElement(By.id("test_password_confirmation"));
-            inputPasswordConfirm.clear();
-            inputPasswordConfirm.sendKeys(passwordToFill); 
-            Thread.sleep(1500);          
-            helperClass.appendTextToPrevious(js, "Done");
-            helperClass.setProgressBarValue(11, this.jProgressBar);
-            Thread.sleep(1000);                        
-            js.executeScript("let infoDiv = document.getElementById('info-button'); infoDiv.innerText = infoDiv.dataset.info");
-            Thread.sleep(5000);
-            webDriver.findElement(By.id("btnSaveTestData")).click();
-            helperClass.setProgressBarValue(12, this.jProgressBar);
-            Thread.sleep(5000);
-            
-            
-            helperClass.printToFileAndJsAndConsoleInformation(fileToWriteLogsOfTesting, "Try to login", js);
-            webDriver.findElement(By.xpath("//*[@id=\"navbarSupportedContent\"]/ul[2]/li[1]/a")).click();
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Try to login");
+            webDriver.get(mainUrl + "login");
             Thread.sleep(1000);             
             helperClass.createMiniScreen(js);
             Thread.sleep(1000); 
@@ -245,7 +245,23 @@ public class FillTestFormClass {
                 helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "home!!! Return...", "Empty");
                 return;
             }
-            //
+            webDriver.get(mainUrl + "management/menu");            
+            Thread.sleep(1000); 
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "management/menu", fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "management/menu!!! Return...", "Empty");
+                return;
+            }
+            webDriver.findElement(By.id("accordionManagement")).click();
+            Thread.sleep(1000); 
+            webDriver.findElement(By.id("accordionElExampleList")).click();
+            Thread.sleep(1000); 
+            if(!helperClass.checkIfOnUrlNow(webDriver.getCurrentUrl(), mainUrl + "management/example/list", fileToWriteLogsOfTesting)) {
+                helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "ERROR: Not on URL" + mainUrl + "management/example/list!!! Return...", "Empty");
+                return;
+            }
+            
+            Thread.sleep(5000); 
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Normal end of the programm");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of FillTestFormClass"); 
