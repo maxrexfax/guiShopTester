@@ -49,7 +49,7 @@ public class CredentialsClass{
             this.mainUrl = baseConf.getProperty("mainUrl", "http://maxbarannyk.ru/");
         } else {
             createConfigFile();
-            this.email = "admin@gmail.com";
+            this.email = "test@test.com";
             this.password = "12345678";
             this.mainUrl = "http://maxbarannyk.ru/";
         }

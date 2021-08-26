@@ -23,6 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import org.apache.bcel.classfile.Utility;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -255,7 +256,8 @@ public class HelperClass {
         return "" + rndDayStr + "-" + rndMonthStr + "-" + getRandomDigit(1960,2005);
     }
     
-    public int[] getIdAndPaginationNumberOfModelOnPage(String stringToSearch, int indexOfTdWithString, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+    public int[] getIdAndPaginationNumberOfModelOnPage(String stringToSearch, int indexOfTdWithString, String tableIdetifier, 
+            String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
         int[] arrayIdAndPagination = new int[2];
         arrayIdAndPagination[0] = 0;
         arrayIdAndPagination[1] = 0;
@@ -319,12 +321,85 @@ public class HelperClass {
         return arrayIdAndPagination;
     }
     
-    public void clickOnEditButtonByModelId(int modelId, int indexOfTdWithClickable, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
-        WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
+    
+        
+    public int[] getIdAndPaginationNumberOfModelOnPageNextPrev(String mainUrl, String stringToSearch, int indexOfTdWithString, String tableIdetifier, 
+        String typeOfId, String paginationContainerId, String paginationContainerIdType, String paginationIdentifier, String paginationIdentefierType, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+                
+        int[] arrayIdAndPagination = new int[2];
+        arrayIdAndPagination[0] = 0;
+        arrayIdAndPagination[1] = 0;
+        boolean isPaginationFound = false;
+        boolean isWork = true;
+        int numberOfPage = 0;
+        WebElement paginationContainer = safeFindElement(webDriver, paginationContainerId, paginationContainerIdType);
+       // WebElement paginationContainer = webDriver.findElement(By.xpath("//*[@aria-label='Pagination Navigation']"));
+        
+        printToFileAndConsoleInformation(logFileNormal, "Work: try to find pagination container:" + paginationContainerId);
+        if (paginationContainer != null) {
+            isPaginationFound = true;
+            printToFileAndConsoleInformation(logFileNormal, "Work: pagination container found!");
+        } else {
+                printToFileAndConsoleInformation(logFileNormal, "Work: NO pagination container!");
+            }
+        
+        Thread.sleep(500);
+        int counter = 1;
+        do {
+            webDriver.get(mainUrl + "management/example/list?page=" + counter);//To navigate by urls
+            Thread.sleep(500);
+            js.executeScript("window.scrollBy(0,245)");//to make pagination clickable
+            Thread.sleep(500);
+            WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
+            List<WebElement> listUserTrs = null;
+            List<WebElement> listOfInternalTds = null;
+
+            try {
+                listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
+            } catch (Exception ex) {
+                writeErrorsToFiles(logFileNormal, logFileErrors, "Error while finding tr", ex.getMessage());            
+            }
+
+            printToFileAndConsoleInformation(logFileNormal, "Work: try to find id of element with text:" + stringToSearch);
+            Thread.sleep(500);
+            if (listUserTrs.size() > 1) {
+                for (int i = 1; i < listUserTrs.size(); i++) {
+                    Thread.sleep(500);
+                    listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
+
+                    if(listOfInternalTds.get(indexOfTdWithString).getText().contains(stringToSearch)) {
+                        arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
+                        printToFileAndConsoleInformation(logFileNormal, "Work: data " + leftDemarkator + stringToSearch + rightDemarkator + " found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
+                        arrayIdAndPagination[1] = counter;
+                        isWork = false;
+                    }
+                }
+            } 
+            Thread.sleep(500);
+            if (isPaginationFound){
+                counter++;//number of paginating page
+                WebElement elementPaginationParent = safeFindElement(webDriver, paginationIdentifier, paginationIdentefierType);
+                List <WebElement> childElementsPagination = webDriver.findElements(By.xpath(".//*"));
+                if(childElementsPagination.get(1).getTagName().contains("span")) {
+                    isWork = false;
+                }
+            } else {
+                isWork = false;
+            }
+
+            Thread.sleep(500);
+        } while (isWork);
+                
+        return arrayIdAndPagination;
+    }    
+    
+    public void clickOnEditButtonByModelId(int modelId, int indexOfTdWithClickable, String tableIdentifier, String typeOfId, String paginationIdentifier, 
+            WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+        WebElement tableWithUsers = safeFindElement(webDriver, tableIdentifier, typeOfId);
         List<WebElement> listOfTrs = null;
         List<WebElement> listOfInternalTds = null;
         js.executeScript("window.scrollBy(0,245)");
-        printToFileAndConsoleInformation(logFileNormal, "Work: try to find data with ID text:" + tableIdetifier);
+        printToFileAndConsoleInformation(logFileNormal, "Work: try to find data with ID text:" + tableIdentifier);
         try {
                 listOfTrs = tableWithUsers.findElements(By.tagName("tr"));
             } catch (Exception ex) {
@@ -334,13 +409,26 @@ public class HelperClass {
         if (listOfTrs.size() > 1) {
             for (int i = 1; i < listOfTrs.size(); i++) {
                 listOfInternalTds = listOfTrs.get(i).findElements(By.tagName("td"));
+                
+//                for(int j = 0; j < listOfInternalTds.size(); j++) {                    
+//                    printToFileAndConsoleInformation(logFileNormal, "Info: current element text: " + listOfInternalTds.get(j).getText());
+//                }
+                
                 printToFileAndConsoleInformation(logFileNormal, "Work: listOfInternalTds.size()=" + listOfInternalTds.size());
                 int idFromTable = Integer.parseInt(listOfInternalTds.get(0).getText());
                 printToFileAndConsoleInformation(logFileNormal, "Work: idFromTable=" + idFromTable + "   listOfInternalTds.get(0).getText():" + listOfInternalTds.get(0).getText());
                 if (idFromTable == modelId) {
                     printToFileAndConsoleInformation(logFileNormal, "Work: ID found, try to click");
+                    
+                    printToFileAndConsoleInformation(logFileNormal, "Info: current element text: " + listOfInternalTds.get(indexOfTdWithClickable).toString());
+                    
                     WebElement tagToClick = listOfInternalTds.get(indexOfTdWithClickable).findElement(By.tagName("a"));
+                    
+                    printToFileAndConsoleInformation(logFileNormal, "Info: current element tagToClick.toString(): " + tagToClick.toString());
+            //Thread.sleep(5000); 
+                    
                     tagToClick.click();
+                    return;
                 } else {
                     printToFileAndConsoleInformation(logFileNormal, "Work: ID not found");
                 }
