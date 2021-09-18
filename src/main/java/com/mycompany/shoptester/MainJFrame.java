@@ -10,23 +10,24 @@ import com.mycompany.tests.FillTestFormClass;
 import com.mycompany.tests.HelperClass;
 import com.mycompany.utils.SlackMessage;
 import com.mycompany.utils.SlackUtils;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import javax.mail.Authenticator;
-//import javax.mail.PasswordAuthentication;
-//import javax.mail.*;
-//import javax.mail.internet.AddressException;
-//import javax.mail.internet.InternetAddress;
-//import javax.mail.internet.MimeBodyPart;
-//import javax.mail.internet.MimeMessage;
-//import javax.mail.internet.MimeMultipart;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -62,7 +63,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private CredentialsClass credentialsClass;
     private Date dateForTimer;
     private boolean isTimerWork;
-    private String mainUrl;
+    public String mainUrl;
+    public String app_record_uuid;
     /**
      * Creates new form MainJFrame
      */
@@ -79,8 +81,8 @@ public class MainJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(frame, "Error! IOException: " + iex.getMessage());
         }
         setTextInInfoLabel();
-        
-    }
+    }    
+    
 
 //    public void setTextInAreaInformation(String txtToShow) {
 //       new Thread(new Runnable() {
@@ -470,8 +472,12 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButtonStartTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartTestActionPerformed
-        // TODO add your handling code here:
-        mainWorkStarts();        
+        try {
+            // TODO add your handling code here:
+            mainWorkStarts();
+        } catch (IOException ex) {
+            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonStartTestActionPerformed
 
     private void jButtonSetCredentialsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetCredentialsActionPerformed
@@ -511,7 +517,7 @@ public class MainJFrame extends javax.swing.JFrame {
     
     
     public void startFillingExampleForm(boolean deleteItem) {
-        FillTestFormClass fillTestFormClass = new FillTestFormClass(pathToLogFile, osName, deleteItem, jProgressBarForm, credentialsClass, mainUrl);                    
+        FillTestFormClass fillTestFormClass = new FillTestFormClass(pathToLogFile, osName, deleteItem, jProgressBarForm, credentialsClass, mainUrl, app_record_uuid);                    
         try {
             fillTestFormClass.fillForm();
         } catch (Exception | Error ex) {
@@ -749,6 +755,8 @@ public class MainJFrame extends javax.swing.JFrame {
                             }                            
                         } catch (InterruptedException ex) {
                             Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }
                             
                     }
@@ -766,7 +774,7 @@ public class MainJFrame extends javax.swing.JFrame {
         return cal.getTime();
     }
 
-    private void mainWorkStarts() {
+    private void mainWorkStarts() throws ProtocolException, IOException {
         if (jRadioButtonUseChromium.isSelected()) {
             CURRENT_BROWSER = CHANGE_CHROME_BROWSER;
         } else {
@@ -776,7 +784,11 @@ public class MainJFrame extends javax.swing.JFrame {
         int loops = getDataFromTextField(jTextFieldLoopsNumber, 1, 100);   
         if (jRadioButtonAll.isSelected()) {
             String message = "Perform of ALL Tests";  
-            jLabelStatus.setText(message);//SearchCandidateClass
+            app_record_uuid = UUID.randomUUID().toString();
+            String urlParameters   = "app_id=" + credentialsClass.appId + "&app_record_uuid=" + app_record_uuid + 
+                "&app_ip=" + "4/4/4/4" + "&type_of_check=" + message + "&check_info=Start test";
+            helperClass.sendDataToServerByPost("http://maxbarannyk.loc/api/admin/appinfo/store", urlParameters);
+            jLabelStatus.setText(message);
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
             Thread tAllChecks = new Thread() {
                 public void run() {   
@@ -793,6 +805,10 @@ public class MainJFrame extends javax.swing.JFrame {
         } else if (jRadioButtonFillExampleForm.isSelected()) {
             boolean deleteItem = true;
             String message = "Testing of filling example form";  
+            app_record_uuid = UUID.randomUUID().toString();
+            String urlParameters   = "app_id=" + credentialsClass.appId + "&app_record_uuid=" + app_record_uuid + 
+                "&app_ip=" + "4/4/4/4" + "&type_of_check=" + message + "&check_info=Start test";
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: Send data to server: " + urlParameters + ". Got response" + helperClass.sendDataToServerByPost("http://maxbarannyk.ru/api/admin/appinfo/store", urlParameters));
             if (!jCheckBoxDeleteData.isSelected()) {
                 deleteItem = false;
             }

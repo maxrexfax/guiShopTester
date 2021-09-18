@@ -8,6 +8,7 @@ package com.mycompany.tests;
 import com.mycompany.shoptester.MainJFrame;
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JProgressBar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -36,17 +37,19 @@ public class FillTestFormClass {
     private final int countOfSymbols = 15; 
     private JProgressBar jProgressBar;
     private boolean isResultDelete;
+    private String sessionRecordId;
     
     private String nameToFill, emailToFill, someTextToFill, phoneToFill, passwordToFill, passwordConfirmToFill;
     
     public FillTestFormClass(String pathToFileFolderIn, String osNameIn, boolean deleteResult, JProgressBar jProgressBarIn, 
-            CredentialsClass credentialsClassIn, String mainUrlIncome){
+            CredentialsClass credentialsClassIn, String mainUrlIncome, String sessionRecordIdIn){
         this.pathToLogFileFolder = pathToFileFolderIn;
         this.osName = osNameIn;
         this.jProgressBar = jProgressBarIn;
         this.credentialsClass = credentialsClassIn;
         this.mainUrl = mainUrlIncome;
         this.isResultDelete = deleteResult;
+        this.sessionRecordId = sessionRecordIdIn;
     }
     
     public void fillForm() {
@@ -291,6 +294,11 @@ public class FillTestFormClass {
             
             Thread.sleep(5000); 
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Normal end of the programm");
+             
+            String urlParameters   = "app_id=" + credentialsClass.appId + "&app_record_uuid=" + sessionRecordId + 
+                "&app_ip=" + "4/4/4/4" + "&type_of_check=the same...&check_info=Normal end of the programm";
+            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: Send data to server: " + urlParameters + ". Got response" + helperClass.sendDataToServerByPost("http://maxbarannyk.ru/api/admin/appinfo/store", urlParameters));
+            
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             helperClass.printToFileAndConsoleInformation(fileToWriteErrorLogOfTesting, "ERROR: Error in main try block of FillTestFormClass"); 

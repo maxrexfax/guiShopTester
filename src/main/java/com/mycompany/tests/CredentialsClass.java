@@ -25,6 +25,7 @@ public class CredentialsClass{
     public String email;
     public String password;
     public String mainUrl;
+    public String appId = "ede363be-1874-11ec-9621-0242ac130002";
     
     
     public CredentialsClass() throws FileNotFoundException, IOException {

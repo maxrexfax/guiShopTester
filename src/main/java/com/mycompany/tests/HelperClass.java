@@ -10,12 +10,22 @@ package com.mycompany.tests;
  * @author maxim
  */
 
+import com.mycompany.shoptester.MainJFrame;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +34,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.apache.bcel.classfile.Utility;
+import org.apache.http.client.methods.HttpPost;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -32,6 +43,12 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -134,6 +151,93 @@ public class HelperClass {
                 System.out.println(ex.getMessage());
             }
         }
+    
+//    public boolean sendDataToServerByPost(String appId, String recordId, String typeOfCheck, String checkInfo, String mainUrlIn) throws MalformedURLException, ProtocolException, IOException            
+//    {
+//        String urlParameters   = "app_id=" + appId + "&app_record_uuid=" + recordId + 
+//                "&app_ip=" + getCurrentIp() + "&type_of_check=" + typeOfCheck + "&check_info=" + checkInfo;
+//        byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+//        int    postDataLength = postData.length;
+//        String request        = mainUrlIn + "api/admin/appinfo/store";
+//        System.out.println("urlParameters=" + urlParameters);
+//        System.out.println("request=" + request);
+//        URL url               = new URL( request );
+//        HttpURLConnection conn= (HttpURLConnection) url.openConnection();           
+//        conn.setDoOutput( true );
+//        conn.setInstanceFollowRedirects( false );
+//        conn.setRequestMethod( "POST" );
+//        conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+//        conn.setRequestProperty( "charset", "utf-8");
+//        conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+//        conn.setUseCaches( false );
+//        try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
+//           wr.write( postData );
+//        }
+//        
+//        return true;
+//    }
+    //TODO - в метод п ередавать урл и данные уже готовые!!!
+    public static String sendDataToServerByPost(String urlToSendData, String urlParameters) {
+        HttpURLConnection connection = null;
+        
+        try {
+          //Create connection
+          URL url = new URL(urlToSendData);
+          connection = (HttpURLConnection) url.openConnection();
+          connection.setRequestMethod("POST");
+          connection.setRequestProperty("Content-Type", 
+              "application/x-www-form-urlencoded");
+
+          connection.setRequestProperty("Content-Length", 
+              Integer.toString(urlParameters.getBytes().length));
+          connection.setRequestProperty("Content-Language", "en-US");  
+
+          connection.setUseCaches(false);
+          connection.setDoOutput(true);
+
+          //Send request
+          DataOutputStream wr = new DataOutputStream (
+              connection.getOutputStream());
+          wr.writeBytes(urlParameters);
+          wr.close();
+
+          //Get Response  
+          InputStream is = connection.getInputStream();
+          BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+          StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
+          String line;
+          while ((line = rd.readLine()) != null) {
+            response.append(line);
+            response.append('\r');
+          }
+          rd.close();
+          return response.toString();
+        } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+        } finally {
+          if (connection != null) {
+            connection.disconnect();
+          }
+        }
+      }
+    
+    public String getCurrentIp() throws SocketException, UnknownHostException, IOException
+    {
+        String ip = "";    
+//        try(final DatagramSocket socket = new DatagramSocket()){
+//            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+//            ip = socket.getLocalAddress().getHostAddress();        
+//        }
+        
+        
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress("google.com", 80));
+        System.out.println(socket.getLocalAddress());
+        ip = socket.getLocalAddress().toString();
+        socket.close();
+        return ip;
+    }
     
 //    public void selectOneElementFromDropdownInHelper(WebDriver webDriver, File logFileNormal) throws InterruptedException
 //    {     
