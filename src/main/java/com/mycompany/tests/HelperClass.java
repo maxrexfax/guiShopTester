@@ -10,12 +10,22 @@ package com.mycompany.tests;
  * @author maxim
  */
 
+import com.mycompany.shoptester.MainJFrame;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +33,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import org.apache.bcel.classfile.Utility;
+import org.apache.http.client.methods.HttpPost;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -31,6 +43,12 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -133,6 +151,93 @@ public class HelperClass {
                 System.out.println(ex.getMessage());
             }
         }
+    
+//    public boolean sendDataToServerByPost(String appId, String recordId, String typeOfCheck, String checkInfo, String mainUrlIn) throws MalformedURLException, ProtocolException, IOException            
+//    {
+//        String urlParameters   = "app_id=" + appId + "&app_record_uuid=" + recordId + 
+//                "&app_ip=" + getCurrentIp() + "&type_of_check=" + typeOfCheck + "&check_info=" + checkInfo;
+//        byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+//        int    postDataLength = postData.length;
+//        String request        = mainUrlIn + "api/admin/appinfo/store";
+//        System.out.println("urlParameters=" + urlParameters);
+//        System.out.println("request=" + request);
+//        URL url               = new URL( request );
+//        HttpURLConnection conn= (HttpURLConnection) url.openConnection();           
+//        conn.setDoOutput( true );
+//        conn.setInstanceFollowRedirects( false );
+//        conn.setRequestMethod( "POST" );
+//        conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
+//        conn.setRequestProperty( "charset", "utf-8");
+//        conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+//        conn.setUseCaches( false );
+//        try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
+//           wr.write( postData );
+//        }
+//        
+//        return true;
+//    }
+    //TODO - в метод п ередавать урл и данные уже готовые!!!
+    public static String sendDataToServerByPost(String urlToSendData, String urlParameters) {
+        HttpURLConnection connection = null;
+        
+        try {
+          //Create connection
+          URL url = new URL(urlToSendData);
+          connection = (HttpURLConnection) url.openConnection();
+          connection.setRequestMethod("POST");
+          connection.setRequestProperty("Content-Type", 
+              "application/x-www-form-urlencoded");
+
+          connection.setRequestProperty("Content-Length", 
+              Integer.toString(urlParameters.getBytes().length));
+          connection.setRequestProperty("Content-Language", "en-US");  
+
+          connection.setUseCaches(false);
+          connection.setDoOutput(true);
+
+          //Send request
+          DataOutputStream wr = new DataOutputStream (
+              connection.getOutputStream());
+          wr.writeBytes(urlParameters);
+          wr.close();
+
+          //Get Response  
+          InputStream is = connection.getInputStream();
+          BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+          StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
+          String line;
+          while ((line = rd.readLine()) != null) {
+            response.append(line);
+            response.append('\r');
+          }
+          rd.close();
+          return response.toString();
+        } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+        } finally {
+          if (connection != null) {
+            connection.disconnect();
+          }
+        }
+      }
+    
+    public String getCurrentIp() throws SocketException, UnknownHostException, IOException
+    {
+        String ip = "";    
+//        try(final DatagramSocket socket = new DatagramSocket()){
+//            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+//            ip = socket.getLocalAddress().getHostAddress();        
+//        }
+        
+        
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress("google.com", 80));
+        System.out.println(socket.getLocalAddress());
+        ip = socket.getLocalAddress().toString();
+        socket.close();
+        return ip;
+    }
     
 //    public void selectOneElementFromDropdownInHelper(WebDriver webDriver, File logFileNormal) throws InterruptedException
 //    {     
@@ -255,7 +360,8 @@ public class HelperClass {
         return "" + rndDayStr + "-" + rndMonthStr + "-" + getRandomDigit(1960,2005);
     }
     
-    public int[] getIdAndPaginationNumberOfModelOnPage(String stringToSearch, int indexOfTdWithString, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+    public int[] getIdAndPaginationNumberOfModelOnPage(String stringToSearch, int indexOfTdWithString, String tableIdetifier, 
+            String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
         int[] arrayIdAndPagination = new int[2];
         arrayIdAndPagination[0] = 0;
         arrayIdAndPagination[1] = 0;
@@ -319,12 +425,85 @@ public class HelperClass {
         return arrayIdAndPagination;
     }
     
-    public void clickOnEditButtonByModelId(int modelId, int indexOfTdWithClickable, String tableIdetifier, String typeOfId, String paginationIdentifier, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
-        WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
+    
+        
+    public int[] getIdAndPaginationNumberOfModelOnPageNextPrev(String mainUrl, String stringToSearch, int indexOfTdWithString, String tableIdetifier, 
+        String typeOfId, String paginationContainerId, String paginationContainerIdType, String paginationIdentifier, String paginationIdentefierType, WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+                
+        int[] arrayIdAndPagination = new int[2];
+        arrayIdAndPagination[0] = 0;
+        arrayIdAndPagination[1] = 0;
+        boolean isPaginationFound = false;
+        boolean isWork = true;
+        int numberOfPage = 0;
+        WebElement paginationContainer = safeFindElement(webDriver, paginationContainerId, paginationContainerIdType);
+       // WebElement paginationContainer = webDriver.findElement(By.xpath("//*[@aria-label='Pagination Navigation']"));
+        
+        printToFileAndConsoleInformation(logFileNormal, "Work: try to find pagination container:" + paginationContainerId);
+        if (paginationContainer != null) {
+            isPaginationFound = true;
+            printToFileAndConsoleInformation(logFileNormal, "Work: pagination container found!");
+        } else {
+                printToFileAndConsoleInformation(logFileNormal, "Work: NO pagination container!");
+            }
+        
+        Thread.sleep(500);
+        int counter = 1;
+        do {
+            webDriver.get(mainUrl + "management/example/list?page=" + counter);//To navigate by urls
+            Thread.sleep(500);
+            js.executeScript("window.scrollBy(0,245)");//to make pagination clickable
+            Thread.sleep(500);
+            WebElement tableWithUsers = safeFindElement(webDriver, tableIdetifier, typeOfId);
+            List<WebElement> listUserTrs = null;
+            List<WebElement> listOfInternalTds = null;
+
+            try {
+                listUserTrs = tableWithUsers.findElements(By.tagName("tr"));
+            } catch (Exception ex) {
+                writeErrorsToFiles(logFileNormal, logFileErrors, "Error while finding tr", ex.getMessage());            
+            }
+
+            printToFileAndConsoleInformation(logFileNormal, "Work: try to find id of element with text:" + stringToSearch);
+            Thread.sleep(500);
+            if (listUserTrs.size() > 1) {
+                for (int i = 1; i < listUserTrs.size(); i++) {
+                    Thread.sleep(500);
+                    listOfInternalTds = listUserTrs.get(i).findElements(By.tagName("td"));
+
+                    if(listOfInternalTds.get(indexOfTdWithString).getText().contains(stringToSearch)) {
+                        arrayIdAndPagination[0] = Integer.valueOf(listOfInternalTds.get(0).getText());
+                        printToFileAndConsoleInformation(logFileNormal, "Work: data " + leftDemarkator + stringToSearch + rightDemarkator + " found on page:" + counter + " with ID:" + arrayIdAndPagination[0]); 
+                        arrayIdAndPagination[1] = counter;
+                        isWork = false;
+                    }
+                }
+            } 
+            Thread.sleep(500);
+            if (isPaginationFound){
+                counter++;//number of paginating page
+                WebElement elementPaginationParent = safeFindElement(webDriver, paginationIdentifier, paginationIdentefierType);
+                List <WebElement> childElementsPagination = webDriver.findElements(By.xpath(".//*"));
+                if(childElementsPagination.get(1).getTagName().contains("span")) {
+                    isWork = false;
+                }
+            } else {
+                isWork = false;
+            }
+
+            Thread.sleep(500);
+        } while (isWork);
+                
+        return arrayIdAndPagination;
+    }    
+    
+    public void clickOnEditButtonByModelId(int modelId, int indexOfTdWithClickable, String tableIdentifier, String typeOfId, String paginationIdentifier, 
+            WebDriver webDriver, JavascriptExecutor js, File logFileNormal, File logFileErrors) throws InterruptedException {
+        WebElement tableWithUsers = safeFindElement(webDriver, tableIdentifier, typeOfId);
         List<WebElement> listOfTrs = null;
         List<WebElement> listOfInternalTds = null;
         js.executeScript("window.scrollBy(0,245)");
-        printToFileAndConsoleInformation(logFileNormal, "Work: try to find data with ID text:" + tableIdetifier);
+        printToFileAndConsoleInformation(logFileNormal, "Work: try to find data with ID text:" + tableIdentifier);
         try {
                 listOfTrs = tableWithUsers.findElements(By.tagName("tr"));
             } catch (Exception ex) {
@@ -334,13 +513,26 @@ public class HelperClass {
         if (listOfTrs.size() > 1) {
             for (int i = 1; i < listOfTrs.size(); i++) {
                 listOfInternalTds = listOfTrs.get(i).findElements(By.tagName("td"));
+                
+//                for(int j = 0; j < listOfInternalTds.size(); j++) {                    
+//                    printToFileAndConsoleInformation(logFileNormal, "Info: current element text: " + listOfInternalTds.get(j).getText());
+//                }
+                
                 printToFileAndConsoleInformation(logFileNormal, "Work: listOfInternalTds.size()=" + listOfInternalTds.size());
                 int idFromTable = Integer.parseInt(listOfInternalTds.get(0).getText());
                 printToFileAndConsoleInformation(logFileNormal, "Work: idFromTable=" + idFromTable + "   listOfInternalTds.get(0).getText():" + listOfInternalTds.get(0).getText());
                 if (idFromTable == modelId) {
                     printToFileAndConsoleInformation(logFileNormal, "Work: ID found, try to click");
+                    
+                    printToFileAndConsoleInformation(logFileNormal, "Info: current element text: " + listOfInternalTds.get(indexOfTdWithClickable).toString());
+                    
                     WebElement tagToClick = listOfInternalTds.get(indexOfTdWithClickable).findElement(By.tagName("a"));
+                    
+                    printToFileAndConsoleInformation(logFileNormal, "Info: current element tagToClick.toString(): " + tagToClick.toString());
+            //Thread.sleep(5000); 
+                    
                     tagToClick.click();
+                    return;
                 } else {
                     printToFileAndConsoleInformation(logFileNormal, "Work: ID not found");
                 }
@@ -476,9 +668,17 @@ public class HelperClass {
         return strBuf.toString();
     }
     
-    public void printToFileAndConsoleInformation(File logFile, String message) {
+    public void printToFileAndConsoleInformation(File logFile, String message) {        
         if (message == null) message = "NULL REPLACED!";
         writeStringToFile(logFile, message);
+        System.out.println(message);
+    }
+    
+    public void printToFileAndJsAndConsoleInformation(File logFile, String message, JavascriptExecutor js) {        
+        if (message == null) message = "NULL REPLACED!";
+        writeStringToFile(logFile, message);
+        //showJsMessage(js, message);
+        appendTextToPrevious(js, message);
         System.out.println(message);
     }
     
@@ -526,5 +726,29 @@ public class HelperClass {
                 catch(Exception e) { }
             }
         }).start();        
+    }
+    
+    
+    public void createMiniScreen(JavascriptExecutor js) {
+        js.executeScript("var element = document.createElement('DIV'); element.style.cssText='width:200px;" +
+    " min-height: 50px;" +
+    " max-height: 400px;" +
+    " overflow-y:auto;" +
+    " opacity: 0.7;" +
+    " position: absolute;" +
+    " top:250px;" +
+    " left:120px;" +
+    " border: 1px solid gray;" +
+    " border-radius: 5px;" +
+    " background-color: #adb5bd;" +
+    " padding: 10px;'; document.body.appendChild(element); var elementInner = document.createElement('DIV'); elementInner.id='info-area'; elementInner.setAttribute('onmousedown', 'drag(this.parentNode,event)'); elementInner.setAttribute('title', 'Drag and drop this item by mouse'); element.appendChild(elementInner); var scriptTag = document.createElement(\"script\"); scriptTag.src = \"http://maxbarannyk.ru/js/dragndrop.js\"; document.head.appendChild(scriptTag);"); 
+    }
+    
+    public void showJsMessage(JavascriptExecutor js, String message) {
+        js.executeScript("document.getElementById('info-area').innerHTML = '<b>" + message + "</b>'");
+    }
+    
+    public void appendTextToPrevious(JavascriptExecutor js, String message) {
+        js.executeScript("document.getElementById('info-area').innerHTML = document.getElementById('info-area').innerHTML + '<br><b>" + message + "</b>'");
     }
 }
