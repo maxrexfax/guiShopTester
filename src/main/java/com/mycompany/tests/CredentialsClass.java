@@ -44,13 +44,14 @@ public class CredentialsClass{
         }
         
         if (isSettingsFileFound) {
-            this.email = baseConf.getProperty("emailToLogin", "admin@mail.com");
-            this.password = baseConf.getProperty("password", "123456");
-            this.mainUrl = baseConf.getProperty("mainUrl", "http://shop.loc");
+            this.email = baseConf.getProperty("emailToLogin", "enducareadmin@arproactive.com");
+            this.password = baseConf.getProperty("password", "Vn@rh1111");
+            this.mainUrl = baseConf.getProperty("mainUrl", "http://localhost:7370/#/providers/login");
         } else {
             createConfigFile();
-            this.email = "admin@gmail.com";
-            this.password = "123456";
+            this.email = "enducareadmin@arproactive.com";
+            this.password = "Vn@rh1111";
+            this.mainUrl = "http://localhost:7370/#/providers/login";
         }
     }
     
@@ -82,7 +83,7 @@ public class CredentialsClass{
     try {
       File baseConfigFile = new File("baseConf.cfg");
       FileWriter myWriter = new FileWriter("baseConf.cfg");
-      myWriter.write("info=Please Fill this file with correct data\nemailToLogin=admin@mail.com\npassword=123456\nmainUrl=http://site.ru");
+      myWriter.write("info=Please Fill this file with correct data\nemailToLogin=enducareadmin@arproactive.com\npassword=Vn@rh1111\nmainUrl=http://localhost:7370/#/providers/login");
       myWriter.close();
       
 //      BufferedWriter writer = new BufferedWriter(new FileWriter("baseConf.cfg", true));

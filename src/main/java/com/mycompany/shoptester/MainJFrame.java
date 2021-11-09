@@ -11,6 +11,7 @@ import com.mycompany.tests.CrudLocalesClass;
 import com.mycompany.tests.CrudUserClass;
 import com.mycompany.tests.HelperClass;
 import com.mycompany.tests.OrderCreateClass;
+import com.mycompany.tests.TestPatientBillingFrontendClass;
 import com.mycompany.utils.SlackMessage;
 import com.mycompany.utils.SlackUtils;
 import java.io.File;
@@ -121,25 +122,19 @@ public class MainJFrame extends javax.swing.JFrame {
         TabsInfo = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jRadioButtonAll = new javax.swing.JRadioButton();
-        jRadioButtonCrudUser = new javax.swing.JRadioButton();
+        jRadioButtonPatientBillFront = new javax.swing.JRadioButton();
         jCheckBoxDeleteUser = new javax.swing.JCheckBox();
         jRadioButtonUseChromium = new javax.swing.JRadioButton();
         jRadioButtonUseFirefox = new javax.swing.JRadioButton();
-        jRadioButtonCrudLocale = new javax.swing.JRadioButton();
-        jCheckBoxDeleteLocale = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jRadioButtonCrudDelivery = new javax.swing.JRadioButton();
-        jCheckBoxDeleteDelivery = new javax.swing.JCheckBox();
-        jProgressBarDelivery = new javax.swing.JProgressBar();
-        jProgressBarLocale = new javax.swing.JProgressBar();
-        jProgressBarUser = new javax.swing.JProgressBar();
-        jCheckBoxCreateOrder = new javax.swing.JCheckBox();
-        jCheckBoxCrudDelivery = new javax.swing.JCheckBox();
+        jProgressBarPBFront = new javax.swing.JProgressBar();
         jRadioButton1 = new javax.swing.JRadioButton();
         jTextFieldMainUrl = new javax.swing.JTextField();
         jButtonSetMainUrl = new javax.swing.JButton();
         jButtonCheckUrl = new javax.swing.JButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jProgressBarPBClient = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaInformation = new javax.swing.JTextArea();
@@ -182,7 +177,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButtonAll.setText("Start all checks below");
 
-        jRadioButtonCrudUser.setText("Crud User");
+        jRadioButtonPatientBillFront.setText("Patient Billing Frontend");
 
         jCheckBoxDeleteUser.setSelected(true);
 
@@ -191,31 +186,20 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jRadioButtonUseFirefox.setText("Use Firefox browser");
 
-        jRadioButtonCrudLocale.setText("Crud Locale");
-
-        jCheckBoxDeleteLocale.setSelected(true);
-
         jLabel2.setText("Delete after test?");
 
         jLabel3.setText("Create, edit, delete (Crud)");
 
-        jRadioButtonCrudDelivery.setText("Crud Delivery");
-
-        jCheckBoxDeleteDelivery.setSelected(true);
-
-        jProgressBarDelivery.setMaximum(8);
-
-        jProgressBarLocale.setMaximum(8);
-
-        jProgressBarUser.setMaximum(8);
-
-        jCheckBoxCreateOrder.setText("Create Order");
-
-        jCheckBoxCrudDelivery.setText("Crud Delivery");
+        jProgressBarPBFront.setMaximum(8);
 
         jRadioButton1.setText("Empty");
 
-        jTextFieldMainUrl.setText("http://test.ru");
+        jTextFieldMainUrl.setText("http://localhost:7370/#/providers/login");
+        jTextFieldMainUrl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldMainUrlActionPerformed(evt);
+            }
+        });
 
         jButtonSetMainUrl.setText("Set URL");
         jButtonSetMainUrl.addActionListener(new java.awt.event.ActionListener() {
@@ -226,6 +210,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jButtonCheckUrl.setText("Check URL");
 
+        jRadioButton2.setText("Patient Billing Client");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -235,40 +221,18 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonCrudUser)
-                            .addComponent(jLabel3)
-                            .addComponent(jRadioButtonCrudLocale))
+                            .addComponent(jRadioButtonPatientBillFront)
+                            .addComponent(jLabel3))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(58, 58, 58)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxDeleteDelivery)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxDeleteUser)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jProgressBarUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jCheckBoxDeleteLocale)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jProgressBarLocale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jCheckBoxDeleteUser)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jProgressBarPBFront, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButtonCrudDelivery)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jRadioButtonUseChromium)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButtonUseFirefox))
-                            .addComponent(jCheckBoxCreateOrder)
-                            .addComponent(jCheckBoxCrudDelivery)
-                            .addComponent(jRadioButton1))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jRadioButtonAll)
                         .addGap(133, 133, 133)
@@ -276,7 +240,19 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonCheckUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSetMainUrl)))
+                        .addComponent(jButtonSetMainUrl))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jRadioButtonUseChromium)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButtonUseFirefox))
+                            .addComponent(jRadioButton1))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jRadioButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jProgressBarPBClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -294,27 +270,17 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jRadioButtonCrudUser)
-                    .addComponent(jCheckBoxDeleteUser)
-                    .addComponent(jProgressBarUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jRadioButtonCrudLocale)
-                    .addComponent(jCheckBoxDeleteLocale)
-                    .addComponent(jProgressBarLocale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jProgressBarDelivery, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButtonCrudDelivery)
-                        .addComponent(jCheckBoxDeleteDelivery)))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jRadioButtonPatientBillFront)
+                            .addComponent(jCheckBoxDeleteUser)
+                            .addComponent(jProgressBarPBFront, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton2))
+                    .addComponent(jProgressBarPBClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
                 .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jCheckBoxCreateOrder)
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBoxCrudDelivery)
-                .addGap(82, 82, 82)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButtonUseChromium)
                     .addComponent(jRadioButtonUseFirefox))
@@ -656,48 +622,25 @@ public class MainJFrame extends javax.swing.JFrame {
         mainUrl = jTextFieldMainUrl.getText();
     }//GEN-LAST:event_jButtonSetMainUrlActionPerformed
 
+    private void jTextFieldMainUrlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMainUrlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldMainUrlActionPerformed
+
     private void startAllTestsOneByOne() {
         //Test Users
-        startCrudUser(true);        
-        startCrudLocale(true);        
-        startCrudDelivery(true);        
+        startPatientBillingFrontendProviders(true);  
     }
     
-    public void startCrudUser(boolean deleteUser) {
-        CrudUserClass crudUserClass = new CrudUserClass(pathToLogFile, osName, deleteUser, jProgressBarUser, credentialsClass, mainUrl);                    
+    public void startPatientBillingFrontendProviders(boolean deleteUser) {
+        TestPatientBillingFrontendClass testPatientBillingFrontendClass = new TestPatientBillingFrontendClass(pathToLogFile, osName, deleteUser, jProgressBarPBFront, credentialsClass, mainUrl);                    
         try {
-            crudUserClass.startCrudTestUsers();
+            testPatientBillingFrontendClass.startTestOfFrontend();
         } catch (Exception | Error ex) {
             helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudUserClass.startCrudTestUsers()!", ex.getMessage());
         }
     }
     
-    public void startCrudLocale(boolean deleteLocale){
-        CrudLocalesClass crudLocalesClass = new CrudLocalesClass(pathToLogFile, osName, deleteLocale, jProgressBarLocale, credentialsClass, mainUrl);                    
-        try {
-            crudLocalesClass.crudTestOfLocales();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudLocalesClass.crudTestOfLocales()!", ex.getMessage());
-        }
-    }
-    
-    public void startCrudDelivery(boolean deleteDelivery) {
-        CrudDeliveryClass crudDeliveryClass = new CrudDeliveryClass(pathToLogFile, osName, deleteDelivery, jProgressBarDelivery, credentialsClass, mainUrl);
-        try {
-            crudDeliveryClass.crudTestOfDeliveries();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting crudDeliveriesesClass.crudTestOfDeliveries()!", ex.getMessage());
-        }
-    }
-    
-    private void testOrderCreate() {
-         OrderCreateClass orderCreateClass = new OrderCreateClass(pathToLogFile, osName, jProgressBarDelivery, credentialsClass, mainUrl);
-         try {
-            orderCreateClass.testOrderCreation();
-        } catch (Exception | Error ex) {
-            helperClass.writeErrorsToFiles(fileToWriteLogsOfTesting, fileToWriteErrorLogOfTesting, "Work: MainFraimClass ERROR starting orderCreateClass.testOrderCreation()!", ex.getMessage());
-        }
-    }
+   
     
     /**
      * @param args the command line arguments
@@ -744,10 +687,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButtonStartTest;
     private javax.swing.JButton jButtonStartTimer;
     private javax.swing.JButton jButtonStopTimer;
-    private javax.swing.JCheckBox jCheckBoxCreateOrder;
-    private javax.swing.JCheckBox jCheckBoxCrudDelivery;
-    private javax.swing.JCheckBox jCheckBoxDeleteDelivery;
-    private javax.swing.JCheckBox jCheckBoxDeleteLocale;
     private javax.swing.JCheckBox jCheckBoxDeleteUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -772,14 +711,12 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jPasswordFieldMain;
-    private javax.swing.JProgressBar jProgressBarDelivery;
-    private javax.swing.JProgressBar jProgressBarLocale;
-    private javax.swing.JProgressBar jProgressBarUser;
+    private javax.swing.JProgressBar jProgressBarPBClient;
+    private javax.swing.JProgressBar jProgressBarPBFront;
     private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButtonAll;
-    private javax.swing.JRadioButton jRadioButtonCrudDelivery;
-    private javax.swing.JRadioButton jRadioButtonCrudLocale;
-    private javax.swing.JRadioButton jRadioButtonCrudUser;
+    private javax.swing.JRadioButton jRadioButtonPatientBillFront;
     private javax.swing.JRadioButton jRadioButtonUseChromium;
     private javax.swing.JRadioButton jRadioButtonUseFirefox;
     private javax.swing.JScrollPane jScrollPane1;
@@ -798,12 +735,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private void fillData() throws FileNotFoundException, IOException {
         bgroupCruds = new ButtonGroup();
         bgroupCruds.add(jRadioButtonAll);
-        bgroupCruds.add(jRadioButtonCrudUser);
-        bgroupCruds.add(jRadioButtonCrudLocale);
-        bgroupCruds.add(jRadioButtonCrudDelivery);
+        bgroupCruds.add(jRadioButtonPatientBillFront);
         frame = this;
         frame.setTitle(appName);
-        
         bgroupBrowsers = new ButtonGroup();
         bgroupBrowsers.add(jRadioButtonUseChromium);
         bgroupBrowsers.add(jRadioButtonUseFirefox); 
@@ -811,6 +745,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jTextFieldLoginData.setText(credentialsClass.getEmailToLogin());
         jPasswordFieldMain.setText(credentialsClass.getPasswordToLogin());
         jTextFieldMainUrl.setText(credentialsClass.getMainUrl());
+        this.mainUrl = credentialsClass.getMainUrl();
         String fileName = "";
         String fileNameERRORS = "";
         dateTimeOfSession = helperClass.getDateInStringForWindowsLinux(); 
@@ -980,92 +915,25 @@ public class MainJFrame extends javax.swing.JFrame {
                 }
             };
             tAllChecks.start();
-        } else if (jRadioButtonCrudUser.isSelected()) { 
+        } else if (jRadioButtonPatientBillFront.isSelected()) { 
             boolean deleteUser = true;
             if (!jCheckBoxDeleteUser.isSelected()) {
                 deleteUser = false;
             }
-            String message = "Testing of the users Create, Edit, Delete";            
+            String message = "Testing of Patient Billing Frontend Provider area starts";            
             jLabelStatus.setText(message);         
             helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
             final boolean deleteUserF = deleteUser;
-            Thread tCrudUser = new Thread() {
+            Thread tPatientBillingFrontend = new Thread() {
                 public void run() {
                     for (int i = 0; i < loops; i++) {
-                        startCrudUser(deleteUserF);
+                        startPatientBillingFrontendProviders(deleteUserF);
                     }
                 }
             };
-            tCrudUser.start();            
-        } else if (jRadioButtonCrudLocale.isSelected()) { 
-            boolean deleteLocale = true;
-            if (!jCheckBoxDeleteLocale.isSelected()) {
-                deleteLocale = false;
-            }
-            String message = "Testing of the Locales Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteLocalerF = deleteLocale;
-            Thread tCrudLocale = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        startCrudLocale(deleteLocalerF);
-                    }
-                }
-            };
-            tCrudLocale.start();            
-        }else if (jRadioButtonCrudDelivery.isSelected()) { 
-            boolean deleteDelivery = true;
-            if (!jCheckBoxDeleteDelivery.isSelected()) {
-                deleteDelivery = false;
-            }
-            String message = "Testing of the Delivery Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteDeliveryF = deleteDelivery;
-            Thread tCrudDelivery = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        startCrudDelivery(deleteDeliveryF);
-                    }
-                }
-            };
-            tCrudDelivery.start();            
-        }
-        if (jCheckBoxCrudDelivery.isSelected()) { 
-            boolean deleteDelivery = true;
-            if (!jCheckBoxDeleteDelivery.isSelected()) {
-                deleteDelivery = false;
-            }
-            String message = "Testing of the Delivery Create, Edit, Delete";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            final boolean deleteDeliveryF = deleteDelivery;
-            Thread tCrudDelivery = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        startCrudDelivery(deleteDeliveryF);
-                    }
-                }
-            };
-            tCrudDelivery.start();            
-        }
-        if (jCheckBoxCreateOrder.isSelected()) { 
-                        
-            String message = "Testing of the Order creation";            
-            jLabelStatus.setText(message);         
-            helperClass.printToFileAndConsoleInformation(fileToWriteLogsOfTesting, "Work: " + message); 
-            
-            Thread tOrderCreate = new Thread() {
-                public void run() {
-                    for (int i = 0; i < loops; i++) {
-                        testOrderCreate();
-                    }
-                }
-                
-            };
-            tOrderCreate.start();            
-        }
+            tPatientBillingFrontend.start();            
+        } 
+        
         /*else {//
             jLabelStatus.setText("EMPTY CHOICE!"); 
             JOptionPane.showMessageDialog(frame, "EMPTY CHOICE!");

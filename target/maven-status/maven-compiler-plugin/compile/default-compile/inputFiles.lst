@@ -5,5 +5,6 @@
 /home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/tests/CrudLocalesClass.java
 /home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/tests/CrudDeliveryClass.java
 /home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/utils/SlackMessage.java
-/home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/tests/HelperClass.java
 /home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/tests/CrudUserClass.java
+/home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/tests/HelperClass.java
+/home/maxim/NetBeansProjects/guiShopTester/src/main/java/com/mycompany/tests/TestPatientBillingFrontendClass.java
